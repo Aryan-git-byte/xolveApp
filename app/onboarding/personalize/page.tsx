@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // 👈 import router
 
 type QuestionType = "buttons" | "date" | "multi-select";
 
@@ -51,6 +52,7 @@ export default function PersonalizePage() {
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [dateInput, setDateInput] = useState("");
   const nickname = "Student";
+  const router = useRouter();
 
   const currentQuestion = questions[currentStep];
   const progress = ((currentStep + 1) / questions.length) * 100;
@@ -82,7 +84,7 @@ export default function PersonalizePage() {
     }
     
     if (currentStep === questions.length - 1) {
-      alert("🎉 Setup complete! Redirecting to email verification...");
+      router.push("/login"); // 👈 redirect to login/auth page
     }
   };
 
