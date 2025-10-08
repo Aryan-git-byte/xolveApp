@@ -9,19 +9,63 @@ export async function GET(request: Request) {
   if (code) {
     const supabase = await createClient()
     const { error, data } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) {
-      // Check if user already has phone verified
+    
+    if (!error && data.user) {
+      // Get user details
       const { data: { user } } = await supabase.auth.getUser()
-      const redirectPath = user?.phone ? '/dashboard' : '/verify-phone'
       
-      const forwardedHost = request.headers.get('x-forwarded-host')
-      const isLocalEnv = process.env.NODE_ENV === 'development'
-      if (isLocalEnv) {
-        return NextResponse.redirect(`${origin}${redirectPath}`)
-      } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${redirectPath}`)
-      } else {
-        return NextResponse.redirect(`${origin}${redirectPath}`)
+      if (user) {
+        // Check if profile exists
+        const { data: existingProfile } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single()
+
+        // If profile doesn't exist, create it (for Google OAuth users)
+        if (!existingProfile) {
+          await supabase
+            .from('user_profiles')
+            .insert({
+              id: user.id,
+              email: user.email,
+              name: user.user_metadata?.full_name || null,
+              nickname: user.user_metadata?.nickname || null,
+              last_login_at: new Date().toISOString(),
+            })
+        } else {
+          // Update last login
+          await supabase
+            .from('user_profiles')
+            .update({ 
+              last_login_at: new Date().toISOString() 
+            })
+            .eq('id', user.id)
+        }
+
+        // Log the login
+        await supabase
+          .from('login_history')
+          .insert({
+            user_id: user.id,
+            device_type: request.headers.get('user-agent')?.includes('Mobile') ? 'mobile' : 'desktop',
+            browser: request.headers.get('user-agent')?.split(' ').pop()?.split('/')[0] || 'unknown',
+          })
+
+        // Check if user already has phone verified
+        const isPhoneVerified = user.user_metadata?.phone_verified === true
+        const redirectPath = (user.phone && isPhoneVerified) ? '/dashboard' : '/verify-phone'
+        
+        const forwardedHost = request.headers.get('x-forwarded-host')
+        const isLocalEnv = process.env.NODE_ENV === 'development'
+        
+        if (isLocalEnv) {
+          return NextResponse.redirect(`${origin}${redirectPath}`)
+        } else if (forwardedHost) {
+          return NextResponse.redirect(`https://${forwardedHost}${redirectPath}`)
+        } else {
+          return NextResponse.redirect(`${origin}${redirectPath}`)
+        }
       }
     }
   }

@@ -26,6 +26,57 @@ export default function SignupPage() {
     checkUser();
   }, [router, supabase]);
 
+  const saveUserProfile = async (userId: string, userEmail: string) => {
+    try {
+      // Get preferences from localStorage
+      const preferencesStr = typeof window !== 'undefined' ? localStorage.getItem('xolve_preferences') : null;
+      const preferences = preferencesStr ? JSON.parse(preferencesStr) : {};
+      
+      // Extract data from preferences
+      const grade = preferences[1] || null;
+      const dateOfBirth = preferences[2] || null;
+      const interests = preferences[3] || [];
+      const personalGoal = preferences[4] || null;
+      const learningStyle = preferences[5] || null;
+
+      // Insert/update user profile
+      const { error: profileError } = await supabase
+        .from('user_profiles')
+        .upsert({
+          id: userId,
+          email: userEmail,
+          nickname: nickname,
+          grade: grade,
+          date_of_birth: dateOfBirth,
+          interests: interests,
+          personal_goal: personalGoal,
+          learning_style: learningStyle,
+          last_login_at: new Date().toISOString(),
+        }, {
+          onConflict: 'id'
+        });
+
+      if (profileError) {
+        console.error('Error saving profile:', profileError);
+      }
+
+      // Log the login
+      const { error: loginError } = await supabase
+        .from('login_history')
+        .insert({
+          user_id: userId,
+          device_type: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+          browser: navigator.userAgent.split(' ').pop()?.split('/')[0] || 'unknown',
+        });
+
+      if (loginError) {
+        console.error('Error logging login:', loginError);
+      }
+    } catch (error) {
+      console.error('Error saving user data:', error);
+    }
+  };
+
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
@@ -68,6 +119,9 @@ export default function SignupPage() {
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/auth/callback`,
+          data: {
+            nickname: nickname,
+          }
         },
       });
 
@@ -79,7 +133,10 @@ export default function SignupPage() {
           // Email already exists
           setError("An account with this email already exists. Please sign in instead.");
           setLoading(false);
-        } else {
+        } else if (data.user) {
+          // Save profile data
+          await saveUserProfile(data.user.id, email);
+          
           // Success - show message
           alert("✅ Check your email to confirm your account! After confirmation, you'll verify your phone number.");
           router.push("/login");

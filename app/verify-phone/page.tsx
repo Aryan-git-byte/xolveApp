@@ -70,7 +70,7 @@ export default function VerifyPhonePage() {
     // Limit to 10 digits
     const limited = digits.slice(0, 10);
     
-    // Format as: xxxxx xxxxx
+    // Format as: 12345 67890
     if (limited.length <= 5) {
       return limited;
     }
@@ -136,7 +136,7 @@ export default function VerifyPhonePage() {
       const digitsOnly = phoneNumber.replace(/\D/g, '');
       const fullPhoneNumber = `+91${digitsOnly}`;
 
-      const { error } = await supabase.auth.verifyOtp({
+      const { error, data } = await supabase.auth.verifyOtp({
         phone: fullPhoneNumber,
         token: otp,
         type: 'sms',
@@ -150,6 +150,17 @@ export default function VerifyPhonePage() {
         await supabase.auth.updateUser({
           data: { phone_verified: true }
         });
+        
+        // Update phone in user_profiles table
+        if (user) {
+          await supabase
+            .from('user_profiles')
+            .update({ 
+              phone: fullPhoneNumber,
+              last_login_at: new Date().toISOString()
+            })
+            .eq('id', user.id);
+        }
         
         // Phone verified successfully
         router.push("/dashboard");
@@ -234,7 +245,7 @@ export default function VerifyPhonePage() {
                       type="tel"
                       value={phoneNumber}
                       onChange={handlePhoneChange}
-                      placeholder="xxxxx xxxxx"
+                      placeholder="12345 67890"
                       maxLength={11}
                       className="flex-1 px-4 py-3 bg-blue-50 text-blue-900 rounded-xl border-2 border-blue-200 focus:outline-none focus:ring-4 focus:ring-orange-500/50 focus:border-orange-500 transition-all font-mono text-lg"
                     />
