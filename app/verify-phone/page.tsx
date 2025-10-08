@@ -12,22 +12,48 @@ export default function VerifyPhonePage() {
   const [error, setError] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
+  const [checkingAuth, setCheckingAuth] = useState(true);
   const router = useRouter();
   const supabase = createClient();
-  const { user } = useSupabase();
+  const { user, loading: authLoading } = useSupabase();
   const nickname = typeof window !== 'undefined' ? localStorage.getItem('xolve_nickname') || "there" : "there";
 
   useEffect(() => {
-    // Redirect if not authenticated
-    if (!user) {
-      router.push("/login");
-    }
+    const checkUserAuth = async () => {
+      // Wait for auth to finish loading
+      if (authLoading) {
+        return;
+      }
 
-    // Check if phone already verified
-    if (user?.phone) {
-      router.push("/dashboard");
-    }
-  }, [user, router]);
+      // Redirect if not authenticated
+      if (!user) {
+        router.push("/login");
+        return;
+      }
+
+      // Check if phone is already verified
+      // Check if user has phone and it's marked as verified in metadata
+      const hasPhone = !!user.phone;
+      const isPhoneVerified = user.user_metadata?.phone_verified === true;
+      
+      console.log("User phone status:", {
+        phone: user.phone,
+        hasPhone,
+        isPhoneVerified,
+        user_metadata: user.user_metadata
+      });
+
+      if (hasPhone && isPhoneVerified) {
+        console.log("Phone already verified, redirecting to dashboard");
+        router.push("/dashboard");
+      } else {
+        console.log("Phone not verified, staying on verify page");
+        setCheckingAuth(false);
+      }
+    };
+
+    checkUserAuth();
+  }, [user, authLoading, router]);
 
   useEffect(() => {
     // Countdown timer for resend OTP
@@ -120,10 +146,12 @@ export default function VerifyPhonePage() {
         setError(error.message);
         setLoading(false);
       } else {
-        // Save phone verification status
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('xolve_phone_verified', 'true');
-        }
+        // Update user metadata to mark phone as verified
+        await supabase.auth.updateUser({
+          data: { phone_verified: true }
+        });
+        
+        // Phone verified successfully
         router.push("/dashboard");
       }
     } catch (error) {
@@ -143,6 +171,15 @@ export default function VerifyPhonePage() {
     // Allow users to skip for now
     router.push("/dashboard");
   };
+
+  // Show loading state while checking authentication
+  if (authLoading || checkingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700">
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 p-6 overflow-hidden">

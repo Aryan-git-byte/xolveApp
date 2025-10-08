@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function CompanionIntroPage() {
   const [nickname, setNickname] = useState("");
@@ -82,7 +83,21 @@ export default function CompanionIntroPage() {
       </div>
 
       {/* Footer */}
-      <div className="relative z-10 text-center mt-8">
+      <div className="relative z-10 text-center mt-8 space-y-4">
+        {/* Sign In Link */}
+        <div>
+          <p className="text-white text-base">
+            Already have an account?{" "}
+            <Link 
+              href="/login"
+              className="text-orange-400 underline hover:text-orange-300 transition font-semibold"
+            >
+              Sign In
+            </Link>
+          </p>
+        </div>
+        
+        {/* Terms & Conditions */}
         <p className="text-blue-200 text-sm">
           By continuing, you agree to our{" "}
           <button className="text-orange-400 underline hover:text-orange-300 transition">

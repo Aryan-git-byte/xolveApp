@@ -30,33 +30,39 @@ export async function updateSession(request: NextRequest) {
   // Refresh session if expired
   const { data: { user } } = await supabase.auth.getUser()
 
-  // If user is logged in but hasn't verified phone, redirect to phone verification
-  if (
-    user &&
-    !user.phone &&
-    !request.nextUrl.pathname.startsWith('/verify-phone') &&
-    !request.nextUrl.pathname.startsWith('/auth') &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/signup') &&
-    !request.nextUrl.pathname.startsWith('/') &&
-    !request.nextUrl.pathname.startsWith('/onboarding')
-  ) {
+  // Public routes that don't require authentication
+  const publicRoutes = [
+    '/',
+    '/login',
+    '/signup',
+    '/onboarding/companion',
+    '/onboarding/personalize',
+    '/auth/callback',
+    '/auth/auth-code-error'
+  ]
+
+  const isPublicRoute = publicRoutes.some(route => 
+    request.nextUrl.pathname === route || request.nextUrl.pathname.startsWith('/auth/')
+  )
+
+  // If no user and trying to access protected route, redirect to login
+  if (!user && !isPublicRoute) {
     const url = request.nextUrl.clone()
-    url.pathname = '/verify-phone'
+    url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
-  // Protect routes that require authentication
+  // If user exists but hasn't verified phone, redirect to phone verification
+  // EXCEPT when they're on public routes, verify-phone page, or dashboard
   if (
-    !user &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/signup') &&
-    !request.nextUrl.pathname.startsWith('/auth') &&
-    !request.nextUrl.pathname.startsWith('/') &&
-    !request.nextUrl.pathname.startsWith('/onboarding')
+    user &&
+    !user.phone &&
+    !isPublicRoute &&
+    request.nextUrl.pathname !== '/verify-phone' &&
+    request.nextUrl.pathname !== '/dashboard'
   ) {
     const url = request.nextUrl.clone()
-    url.pathname = '/login'
+    url.pathname = '/verify-phone'
     return NextResponse.redirect(url)
   }
 
