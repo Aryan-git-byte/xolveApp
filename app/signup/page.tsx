@@ -35,9 +35,12 @@ export default function SignupPage() {
       // Extract data from preferences
       const grade = preferences[1] || null;
       const dateOfBirth = preferences[2] || null;
-      const interests = preferences[3] || [];
+      const interests = Array.isArray(preferences[3]) ? preferences[3] : [];
       const personalGoal = preferences[4] || null;
       const learningStyle = preferences[5] || null;
+
+      // Get nickname
+      const nicknameFromStorage = typeof window !== 'undefined' ? localStorage.getItem('xolve_nickname') : null;
 
       // Insert/update user profile
       const { error: profileError } = await supabase
@@ -45,10 +48,10 @@ export default function SignupPage() {
         .upsert({
           id: userId,
           email: userEmail,
-          nickname: nickname,
+          nickname: nicknameFromStorage || null,
           grade: grade,
           date_of_birth: dateOfBirth,
-          interests: interests,
+          interests: interests.length > 0 ? interests : null,
           personal_goal: personalGoal,
           learning_style: learningStyle,
           last_login_at: new Date().toISOString(),
@@ -80,10 +83,23 @@ export default function SignupPage() {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
+      // Get onboarding data from localStorage
+      const nickname = localStorage.getItem('xolve_nickname') || '';
+      const preferencesStr = localStorage.getItem('xolve_preferences') || '{}';
+      
+      // Build redirect URL with onboarding data
+      const redirectUrl = new URL(`${window.location.origin}/auth/callback`);
+      if (nickname) {
+        redirectUrl.searchParams.set('nickname', encodeURIComponent(nickname));
+      }
+      if (preferencesStr !== '{}') {
+        redirectUrl.searchParams.set('preferences', encodeURIComponent(preferencesStr));
+      }
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: redirectUrl.toString(),
         },
       });
       

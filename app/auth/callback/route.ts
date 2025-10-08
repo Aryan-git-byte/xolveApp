@@ -5,6 +5,10 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
   const next = searchParams.get('next') ?? '/verify-phone'
+  
+  // Get onboarding data from query params (we'll pass these during OAuth)
+  const nickname = searchParams.get('nickname')
+  const preferences = searchParams.get('preferences')
 
   if (code) {
     const supabase = await createClient()
@@ -22,25 +26,54 @@ export async function GET(request: Request) {
           .eq('id', user.id)
           .single()
 
-        // If profile doesn't exist, create it (for Google OAuth users)
+        // Parse preferences if available
+        let profileData: any = {
+          id: user.id,
+          email: user.email,
+          name: user.user_metadata?.full_name || null,
+          last_login_at: new Date().toISOString(),
+        }
+
+        // Add nickname if provided
+        if (nickname) {
+          profileData.nickname = decodeURIComponent(nickname)
+        }
+
+        // Add preferences if provided
+        if (preferences) {
+          try {
+            const prefs = JSON.parse(decodeURIComponent(preferences))
+            profileData.grade = prefs[1] || null
+            profileData.date_of_birth = prefs[2] || null
+            profileData.interests = prefs[3] || []
+            profileData.personal_goal = prefs[4] || null
+            profileData.learning_style = prefs[5] || null
+          } catch (e) {
+            console.error('Error parsing preferences:', e)
+          }
+        }
+
+        // If profile doesn't exist, create it
         if (!existingProfile) {
           await supabase
             .from('user_profiles')
-            .insert({
-              id: user.id,
-              email: user.email,
-              name: user.user_metadata?.full_name || null,
-              nickname: user.user_metadata?.nickname || null,
-              last_login_at: new Date().toISOString(),
-            })
+            .insert(profileData)
         } else {
-          // Update last login
-          await supabase
-            .from('user_profiles')
-            .update({ 
-              last_login_at: new Date().toISOString() 
-            })
-            .eq('id', user.id)
+          // Update existing profile with new data (only if we have onboarding data)
+          if (nickname || preferences) {
+            await supabase
+              .from('user_profiles')
+              .update(profileData)
+              .eq('id', user.id)
+          } else {
+            // Just update last login
+            await supabase
+              .from('user_profiles')
+              .update({ 
+                last_login_at: new Date().toISOString() 
+              })
+              .eq('id', user.id)
+          }
         }
 
         // Log the login

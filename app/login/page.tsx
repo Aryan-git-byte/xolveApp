@@ -42,6 +42,7 @@ export default function LoginPage() {
       }
     } catch (error) {
       console.error("Error:", error);
+      setError("An unexpected error occurred. Please try again.");
       setLoading(false);
     }
   };
@@ -60,9 +61,27 @@ export default function LoginPage() {
       if (error) {
         setError(error.message);
         setLoading(false);
-      } else {
+      } else if (data?.user) {
+        // Update last login time
+        await supabase
+          .from('user_profiles')
+          .update({ 
+            last_login_at: new Date().toISOString() 
+          })
+          .eq('id', data.user.id);
+
+        // Log the login
+        await supabase
+          .from('login_history')
+          .insert({
+            user_id: data.user.id,
+            device_type: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+            browser: navigator.userAgent.split(' ').pop()?.split('/')[0] || 'unknown',
+          });
+
         // Check if phone is verified
-        if (data?.user?.phone) {
+        const isPhoneVerified = data.user.user_metadata?.phone_verified === true;
+        if (data.user.phone && isPhoneVerified) {
           router.push("/dashboard");
         } else {
           router.push("/verify-phone");
