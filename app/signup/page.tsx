@@ -317,14 +317,7 @@ export default function SignupPage() {
           )}
 
           {/* Sign In Link */}
-          <div className="text-center pt-4 border-t border-blue-200">
-            <p className="text-blue-600">
-              Already have an account?{" "}
-              <Link href="/login" className="text-orange-600 hover:text-orange-700 font-semibold underline">
-                Sign In Instead
-              </Link>
-            </p>
-          </div>
+          
         </div>
 
         {/* Bottom Message from Companion */}

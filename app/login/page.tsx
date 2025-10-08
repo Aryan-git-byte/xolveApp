@@ -229,15 +229,7 @@ export default function LoginPage() {
             </form>
           )}
 
-          {/* Sign Up Link */}
-          <div className="text-center pt-4 border-t border-blue-200">
-            <p className="text-blue-600">
-              Don't have an account?{" "}
-              <Link href="/signup" className="text-orange-600 hover:text-orange-700 font-semibold underline">
-                Sign Up Here
-              </Link>
-            </p>
-          </div>
+          
         </div>
 
         {/* Bottom Message from Companion */}
