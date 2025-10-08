@@ -44,8 +44,7 @@ export default function VerifyPhonePage() {
       });
 
       if (hasPhone && isPhoneVerified) {
-        console.log("Phone already verified, redirecting to dashboard");
-        router.push("/dashboard");
+        router.push("/main");
       } else {
         console.log("Phone not verified, staying on verify page");
         setCheckingAuth(false);
@@ -163,7 +162,7 @@ export default function VerifyPhonePage() {
         }
         
         // Phone verified successfully
-        router.push("/dashboard");
+        router.push("/main");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -180,7 +179,7 @@ export default function VerifyPhonePage() {
 
   const handleSkip = () => {
     // Allow users to skip for now
-    router.push("/dashboard");
+    router.push("/main");
   };
 
   // Show loading state while checking authentication
