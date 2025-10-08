@@ -34,6 +34,7 @@ export async function updateSession(request: NextRequest) {
   const publicRoutes = [
     '/',
     '/login',
+    '/main',
     '/signup',
     '/onboarding/companion',
     '/onboarding/personalize',
