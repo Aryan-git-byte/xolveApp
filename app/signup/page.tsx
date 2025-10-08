@@ -5,11 +5,12 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-export default function LoginPage() {
+export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
   const supabase = createClient();
@@ -46,26 +47,42 @@ export default function LoginPage() {
     }
   };
 
-  const handleEmailLogin = async (e: React.FormEvent) => {
+  const handleEmailSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    setLoading(true);
 
+    if (password !== confirmPassword) {
+      setError("Passwords don't match!");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters!");
+      return;
+    }
+
+    setLoading(true);
     try {
-      const { error, data } = await supabase.auth.signInWithPassword({
+      const { error, data } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
       });
 
       if (error) {
         setError(error.message);
         setLoading(false);
       } else {
-        // Check if phone is verified
-        if (data?.user?.phone) {
-          router.push("/dashboard");
+        if (data?.user?.identities?.length === 0) {
+          // Email already exists
+          setError("An account with this email already exists. Please sign in instead.");
+          setLoading(false);
         } else {
-          router.push("/verify-phone");
+          // Success - show message
+          alert("✅ Check your email to confirm your account! After confirmation, you'll verify your phone number.");
+          router.push("/login");
         }
       }
     } catch (error) {
@@ -104,10 +121,10 @@ export default function LoginPage() {
               </div>
             </div>
             <h1 className="text-3xl font-bold text-blue-900 mb-2">
-              Welcome Back, {nickname}! 👋
+              Create your XolveTech Account
             </h1>
             <p className="text-blue-600">
-              Sign in to continue your XolveTech journey
+              Let's save your progress and unlock your personalized dashboard, {nickname}!
             </p>
           </div>
 
@@ -125,7 +142,7 @@ export default function LoginPage() {
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-                {loading ? "Signing in..." : "Continue with Google"}
+                {loading ? "Signing up..." : "Continue with Google"}
               </button>
 
               {/* Divider */}
@@ -134,20 +151,20 @@ export default function LoginPage() {
                   <div className="w-full border-t border-blue-200"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white text-blue-500 font-medium">Or sign in with email</span>
+                  <span className="px-4 bg-white text-blue-500 font-medium">Or sign up with email</span>
                 </div>
               </div>
 
-              {/* Email Login Button */}
+              {/* Email Signup Button */}
               <button
                 onClick={() => setShowEmailForm(true)}
                 className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 transition-all active:scale-95 shadow-lg mb-6"
               >
-                Sign in with Email
+                Sign up with Email
               </button>
             </>
           ) : (
-            <form onSubmit={handleEmailLogin} className="space-y-4 mb-6">
+            <form onSubmit={handleEmailSignup} className="space-y-4 mb-6">
               {/* Email Input */}
               <div>
                 <label htmlFor="email" className="block text-sm font-semibold text-blue-700 mb-2">
@@ -174,7 +191,23 @@ export default function LoginPage() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  placeholder="At least 6 characters"
+                  required
+                  className="w-full px-4 py-3 bg-blue-50 text-blue-900 rounded-xl border-2 border-blue-200 focus:outline-none focus:ring-4 focus:ring-orange-500/50 focus:border-orange-500 transition-all"
+                />
+              </div>
+
+              {/* Confirm Password Input */}
+              <div>
+                <label htmlFor="confirm-password" className="block text-sm font-semibold text-blue-700 mb-2">
+                  🔒 Confirm Password
+                </label>
+                <input
+                  id="confirm-password"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Re-enter your password"
                   required
                   className="w-full px-4 py-3 bg-blue-50 text-blue-900 rounded-xl border-2 border-blue-200 focus:outline-none focus:ring-4 focus:ring-orange-500/50 focus:border-orange-500 transition-all"
                 />
@@ -193,7 +226,7 @@ export default function LoginPage() {
                 disabled={loading}
                 className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 transition-all active:scale-95 shadow-lg disabled:opacity-50"
               >
-                {loading ? "Signing in..." : "Sign In"}
+                {loading ? "Creating Account..." : "Create Account"}
               </button>
 
               {/* Back Button */}
@@ -210,12 +243,12 @@ export default function LoginPage() {
             </form>
           )}
 
-          {/* Sign Up Link */}
+          {/* Sign In Link */}
           <div className="text-center pt-4 border-t border-blue-200">
             <p className="text-blue-600">
-              Don't have an account?{" "}
-              <Link href="/signup" className="text-orange-600 hover:text-orange-700 font-semibold underline">
-                Sign Up Here
+              Already have an account?{" "}
+              <Link href="/login" className="text-orange-600 hover:text-orange-700 font-semibold underline">
+                Sign In Instead
               </Link>
             </p>
           </div>
@@ -225,7 +258,7 @@ export default function LoginPage() {
         <div className="mt-6 text-center">
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 inline-block">
             <p className="text-white text-sm">
-              <span className="text-orange-400 font-semibold">🤖 X says:</span> "Welcome back! Ready to continue learning?"
+              <span className="text-orange-400 font-semibold">🤖 X says:</span> "Quick setup means you can start exploring faster!"
             </p>
           </div>
         </div>

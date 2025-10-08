@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // 👈 import router
+import { useRouter } from "next/navigation";
 
 export default function CompanionIntroPage() {
   const [nickname, setNickname] = useState("");
   const [error, setError] = useState("");
-  const router = useRouter(); // 👈 initialize router
+  const router = useRouter();
 
   const handleContinue = () => {
     if (!nickname.trim()) {
@@ -14,7 +14,11 @@ export default function CompanionIntroPage() {
       return;
     }
     
-    // In a real app, you'd save this and navigate
+    // Save nickname to localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('xolve_nickname', nickname);
+    }
+    
     router.push("/onboarding/personalize");
   };
 

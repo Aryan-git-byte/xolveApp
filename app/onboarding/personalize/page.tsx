@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // 👈 import router
+import { useRouter } from "next/navigation";
 
 type QuestionType = "buttons" | "date" | "multi-select";
 
@@ -51,7 +51,8 @@ export default function PersonalizePage() {
   const [answers, setAnswers] = useState<Record<number, string | string[]>>({});
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [dateInput, setDateInput] = useState("");
-  const nickname = "Student";
+  const [showTransition, setShowTransition] = useState(false);
+  const nickname = typeof window !== 'undefined' ? localStorage.getItem('xolve_nickname') || "Student" : "Student";
   const router = useRouter();
 
   const currentQuestion = questions[currentStep];
@@ -60,7 +61,6 @@ export default function PersonalizePage() {
   const handleAnswer = (answer: string | string[]) => {
     setAnswers({ ...answers, [currentQuestion.id]: answer });
     
-    // Don't auto-advance on the last question
     if (currentStep < questions.length - 1) {
       setTimeout(() => setCurrentStep(currentStep + 1), 300);
     }
@@ -83,20 +83,56 @@ export default function PersonalizePage() {
       }
     }
     
+    // On last question completion, show transition message
     if (currentStep === questions.length - 1) {
-      router.push("/login"); // 👈 redirect to login/auth page
+      // Save preferences to localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('xolve_preferences', JSON.stringify(answers));
+      }
+      setShowTransition(true);
+      setTimeout(() => {
+        router.push("/signup");
+      }, 3000);
     }
   };
 
   const progressWidth = `${progress}%`;
 
+  if (showTransition) {
+    return (
+      <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 p-6 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-green-500/10 rounded-full blur-3xl animate-pulse"></div>
+
+        <div className="relative z-10 text-center max-w-md space-y-6 animate-fade-in">
+          <div className="inline-block mb-4">
+            <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-xl animate-bounce">
+              <span className="text-5xl">🤖</span>
+            </div>
+          </div>
+          
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 space-y-4">
+            <h1 className="text-3xl font-bold text-white">Awesome, {nickname}! 🎉</h1>
+            <p className="text-xl text-blue-100">
+              I've saved your preferences.
+            </p>
+            <p className="text-lg text-blue-200">
+              Now, let's get your personal XolveTech account ready — so you can track your XP, badges, and kits.
+            </p>
+            <div className="pt-4">
+              <div className="animate-spin w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full mx-auto"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative min-h-screen w-full flex flex-col bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 p-6 overflow-hidden">
-      {/* Decorative background */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-green-500/10 rounded-full blur-3xl"></div>
 
-      {/* Progress bar with back button */}
       <div className="relative z-10 w-full max-w-md mx-auto mb-6">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-3">
@@ -123,7 +159,6 @@ export default function PersonalizePage() {
         </div>
       </div>
 
-      {/* Header */}
       <div className="relative z-10 text-center mb-8">
         <div className="inline-block mb-4">
           <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-xl">
@@ -134,7 +169,6 @@ export default function PersonalizePage() {
         <p className="text-blue-100">Answer a few questions so I can customize your journey</p>
       </div>
 
-      {/* Question Card */}
       <div className="relative z-10 flex-grow flex items-center justify-center">
         <div className="w-full max-w-md">
           <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl">
@@ -142,7 +176,6 @@ export default function PersonalizePage() {
               {currentQuestion.question}
             </h2>
 
-            {/* Button options */}
             {currentQuestion.type === "buttons" && currentQuestion.options && (
               <div className="space-y-3">
                 <div className="space-y-3">
@@ -160,7 +193,6 @@ export default function PersonalizePage() {
                     </button>
                   ))}
                 </div>
-                {/* Show continue button on last question if answer is selected */}
                 {currentStep === questions.length - 1 && answers[currentQuestion.id] && (
                   <button
                     onClick={handleContinue}
@@ -172,7 +204,6 @@ export default function PersonalizePage() {
               </div>
             )}
 
-            {/* Modern date input */}
             {currentQuestion.type === "date" && (
               <div className="space-y-6">
                 <div className="space-y-2">
@@ -209,7 +240,6 @@ export default function PersonalizePage() {
               </div>
             )}
 
-            {/* Multi-select */}
             {currentQuestion.type === "multi-select" && currentQuestion.options && (
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-3">
@@ -241,7 +271,6 @@ export default function PersonalizePage() {
         </div>
       </div>
 
-      {/* Navigation dots */}
       <div className="relative z-10 flex justify-center gap-2 mt-6 mb-4">
         {questions.map((_, index) => (
           <div
