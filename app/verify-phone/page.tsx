@@ -70,7 +70,7 @@ export default function VerifyPhonePage() {
     // Limit to 10 digits
     const limited = digits.slice(0, 10);
     
-    // Format as: 12345 67890
+    // Format as: xxxxx xxxxx
     if (limited.length <= 5) {
       return limited;
     }
@@ -234,7 +234,7 @@ export default function VerifyPhonePage() {
                       type="tel"
                       value={phoneNumber}
                       onChange={handlePhoneChange}
-                      placeholder="12345 67890"
+                      placeholder="xxxxx xxxxx"
                       maxLength={11}
                       className="flex-1 px-4 py-3 bg-blue-50 text-blue-900 rounded-xl border-2 border-blue-200 focus:outline-none focus:ring-4 focus:ring-orange-500/50 focus:border-orange-500 transition-all font-mono text-lg"
                     />
