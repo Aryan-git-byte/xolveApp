@@ -42,8 +42,24 @@ export async function updateSession(request: NextRequest) {
     '/auth/auth-code-error'
   ]
 
+  // Routes that don't require phone verification but do require authentication
+  const allowedWithoutPhoneRoutes = [
+    '/main',
+    '/main/home',
+    '/main/courses',
+    '/main/profile',
+    '/main/shopping',
+    '/main/xchange',
+    '/verify-phone',
+    '/dashboard'
+  ]
+
   const isPublicRoute = publicRoutes.some(route => 
     request.nextUrl.pathname === route || request.nextUrl.pathname.startsWith('/auth/')
+  )
+
+  const isAllowedWithoutPhone = allowedWithoutPhoneRoutes.some(route => 
+    request.nextUrl.pathname === route || request.nextUrl.pathname.startsWith(route)
   )
 
   // If no user and trying to access protected route, redirect to login
@@ -54,13 +70,12 @@ export async function updateSession(request: NextRequest) {
   }
 
   // If user exists but hasn't verified phone, redirect to phone verification
-  // EXCEPT when they're on public routes, verify-phone page, or dashboard
+  // EXCEPT when they're on public routes or allowed routes without phone verification
   if (
     user &&
     !user.phone &&
     !isPublicRoute &&
-    request.nextUrl.pathname !== '/verify-phone' &&
-    request.nextUrl.pathname !== '/dashboard'
+    !isAllowedWithoutPhone
   ) {
     const url = request.nextUrl.clone()
     url.pathname = '/verify-phone'
