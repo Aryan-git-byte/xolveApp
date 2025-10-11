@@ -20,7 +20,7 @@ export default function SignupPage() {
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        router.push("/main");
+        router.push("/main/home");
       }
     };
     checkUser();
@@ -197,7 +197,7 @@ export default function SignupPage() {
               Create your XolveTech Account
             </h1>
             <p className="text-blue-600">
-              Let's save your progress and unlock your personalized dashboard, {nickname}!
+              Let's save your progress and unlock your personalized home page, {nickname}!
             </p>
           </div>
 

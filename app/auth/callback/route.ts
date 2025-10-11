@@ -87,7 +87,7 @@ export async function GET(request: Request) {
 
         // Check if user already has phone verified
         const isPhoneVerified = user.user_metadata?.phone_verified === true
-        const redirectPath = (user.phone && isPhoneVerified) ? '/main' : '/verify-phone'
+        const redirectPath = (user.phone && isPhoneVerified) ? '/main/home' : '/verify-phone'
         
         const forwardedHost = request.headers.get('x-forwarded-host')
         const isLocalEnv = process.env.NODE_ENV === 'development'

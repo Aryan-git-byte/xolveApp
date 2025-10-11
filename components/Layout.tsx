@@ -13,11 +13,8 @@ export const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showXpDetails, setShowXpDetails] = useState(false);
-  const [notifications, setNotifications] = useState([
-    { id: 1, title: "New reply to your thread", message: "TechExplorer replied to your Arduino question", time: "2m ago", unread: true },
-    { id: 2, title: "XP earned!", message: "You earned 10 XP for helping a fellow developer", time: "1h ago", unread: true },
-    { id: 3, title: "Streak milestone", message: "You've maintained a 7-day streak! Keep it up!", time: "2h ago", unread: false },
-  ]);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const supabase = createClient();
 
   // Handle back navigation
@@ -44,13 +41,60 @@ export const Header = () => {
     }
   };
 
+  // Fetch user data and notifications
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          // Fetch user profile for XP and streak
+          const { data: profile } = await supabase
+            .from('user_profiles')
+            .select('xp, streak')
+            .eq('id', user.id)
+            .single();
+
+          if (profile) {
+            setXp(profile.xp || 0);
+            setStreak(profile.streak || 0);
+          }
+
+          // Fetch notifications
+          const { data: userNotifications } = await supabase
+            .from('notifications')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false })
+            .limit(10);
+
+          setNotifications(userNotifications || []);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [supabase]);
+
   // Mark notification as read
-  const markAsRead = (id: number) => {
-    setNotifications(prev => 
-      prev.map(notif => 
-        notif.id === id ? { ...notif, unread: false } : notif
-      )
-    );
+  const markAsRead = async (id: number) => {
+    try {
+      await supabase
+        .from('notifications')
+        .update({ read: true })
+        .eq('id', id);
+
+      setNotifications(prev => 
+        prev.map(notif => 
+          notif.id === id ? { ...notif, read: true } : notif
+        )
+      );
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+    }
   };
 
   // Close menus when clicking outside
@@ -67,7 +111,7 @@ export const Header = () => {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [showMenu, showNotifications, showXpDetails]);
 
-  const unreadCount = notifications.filter(n => n.unread).length;
+  const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
     <header className="bg-white border-b border-gray-200 px-4 py-3 fixed top-0 left-0 right-0 z-50">
@@ -117,16 +161,18 @@ export const Header = () => {
                     key={notification.id}
                     onClick={() => markAsRead(notification.id)}
                     className={`px-4 py-3 hover:bg-gray-50 transition cursor-pointer border-b border-gray-100 last:border-b-0 ${
-                      notification.unread ? 'bg-blue-50' : ''
+                      !notification.read ? 'bg-blue-50' : ''
                     }`}
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <h4 className="font-medium text-gray-800 text-sm">{notification.title}</h4>
                         <p className="text-xs text-gray-600 mt-1">{notification.message}</p>
-                        <p className="text-xs text-gray-400 mt-1">{notification.time}</p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          {new Date(notification.created_at).toLocaleDateString()} {new Date(notification.created_at).toLocaleTimeString()}
+                        </p>
                       </div>
-                      {notification.unread && (
+                      {!notification.read && (
                         <div className="w-2 h-2 bg-blue-500 rounded-full mt-1"></div>
                       )}
                     </div>

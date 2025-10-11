@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header, Footer } from '../../../components/Layout';
 import { 
   TrendingUp,
@@ -12,38 +12,132 @@ import {
   Activity,
   BookOpen,
   ShoppingCart,
-  RefreshCw
+  RefreshCw,
+  Target,
+  Users,
+  Zap,
+  CheckCircle,
+  AlertCircle,
+  Bell
 } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
 // Home Page Component
 const HomePage = () => {
-  const [user] = useState({
-    name: "John Doe",
-    level: 15,
-    xp: 2450,
-    xpToNext: 3000,
-    streak: 7
+  const [user, setUser] = useState({
+    name: "User",
+    level: 1,
+    xp: 0,
+    xpToNext: 100,
+    streak: 0
   });
+  const [loading, setLoading] = useState(true);
+  const [notifications, setNotifications] = useState([]);
+  const supabase = createClient();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const { data: { user: authUser } } = await supabase.auth.getUser();
+        if (authUser) {
+          // Fetch user profile
+          const { data: profile } = await supabase
+            .from('user_profiles')
+            .select('*')
+            .eq('id', authUser.id)
+            .single();
+
+          if (profile) {
+            setUser({
+              name: profile.nickname || profile.name || "User",
+              level: Math.floor((profile.xp || 0) / 100) + 1,
+              xp: profile.xp || 0,
+              xpToNext: 100 - ((profile.xp || 0) % 100),
+              streak: profile.streak || 0
+            });
+          }
+
+          // Fetch notifications
+          const { data: userNotifications } = await supabase
+            .from('notifications')
+            .select('*')
+            .eq('user_id', authUser.id)
+            .order('created_at', { ascending: false })
+            .limit(5);
+
+          setNotifications(userNotifications || []);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [supabase]);
 
   const quickActions = [
-    { icon: BookOpen, label: "Continue Course", color: "bg-blue-500", count: "3 active" },
-    { icon: ShoppingCart, label: "Browse Store", color: "bg-green-500", count: "5 new" },
-    { icon: RefreshCw, label: "Quick Trade", color: "bg-purple-500", count: "Live" },
-    { icon: Award, label: "Achievements", color: "bg-orange-500", count: "2 unlocked" }
+    { 
+      icon: BookOpen, 
+      label: "Continue Learning", 
+      color: "bg-blue-500", 
+      count: "3 active courses",
+      href: "/main/courses"
+    },
+    { 
+      icon: ShoppingCart, 
+      label: "Browse Store", 
+      color: "bg-green-500", 
+      count: "New items",
+      href: "/main/shopping"
+    },
+    { 
+      icon: RefreshCw, 
+      label: "Xchange", 
+      color: "bg-purple-500", 
+      count: "Active discussions",
+      href: "/main/xchange"
+    },
+    { 
+      icon: Award, 
+      label: "Achievements", 
+      color: "bg-orange-500", 
+      count: "2 unlocked",
+      href: "/main/profile"
+    }
   ];
 
   const recentActivity = [
     { type: "course", title: "JavaScript Fundamentals", action: "Completed Chapter 3", time: "2 hours ago", xp: 25 },
     { type: "achievement", title: "Speed Learner", action: "Achievement unlocked", time: "1 day ago", xp: 50 },
-    { type: "trade", title: "BTC/USDT", action: "Successful trade", time: "2 days ago", xp: 15 },
+    { type: "xchange", title: "Arduino Project", action: "New reply received", time: "2 days ago", xp: 15 },
     { type: "purchase", title: "Premium Course", action: "Purchased successfully", time: "3 days ago", xp: 10 }
   ];
 
   const upcomingDeadlines = [
-    { title: "React Advanced Quiz", date: "Tomorrow", time: "2:00 PM" },
-    { title: "Trading Contest", date: "Oct 12", time: "9:00 AM" },
-    { title: "Course Assignment", date: "Oct 15", time: "11:59 PM" }
+    { title: "React Advanced Quiz", date: "Tomorrow", time: "2:00 PM", type: "course" },
+    { title: "Xchange Contest", date: "Oct 12", time: "9:00 AM", type: "xchange" },
+    { title: "Course Assignment", date: "Oct 15", time: "11:59 PM", type: "course" }
   ];
+
+  const stats = [
+    { label: "Courses", value: "12", icon: BookOpen, color: "text-blue-600", bgColor: "bg-blue-100" },
+    { label: "XP Earned", value: user.xp.toString(), icon: Star, color: "text-yellow-600", bgColor: "bg-yellow-100" },
+    { label: "Streak", value: `${user.streak} days`, icon: Zap, color: "text-orange-600", bgColor: "bg-orange-100" },
+    { label: "Level", value: user.level.toString(), icon: Target, color: "text-purple-600", bgColor: "bg-purple-100" }
+  ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading your home page...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -61,7 +155,7 @@ const HomePage = () => {
                 <p className="text-blue-100 mb-4">Ready to continue your learning journey?</p>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
-                    <Activity className="w-4 h-4" />
+                    <Zap className="w-4 h-4" />
                     <span className="text-sm">{user.streak} day streak</span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -76,7 +170,7 @@ const HomePage = () => {
                 <div className="w-24 bg-blue-500 rounded-full h-2 mt-2">
                   <div 
                     className="bg-white rounded-full h-2 transition-all duration-300"
-                    style={{ width: `${(user.xp / user.xpToNext) * 100}%` }}
+                    style={{ width: `${Math.min((user.xp % 100) / 100 * 100, 100)}%` }}
                   ></div>
                 </div>
               </div>
@@ -90,67 +184,42 @@ const HomePage = () => {
               {quickActions.map((action, index) => {
                 const Icon = action.icon;
                 return (
-                  <button
+                  <a
                     key={index}
-                    className="p-4 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-sm transition group"
+                    href={action.href}
+                    className="p-4 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-sm transition group block"
                   >
                     <div className={`w-12 h-12 ${action.color} rounded-lg flex items-center justify-center mb-3 group-hover:scale-105 transition`}>
                       <Icon className="w-6 h-6 text-white" />
                     </div>
                     <div className="text-sm font-medium text-gray-800 mb-1">{action.label}</div>
                     <div className="text-xs text-gray-500">{action.count}</div>
-                  </button>
+                  </a>
                 );
               })}
             </div>
           </div>
 
           {/* Stats Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800">Courses</h3>
-                  <div className="flex items-end gap-2 mt-2">
-                    <span className="text-3xl font-bold text-blue-600">12</span>
-                    <span className="text-gray-500 text-sm mb-1">enrolled</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-800">{stat.label}</h3>
+                      <div className="flex items-end gap-2 mt-2">
+                        <span className={`text-3xl font-bold ${stat.color}`}>{stat.value}</span>
+                      </div>
+                    </div>
+                    <div className={`w-12 h-12 ${stat.bgColor} rounded-lg flex items-center justify-center`}>
+                      <Icon className={`w-6 h-6 ${stat.color}`} />
+                    </div>
                   </div>
                 </div>
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <BookOpen className="w-6 h-6 text-blue-600" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800">Trading</h3>
-                  <div className="flex items-end gap-2 mt-2">
-                    <span className="text-3xl font-bold text-green-600">+12.5%</span>
-                    <span className="text-gray-500 text-sm mb-1">this week</span>
-                  </div>
-                </div>
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-green-600" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800">Achievements</h3>
-                  <div className="flex items-end gap-2 mt-2">
-                    <span className="text-3xl font-bold text-orange-600">24</span>
-                    <span className="text-gray-500 text-sm mb-1">unlocked</span>
-                  </div>
-                </div>
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <Award className="w-6 h-6 text-orange-600" />
-                </div>
-              </div>
-            </div>
+              );
+            })}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -158,9 +227,9 @@ const HomePage = () => {
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold text-gray-800">Recent Activity</h2>
-                <button className="text-blue-600 text-sm font-medium hover:text-blue-700 transition">
+                <a href="/main/profile" className="text-blue-600 text-sm font-medium hover:text-blue-700 transition">
                   View All
-                </button>
+                </a>
               </div>
               <div className="space-y-4">
                 {recentActivity.map((activity, index) => {
@@ -168,7 +237,7 @@ const HomePage = () => {
                     switch (type) {
                       case 'course': return BookOpen;
                       case 'achievement': return Award;
-                      case 'trade': return RefreshCw;
+                      case 'xchange': return RefreshCw;
                       case 'purchase': return ShoppingCart;
                       default: return Activity;
                     }
@@ -222,6 +291,43 @@ const HomePage = () => {
               </div>
             </div>
           </div>
+
+          {/* Notifications Section */}
+          {notifications.length > 0 && (
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Bell className="w-5 h-5 text-blue-600" />
+                  <h2 className="text-xl font-semibold text-gray-800">Notifications</h2>
+                </div>
+                <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                  {notifications.filter(n => !n.read).length} new
+                </span>
+              </div>
+              <div className="space-y-3">
+                {notifications.slice(0, 3).map((notification, index) => (
+                  <div key={index} className={`flex items-start gap-3 p-3 rounded-lg transition ${
+                    !notification.read ? 'bg-blue-50 border-l-4 border-blue-500' : 'bg-gray-50'
+                  }`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                      !notification.read ? 'bg-blue-100' : 'bg-gray-100'
+                    }`}>
+                      {!notification.read ? (
+                        <AlertCircle className="w-4 h-4 text-blue-600" />
+                      ) : (
+                        <CheckCircle className="w-4 h-4 text-gray-600" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-gray-800">{notification.title}</p>
+                      <p className="text-xs text-gray-500 mt-1">{notification.message}</p>
+                      <p className="text-xs text-gray-400 mt-1">{notification.created_at}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
         </div>
       </main>

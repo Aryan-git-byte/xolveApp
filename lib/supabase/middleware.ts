@@ -50,8 +50,7 @@ export async function updateSession(request: NextRequest) {
     '/main/profile',
     '/main/shopping',
     '/main/xchange',
-    '/verify-phone',
-    '/dashboard'
+    '/verify-phone'
   ]
 
   const isPublicRoute = publicRoutes.some(route => 
