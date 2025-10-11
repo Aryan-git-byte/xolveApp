@@ -100,6 +100,10 @@ export const Header = () => {
   // Close menus when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      // Don't close if clicking on dropdown content
+      if (target.closest('.dropdown-content')) return;
+      
       if (showMenu || showNotifications || showXpDetails) {
         setShowMenu(false);
         setShowNotifications(false);
@@ -152,7 +156,7 @@ export const Header = () => {
             
             {/* Notifications Dropdown */}
             {showNotifications && (
-              <div className="absolute top-12 right-0 bg-white rounded-lg shadow-lg border border-gray-200 py-2 w-80 max-h-96 overflow-y-auto">
+              <div className="dropdown-content absolute top-12 -right-4 bg-white rounded-lg shadow-lg border border-gray-200 py-2 w-80 max-h-96 overflow-y-auto z-50">
                 <div className="px-4 py-2 border-b border-gray-200">
                   <h3 className="font-semibold text-gray-800">Notifications</h3>
                 </div>
@@ -200,7 +204,7 @@ export const Header = () => {
             
             {/* XP Details Dropdown */}
             {showXpDetails && (
-              <div className="absolute top-12 right-0 bg-white rounded-lg shadow-lg border border-gray-200 py-3 w-64">
+              <div className="dropdown-content absolute top-12 right-0 bg-white rounded-lg shadow-lg border border-gray-200 py-3 w-64 z-50">
                 <div className="px-4 py-2 border-b border-gray-200">
                   <h3 className="font-semibold text-gray-800">Your Stats</h3>
                 </div>
@@ -239,7 +243,7 @@ export const Header = () => {
             
             {/* Menu Dropdown */}
             {showMenu && (
-              <div className="absolute top-12 right-0 bg-white rounded-lg shadow-lg border border-gray-200 py-2 w-48">
+              <div className="dropdown-content absolute top-12 right-0 bg-white rounded-lg shadow-lg border border-gray-200 py-2 w-48 z-50">
                 <button 
                   onClick={() => {
                     router.push('/main/settings');
