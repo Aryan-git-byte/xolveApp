@@ -32,7 +32,7 @@ const HomePage = () => {
     streak: 0
   });
   const [loading, setLoading] = useState(true);
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState<any[]>([]);
   const supabase = createClient();
 
   useEffect(() => {
