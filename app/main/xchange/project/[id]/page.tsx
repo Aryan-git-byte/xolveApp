@@ -94,12 +94,12 @@ const ProjectDetailPage = () => {
   const [comments] = useState(mockComments);
   const [newComment, setNewComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [userVote, setUserVote] = useState(null);
+  const [userVote, setUserVote] = useState<'up' | 'down' | null>(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [showFullContent, setShowFullContent] = useState(false);
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     const now = new Date();
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
@@ -110,8 +110,8 @@ const ProjectDetailPage = () => {
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
-  const getDifficultyColor = (difficulty) => {
-    const colors = {
+  const getDifficultyColor = (difficulty: string): string => {
+    const colors: { [key: string]: string } = {
       beginner: 'bg-green-100 text-green-700',
       intermediate: 'bg-yellow-100 text-yellow-700',
       advanced: 'bg-red-100 text-red-700'
@@ -119,11 +119,11 @@ const ProjectDetailPage = () => {
     return colors[difficulty] || 'bg-gray-100 text-gray-700';
   };
 
-  const handleVote = (type) => {
+  const handleVote = (type: 'up' | 'down'): void => {
     setUserVote(userVote === type ? null : type);
   };
 
-  const handleSubmitComment = () => {
+  const handleSubmitComment = (): void => {
     if (!newComment.trim()) return;
     setIsSubmitting(true);
     setTimeout(() => {
@@ -132,7 +132,7 @@ const ProjectDetailPage = () => {
     }, 1000);
   };
 
-  const Comment = ({ comment }) => (
+  const Comment = ({ comment }: { comment: typeof mockComments[0] }) => (
     <div className="border-b border-gray-200 py-4 last:border-b-0">
       <div className="flex items-start justify-between mb-2">
         <div className="flex items-start gap-2 flex-1 min-w-0">
