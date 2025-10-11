@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { Header, Footer } from '../../../components/Layout';
 import { 
   Camera, Settings, Share2, MapPin, Link as LinkIcon, Github,
-  Users, Eye, Calendar, ChevronRight, BookOpen, Flame, 
-  Trophy, Rocket, X, Zap, Package
+  Users, Eye, Calendar, BookOpen, Flame, 
+  Trophy, Rocket, X, Package
 } from 'lucide-react';
 
 // Mock data
@@ -230,11 +230,11 @@ const ProfilePage = () => {
             {/* Name & Bio */}
             <div className="text-center mb-4">
               <h1 className="text-xl font-bold text-gray-800 mb-1">{userData.name}</h1>
-              <p className="text-sm text-gray-600 mb-2">{userData.tagline}</p>
-              <p className="text-xs text-gray-500 mb-3">{userData.bio}</p>
+              <p className="text-sm text-black mb-2">{userData.tagline}</p>
+              <p className="text-xs text-black mb-3">{userData.bio}</p>
               
               {/* Location & Links */}
-              <div className="flex flex-wrap justify-center gap-3 text-xs text-gray-600 mb-3">
+              <div className="flex flex-wrap justify-center gap-3 text-xs text-black mb-3">
                 <div className="flex items-center gap-1">
                   <MapPin className="w-3 h-3" />
                   <span>Mumbai, India</span>
@@ -252,7 +252,7 @@ const ProfilePage = () => {
               {/* Action Buttons */}
               <div className="flex gap-2 justify-center mb-3">
                 <button
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 text-gray-700 font-medium text-sm"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 text-black font-medium text-sm"
                   onClick={() => setShowSettings(!showSettings)}
                 >
                   <Settings className="w-4 h-4" />
@@ -268,7 +268,7 @@ const ProfilePage = () => {
               </div>
 
               {/* Stats */}
-              <div className="flex justify-center gap-4 text-xs text-gray-500">
+              <div className="flex justify-center gap-4 text-xs text-black">
                 <div className="flex items-center gap-1">
                   <Users className="w-3 h-3" />
                   <span>234 Followers</span>
@@ -278,7 +278,7 @@ const ProfilePage = () => {
                   <span>1234 Views</span>
                 </div>
               </div>
-              <div className="text-xs text-gray-400 mt-1 flex items-center justify-center gap-1">
+              <div className="text-xs text-black mt-1 flex items-center justify-center gap-1">
                 <Calendar className="w-3 h-3" />
                 Joined 2024-01-15
               </div>
@@ -288,12 +288,12 @@ const ProfilePage = () => {
             {showSettings && (
               <div className="mt-4 p-3 bg-gray-50 rounded-lg">
                 <div className="flex justify-between mb-2">
-                  <h3 className="font-semibold text-sm">Edit Profile</h3>
+                  <h3 className="font-semibold text-sm text-black">Edit Profile</h3>
                   <button onClick={() => setShowSettings(false)}>
                     <X className="w-4 h-4" />
                   </button>
                 </div>
-                <div className="space-y-2 text-sm">
+                <div className="space-y-2 text-sm text-black">
                   <button className="w-full text-left p-2 hover:bg-white rounded">Edit Bio</button>
                   <button className="w-full text-left p-2 hover:bg-white rounded">Update Links</button>
                   <button className="w-full text-left p-2 hover:bg-white rounded">Privacy Settings</button>
@@ -305,12 +305,12 @@ const ProfilePage = () => {
             {showShareMenu && (
               <div className="mt-4 p-3 bg-gray-50 rounded-lg">
                 <div className="flex justify-between mb-2">
-                  <h3 className="font-semibold text-sm">Share Profile</h3>
+                  <h3 className="font-semibold text-sm text-black">Share Profile</h3>
                   <button onClick={() => setShowShareMenu(false)}>
                     <X className="w-4 h-4" />
                   </button>
                 </div>
-                <button onClick={copyProfileLink} className="w-full text-left p-2 hover:bg-white rounded flex items-center gap-2 text-sm">
+                <button onClick={copyProfileLink} className="w-full text-left p-2 hover:bg-white rounded flex items-center gap-2 text-sm text-black">
                   <LinkIcon className="w-4 h-4" />
                   Copy Link
                 </button>
@@ -322,23 +322,23 @@ const ProfilePage = () => {
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div className="bg-white rounded-lg shadow p-3 text-center">
               <Rocket className="w-6 h-6 mx-auto mb-1 text-blue-500" />
-              <div className="text-xl font-bold">{userData.projects_count}</div>
-              <div className="text-xs text-gray-500">Projects</div>
+              <div className="text-xl font-bold text-black">{userData.projects_count}</div>
+              <div className="text-xs text-black">Projects</div>
             </div>
             <div className="bg-white rounded-lg shadow p-3 text-center">
               <Package className="w-6 h-6 mx-auto mb-1 text-green-500" />
-              <div className="text-xl font-bold">{userData.kits_owned_count}</div>
-              <div className="text-xs text-gray-500">Kits Owned</div>
+              <div className="text-xl font-bold text-black">{userData.kits_owned_count}</div>
+              <div className="text-xs text-black">Kits Owned</div>
             </div>
             <div className="bg-white rounded-lg shadow p-3 text-center">
               <BookOpen className="w-6 h-6 mx-auto mb-1 text-purple-500" />
-              <div className="text-xl font-bold">{userData.courses_completed_count}/{userData.courses_enrolled_count}</div>
-              <div className="text-xs text-gray-500">Courses</div>
+              <div className="text-xl font-bold text-black">{userData.courses_completed_count}/{userData.courses_enrolled_count}</div>
+              <div className="text-xs text-black">Courses</div>
             </div>
             <div className="bg-white rounded-lg shadow p-3 text-center">
               <Trophy className="w-6 h-6 mx-auto mb-1 text-orange-500" />
-              <div className="text-xl font-bold">{userData.badges_earned_count}</div>
-              <div className="text-xs text-gray-500">Badges</div>
+              <div className="text-xl font-bold text-black">{userData.badges_earned_count}</div>
+              <div className="text-xs text-black">Badges</div>
             </div>
           </div>
 
@@ -350,7 +350,7 @@ const ProfilePage = () => {
                 className={`flex flex-col items-center px-4 py-2 rounded-lg font-medium text-xs whitespace-nowrap ${
                   activeTab === tab.id 
                     ? 'bg-blue-600 text-white' 
-                    : 'bg-white text-gray-600'
+                    : 'bg-white text-black'
                 }`}
                 onClick={() => setActiveTab(tab.id)}
               >
@@ -367,11 +367,11 @@ const ProfilePage = () => {
                 {/* Recent Projects */}
                 <div className="bg-white rounded-lg shadow p-4">
                   <div className="flex justify-between mb-3">
-                    <h3 className="font-semibold flex items-center gap-2">
+                    <h3 className="font-semibold flex items-center gap-2 text-black">
                       <Rocket className="w-4 h-4 text-blue-500" />
                       Recent Projects
                     </h3>
-                    <button className="text-xs text-blue-600" onClick={() => setActiveTab('projects')}>
+                    <button className="text-xs text-blue-600 font-medium" onClick={() => setActiveTab('projects')}>
                       View All →
                     </button>
                   </div>
@@ -382,9 +382,9 @@ const ProfilePage = () => {
                           {project.title[0]}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="font-semibold text-sm">{project.title}</div>
-                          <div className="text-xs text-gray-500">{project.description}</div>
-                          <div className="flex gap-2 mt-1 text-xs text-gray-400">
+                          <div className="font-semibold text-sm text-black">{project.title}</div>
+                          <div className="text-xs text-black">{project.description}</div>
+                          <div className="flex gap-2 mt-1 text-xs text-black">
                             <span>{project.category}</span>
                             <span>· {project.likes_count} ❤️</span>
                             <span>· {project.views_count} 👁️</span>
@@ -398,11 +398,11 @@ const ProfilePage = () => {
                 {/* Badges */}
                 <div className="bg-white rounded-lg shadow p-4">
                   <div className="flex justify-between mb-3">
-                    <h3 className="font-semibold flex items-center gap-2">
+                    <h3 className="font-semibold flex items-center gap-2 text-black">
                       <Trophy className="w-4 h-4 text-yellow-500" />
                       Badges
                     </h3>
-                    <button className="text-xs text-blue-600" onClick={() => setActiveTab('achievements')}>
+                    <button className="text-xs text-blue-600 font-medium" onClick={() => setActiveTab('achievements')}>
                       View All →
                     </button>
                   </div>
@@ -421,11 +421,11 @@ const ProfilePage = () => {
                 {/* Courses */}
                 <div className="bg-white rounded-lg shadow p-4">
                   <div className="flex justify-between mb-3">
-                    <h3 className="font-semibold flex items-center gap-2">
+                    <h3 className="font-semibold flex items-center gap-2 text-black">
                       <BookOpen className="w-4 h-4 text-purple-500" />
                       Courses Progress
                     </h3>
-                    <button className="text-xs text-blue-600" onClick={() => setActiveTab('courses')}>
+                    <button className="text-xs text-blue-600 font-medium" onClick={() => setActiveTab('courses')}>
                       View All →
                     </button>
                   </div>
@@ -433,8 +433,8 @@ const ProfilePage = () => {
                     {mockCourses.slice(0, 2).map(course => (
                       <div key={course.id}>
                         <div className="flex justify-between text-sm mb-1">
-                          <span className="font-medium">{course.course_title}</span>
-                          <span className="text-gray-500">{course.completion_percentage}%</span>
+                          <span className="font-medium text-black">{course.course_title}</span>
+                          <span className="text-black">{course.completion_percentage}%</span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2">
                           <div 
@@ -449,18 +449,18 @@ const ProfilePage = () => {
 
                 {/* Streaks */}
                 <div className="bg-white rounded-lg shadow p-4">
-                  <h3 className="font-semibold flex items-center gap-2 mb-3">
+                  <h3 className="font-semibold flex items-center gap-2 mb-3 text-black">
                     <Flame className="w-4 h-4 text-orange-500" />
                     Streaks
                   </h3>
                   <div className="flex justify-around">
                     <div className="text-center">
                       <div className="text-3xl font-bold text-orange-600">{userData.current_streak}</div>
-                      <div className="text-xs text-gray-500">Current</div>
+                      <div className="text-xs text-black">Current</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-gray-600">{userData.longest_streak}</div>
-                      <div className="text-xs text-gray-500">Longest</div>
+                      <div className="text-3xl font-bold text-black">{userData.longest_streak}</div>
+                      <div className="text-xs text-black">Longest</div>
                     </div>
                   </div>
                 </div>
@@ -475,9 +475,9 @@ const ProfilePage = () => {
                       {project.title[0]}
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold">{project.title}</h3>
-                      <p className="text-xs text-gray-500 mb-1">{project.description}</p>
-                      <div className="flex gap-2 text-xs text-gray-400">
+                      <h3 className="font-semibold text-black">{project.title}</h3>
+                      <p className="text-xs text-black mb-1">{project.description}</p>
+                      <div className="flex gap-2 text-xs text-black">
                         <span>{project.category}</span>
                         <span>· {project.likes_count} ❤️</span>
                         <span>· {project.views_count} 👁️</span>
@@ -493,7 +493,7 @@ const ProfilePage = () => {
                 {mockCourses.map(course => (
                   <div key={course.id} className="bg-white rounded-lg shadow p-4">
                     <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-semibold text-sm">{course.course_title}</h3>
+                      <h3 className="font-semibold text-sm text-black">{course.course_title}</h3>
                       <span className={`text-xs px-2 py-1 rounded-full ${
                         course.status === 'completed' 
                           ? 'bg-green-100 text-green-700' 
@@ -502,14 +502,14 @@ const ProfilePage = () => {
                         {course.status === 'completed' ? 'Completed' : 'In Progress'}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-500 mb-2">{course.course_description}</p>
+                    <p className="text-xs text-black mb-2">{course.course_description}</p>
                     <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
                       <div 
                         className={`h-2 rounded-full ${course.status === 'completed' ? 'bg-green-500' : 'bg-blue-500'}`} 
                         style={{ width: `${course.completion_percentage}%` }}
                       ></div>
                     </div>
-                    <div className="flex justify-between text-xs text-gray-400">
+                    <div className="flex justify-between text-xs text-black">
                       <span>{course.completion_percentage}%</span>
                       <span>XP: {course.xp_earned}</span>
                     </div>
@@ -525,7 +525,7 @@ const ProfilePage = () => {
                     <div className={`w-16 h-16 rounded-full flex items-center justify-center text-3xl bg-gradient-to-br ${getRarityColor(badge.rarity)} ${badge.earned ? '' : 'opacity-40 grayscale'}`}>
                       {badge.icon}
                     </div>
-                    <span className="text-xs text-center mt-1">{badge.name}</span>
+                    <span className="text-xs text-center mt-1 text-black">{badge.name}</span>
                   </div>
                 ))}
               </div>
@@ -539,9 +539,9 @@ const ProfilePage = () => {
                       {activity.icon}
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-sm">{activity.title}</h3>
-                      <p className="text-xs text-gray-500">{activity.description}</p>
-                      <div className="flex gap-2 text-xs text-gray-400 mt-1">
+                      <h3 className="font-semibold text-sm text-black">{activity.title}</h3>
+                      <p className="text-xs text-black">{activity.description}</p>
+                      <div className="flex gap-2 text-xs text-black mt-1">
                         <span>{activity.created_at}</span>
                         <span>· {activity.likes_count} ❤️</span>
                       </div>
