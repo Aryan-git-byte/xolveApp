@@ -19,7 +19,7 @@ export default function LoginPage() {
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        router.push("/dashboard");
+        router.push("/main");
       }
     };
     checkUser();
@@ -82,7 +82,7 @@ export default function LoginPage() {
         // Check if phone is verified
         const isPhoneVerified = data.user.user_metadata?.phone_verified === true;
         if (data.user.phone && isPhoneVerified) {
-          router.push("/dashboard");
+          router.push("/main");
         } else {
           router.push("/verify-phone");
         }

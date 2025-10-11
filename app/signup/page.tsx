@@ -20,7 +20,7 @@ export default function SignupPage() {
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        router.push("/dashboard");
+        router.push("/main");
       }
     };
     checkUser();
