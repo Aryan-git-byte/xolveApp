@@ -157,8 +157,8 @@ const ProfilePage = () => {
     { icon: Trophy, label: 'Badges', value: userData.badges_earned_count, color: 'orange' }
   ];
 
-  const getRarityColor = (rarity) => {
-    const colors = {
+  const getRarityColor = (rarity: string) => {
+    const colors: Record<string, string> = {
       bronze: 'from-amber-700 to-amber-900',
       silver: 'from-gray-400 to-gray-600',
       gold: 'from-yellow-400 to-yellow-600',
@@ -168,14 +168,14 @@ const ProfilePage = () => {
     return colors[rarity] || colors.bronze;
   };
 
-  const getDifficultyColor = (level) => {
-    const colors = {
-      beginner: 'bg-green-100 text-green-700',
-      intermediate: 'bg-orange-100 text-orange-700',
-      advanced: 'bg-red-100 text-red-700'
-    };
-    return colors[level] || colors.beginner;
+ const getDifficultyColor = (level: string) => {
+  const colors: Record<string, string> = {
+    beginner: 'bg-green-100 text-green-700',
+    intermediate: 'bg-orange-100 text-orange-700',
+    advanced: 'bg-red-100 text-red-700'
   };
+  return colors[level] || colors.beginner;
+};
 
   return (
     <>
