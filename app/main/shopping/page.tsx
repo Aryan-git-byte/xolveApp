@@ -146,7 +146,7 @@ export default function ShoppingPage() {
               
               {/* Search */}
               <div className="flex-1 relative">
-                <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-5 h-5 text-gray-800 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Search for products..."
