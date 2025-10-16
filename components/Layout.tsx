@@ -1,0 +1,328 @@
+"use client";
+import React, { useState, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { ChevronLeft, Bell, Menu, Home, BookOpen, ShoppingCart, RefreshCw, User, X, Settings, HelpCircle, LogOut, Trophy, Flame } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
+
+// Header Component
+export const Header = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [xp, setXp] = useState(250);
+  const [streak, setStreak] = useState(7);
+  const [showMenu, setShowMenu] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showXpDetails, setShowXpDetails] = useState(false);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const supabase = createClient();
+
+  // Handle back navigation
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push('/main/home');
+    }
+  };
+
+  // Handle home navigation
+  const handleHome = () => {
+    router.push('/main/home');
+  };
+
+  // Handle logout
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      router.push('/login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+
+  // Fetch user data and notifications
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          // Fetch user profile for XP and streak
+          const { data: profile } = await supabase
+            .from('user_profiles')
+            .select('xp, streak')
+            .eq('id', user.id)
+            .single();
+
+          if (profile) {
+            setXp(profile.xp || 0);
+            setStreak(profile.streak || 0);
+          }
+
+          // Fetch notifications
+          const { data: userNotifications } = await supabase
+            .from('notifications')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false })
+            .limit(10);
+
+          setNotifications(userNotifications || []);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [supabase]);
+
+  // Mark notification as read
+  const markAsRead = async (id: number) => {
+    try {
+      await supabase
+        .from('notifications')
+        .update({ read: true })
+        .eq('id', id);
+
+      setNotifications(prev => 
+        prev.map(notif => 
+          notif.id === id ? { ...notif, read: true } : notif
+        )
+      );
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+    }
+  };
+
+  // Close menus when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      // Don't close if clicking on dropdown content
+      if (target.closest('.dropdown-content')) return;
+      
+      if (showMenu || showNotifications || showXpDetails) {
+        setShowMenu(false);
+        setShowNotifications(false);
+        setShowXpDetails(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [showMenu, showNotifications, showXpDetails]);
+
+  const unreadCount = notifications.filter(n => !n.read).length;
+
+  return (
+    <header className="bg-white border-b border-gray-200 px-4 py-3 fixed top-0 left-0 right-0 z-50">
+      <div className="flex items-center justify-between max-w-7xl mx-auto">
+        {/* Left side - Back button */}
+        <button 
+          onClick={handleBack}
+          className="p-2 hover:bg-gray-100 rounded-full transition"
+          aria-label="Go back"
+        >
+          <ChevronLeft className="w-6 h-6 text-gray-700" />
+        </button>
+
+        {/* Center - Logo and Brand */}
+        <button 
+          onClick={handleHome}
+          className="flex items-center gap-2 hover:opacity-80 transition"
+        >
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-lg">X</span>
+          </div>
+          <span className="text-xl font-bold text-gray-800">XolveTech</span>
+        </button>
+
+        {/* Right side - Notification, XP, Hamburger */}
+        <div className="flex items-center gap-3">
+          {/* Notifications */}
+          <div className="relative">
+            <button 
+              onClick={() => setShowNotifications(!showNotifications)}
+              className="p-2 hover:bg-gray-100 rounded-full transition relative"
+            >
+              <Bell className="w-6 h-6 text-gray-700" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              )}
+            </button>
+            
+            {/* Notifications Dropdown */}
+            {showNotifications && (
+              <div className="dropdown-content absolute top-12 -right-4 bg-white rounded-lg shadow-lg border border-gray-200 py-2 w-80 max-h-96 overflow-y-auto z-50">
+                <div className="px-4 py-2 border-b border-gray-200">
+                  <h3 className="font-semibold text-gray-800">Notifications</h3>
+                </div>
+                {notifications.map((notification) => (
+                  <div 
+                    key={notification.id}
+                    onClick={() => markAsRead(notification.id)}
+                    className={`px-4 py-3 hover:bg-gray-50 transition cursor-pointer border-b border-gray-100 last:border-b-0 ${
+                      !notification.read ? 'bg-blue-50' : ''
+                    }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <h4 className="font-medium text-gray-800 text-sm">{notification.title}</h4>
+                        <p className="text-xs text-gray-600 mt-1">{notification.message}</p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          {new Date(notification.created_at).toLocaleDateString()} {new Date(notification.created_at).toLocaleTimeString()}
+                        </p>
+                      </div>
+                      {!notification.read && (
+                        <div className="w-2 h-2 bg-blue-500 rounded-full mt-1"></div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {notifications.length === 0 && (
+                  <div className="px-4 py-8 text-center text-gray-500">
+                    No notifications yet
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+          
+          {/* XP Display */}
+          <div className="relative">
+            <button 
+              onClick={() => setShowXpDetails(!showXpDetails)}
+              className="bg-blue-50 px-3 py-1 rounded-full flex items-center gap-1 hover:bg-blue-100 transition"
+            >
+              <Trophy className="w-4 h-4 text-blue-600" />
+              <span className="text-sm font-semibold text-blue-600">XP</span>
+              <span className="text-sm font-bold text-blue-800">{xp}</span>
+            </button>
+            
+            {/* XP Details Dropdown */}
+            {showXpDetails && (
+              <div className="dropdown-content absolute top-12 right-0 bg-white rounded-lg shadow-lg border border-gray-200 py-3 w-64 z-50">
+                <div className="px-4 py-2 border-b border-gray-200">
+                  <h3 className="font-semibold text-gray-800">Your Stats</h3>
+                </div>
+                <div className="px-4 py-3">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <Trophy className="w-5 h-5 text-yellow-500" />
+                      <span className="text-sm font-medium text-gray-700">Total XP</span>
+                    </div>
+                    <span className="text-lg font-bold text-blue-600">{xp}</span>
+                  </div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <Flame className="w-5 h-5 text-orange-500" />
+                      <span className="text-sm font-medium text-gray-700">Streak</span>
+                    </div>
+                    <span className="text-lg font-bold text-orange-600">{streak} days</span>
+                  </div>
+                  <div className="text-xs text-gray-500 mt-2">
+                    Keep participating to earn more XP and maintain your streak!
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Hamburger Menu */}
+          <div className="relative">
+            <button 
+              onClick={() => setShowMenu(!showMenu)}
+              className="p-2 hover:bg-gray-100 rounded-full transition"
+              aria-label="Open menu"
+            >
+              <Menu className="w-6 h-6 text-gray-700" />
+            </button>
+            
+            {/* Menu Dropdown */}
+            {showMenu && (
+              <div className="dropdown-content absolute top-12 right-0 bg-white rounded-lg shadow-lg border border-gray-200 py-2 w-48 z-50">
+                <button 
+                  onClick={() => {
+                    router.push('/main/settings');
+                    setShowMenu(false);
+                  }}
+                  className="w-full px-4 py-2 text-left hover:bg-gray-50 transition flex items-center gap-2"
+                >
+                  <Settings className="w-4 h-4" />
+                  Settings
+                </button>
+                <button 
+                  onClick={() => {
+                    router.push('/main/help-support');
+                    setShowMenu(false);
+                  }}
+                  className="w-full px-4 py-2 text-left hover:bg-gray-50 transition flex items-center gap-2"
+                >
+                  <HelpCircle className="w-4 h-4" />
+                  Help & Support
+                </button>
+                <div className="border-t border-gray-200 my-1"></div>
+                <button 
+                  onClick={handleLogout}
+                  className="w-full px-4 py-2 text-left hover:bg-gray-50 transition flex items-center gap-2 text-red-600"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+// Footer Component
+export const Footer = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const navItems = [
+    { id: 'home', label: 'Home', icon: Home, path: '/main/home' },
+    { id: 'courses', label: 'Courses', icon: BookOpen, path: '/main/courses' },
+    { id: 'xchange', label: 'Xchange', icon: RefreshCw, path: '/main/xchange' },
+    { id: 'shopping', label: 'Shopping', icon: ShoppingCart, path: '/main/shopping' },
+    { id: 'profile', label: 'Profile', icon: User, path: '/main/profile' },
+  ];
+
+  const handleNavigation = (item: any) => {
+    if (pathname !== item.path) {
+      router.push(item.path);
+    }
+  };
+
+  return (
+    <footer className="bg-white border-t border-gray-200 px-4 py-1.5 fixed bottom-0 left-0 right-0 z-50">
+      <nav className="flex items-center justify-around max-w-7xl mx-auto">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = pathname === item.path;
+          
+          return (
+            <button
+              key={item.id}
+              onClick={() => handleNavigation(item)}
+              className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded-md transition ${
+                isActive 
+                  ? 'text-blue-600 bg-blue-50' 
+                  : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+              }`}
+            >
+              <Icon className={`w-5 h-5 ${isActive ? 'stroke-2' : ''}`} />
+              <span className="text-[10px] font-medium">{item.label}</span>
+            </button>
+          );
+        })}
+      </nav>
+    </footer>
+  );
+};
