@@ -87,8 +87,8 @@ export default function SignupPage() {
       const nickname = localStorage.getItem('xolve_nickname') || '';
       const preferencesStr = localStorage.getItem('xolve_preferences') || '{}';
       
-      // Build redirect URL with onboarding data
-      const redirectUrl = new URL(`${window.location.origin}/auth/callback`);
+  // Build redirect URL with onboarding data (client callback handles hash/fragments)
+  const redirectUrl = new URL(`${window.location.origin}/auth/callback/client`);
       if (nickname) {
         redirectUrl.searchParams.set('nickname', encodeURIComponent(nickname));
       }
@@ -134,7 +134,7 @@ export default function SignupPage() {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: `${window.location.origin}/auth/callback/client`,
           data: {
             nickname: nickname,
           }
