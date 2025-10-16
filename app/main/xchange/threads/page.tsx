@@ -170,7 +170,7 @@ const ThreadsPage = () => {
 
   const ThreadCard: React.FC<{ thread: Thread }> = ({ thread }) => (
     <div 
-      className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer"
+      className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow cursor-pointer"
       onClick={() => router.push(`/main/xchange/thread/${thread.id}`)}
     >
       {/* Thread Header */}
@@ -191,11 +191,11 @@ const ThreadsPage = () => {
             <span className="text-sm text-gray-400">• {thread.created_at}</span>
           </div>
           
-          <h3 className="font-semibold text-gray-800 hover:text-blue-600 transition-colors mb-2">
+          <h3 className="font-semibold text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:text-blue-400 transition-colors mb-2">
             {thread.title}
           </h3>
           
-          <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+          <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-3">
             {thread.content}
           </p>
         </div>
@@ -206,11 +206,11 @@ const ThreadsPage = () => {
         <div className="flex items-center gap-4 text-sm text-gray-500">
           <div className="flex items-center gap-1">
             <div className="flex items-center">
-              <button className="p-1 hover:bg-gray-100 rounded">
+              <button className="p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded">
                 <ArrowUp className="w-3 h-3" />
               </button>
               <span className="mx-1 font-medium">{thread.upvotes - thread.downvotes}</span>
-              <button className="p-1 hover:bg-gray-100 rounded">
+              <button className="p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded">
                 <ArrowDown className="w-3 h-3" />
               </button>
             </div>
@@ -233,7 +233,7 @@ const ThreadsPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <Header />
       
       <main className="pt-20 pb-24 px-4">
@@ -241,12 +241,12 @@ const ThreadsPage = () => {
           {/* Page Header */}
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-800">Community Discussions</h1>
-              <p className="text-gray-600">Join the conversation and share your knowledge</p>
+              <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Community Discussions</h1>
+              <p className="text-gray-600 dark:text-gray-400">Join the conversation and share your knowledge</p>
             </div>
             <button
               onClick={() => router.push('/main/xchange/create-thread')}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
             >
               <Plus className="w-4 h-4" />
               New Thread
@@ -256,8 +256,8 @@ const ThreadsPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Sidebar - Categories */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sticky top-24">
-                <h3 className="font-semibold text-gray-800 mb-4">Categories</h3>
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sticky top-24">
+                <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-4">Categories</h3>
                 <div className="space-y-1">
                   {mockCategories.map(category => (
                     <button
@@ -265,12 +265,12 @@ const ThreadsPage = () => {
                       onClick={() => setSelectedCategory(category.name)}
                       className={`w-full flex items-center justify-between p-2 rounded-lg text-left transition-colors ${
                         selectedCategory === category.name
-                          ? 'bg-blue-50 text-blue-600 border-blue-200'
-                          : 'hover:bg-gray-50 text-gray-600'
+                          ? 'bg-blue-50 text-blue-600 dark:text-blue-400 border-blue-200'
+                          : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'
                       }`}
                     >
                       <span className="font-medium">{category.name}</span>
-                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                      <span className="text-xs bg-gray-100 text-gray-600 dark:text-gray-400 px-2 py-1 rounded-full">
                         {category.thread_count}
                       </span>
                     </button>
@@ -278,9 +278,9 @@ const ThreadsPage = () => {
                 </div>
 
                 {/* Thread Stats */}
-                <div className="mt-6 pt-4 border-t border-gray-200">
-                  <h4 className="font-medium text-gray-800 mb-2">Stats</h4>
-                  <div className="space-y-2 text-sm text-gray-600">
+                <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <h4 className="font-medium text-gray-800 dark:text-gray-100 mb-2">Stats</h4>
+                  <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                     <div className="flex justify-between">
                       <span>Total Threads</span>
                       <span className="font-medium">156</span>
@@ -301,7 +301,7 @@ const ThreadsPage = () => {
             {/* Main Content */}
             <div className="lg:col-span-3">
               {/* Filters and Search */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 mb-6">
                 <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                   <div className="flex items-center gap-4 flex-1">
                     <div className="relative flex-1 max-w-md">
@@ -311,7 +311,7 @@ const ThreadsPage = () => {
                         placeholder="Search threads..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                       />
                     </div>
                   </div>
@@ -320,7 +320,7 @@ const ThreadsPage = () => {
                     <select
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
                     >
                       <option value="latest">Latest Activity</option>
                       <option value="popular">Most Popular</option>
@@ -330,9 +330,9 @@ const ThreadsPage = () => {
                     
                     <button
                       onClick={() => setShowFilters(!showFilters)}
-                      className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                      className="p-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                     >
-                      <Filter className="w-4 h-4 text-gray-600" />
+                      <Filter className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                     </button>
                   </div>
                 </div>
@@ -345,10 +345,10 @@ const ThreadsPage = () => {
                     <ThreadCard key={thread.id} thread={thread} />
                   ))
                 ) : (
-                  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+                  <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-8 text-center">
                     <MessageCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-800 mb-2">No threads found</h3>
-                    <p className="text-gray-600 mb-4">
+                    <h3 className="text-lg font-medium text-gray-800 dark:text-gray-100 mb-2">No threads found</h3>
+                    <p className="text-gray-600 dark:text-gray-400 mb-4">
                       {searchQuery ? 
                         `No threads match your search for "${searchQuery}"` :
                         `No threads in the ${selectedCategory} category yet`
@@ -356,7 +356,7 @@ const ThreadsPage = () => {
                     </p>
                     <button
                       onClick={() => router.push('/main/xchange/create-thread')}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
                     >
                       <Plus className="w-4 h-4" />
                       Start a Discussion

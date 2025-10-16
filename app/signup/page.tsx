@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useToast } from "@/components/Toast";
 
 export default function SignupPage() {
   const [loading, setLoading] = useState(false);
@@ -15,6 +16,7 @@ export default function SignupPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   const supabase = createClient();
+  const { showToast } = useToast();
   const nickname = typeof window !== 'undefined' ? localStorage.getItem('xolve_nickname') || "there" : "there";
 
   useEffect(() => {
@@ -71,6 +73,9 @@ export default function SignupPage() {
       // Get nickname
       const nicknameFromStorage = typeof window !== 'undefined' ? localStorage.getItem('xolve_nickname') : null;
 
+      // Check if we have onboarding data
+      const hasOnboardingData = nicknameFromStorage || grade || interests.length > 0;
+
       // Insert/update user profile
       const { error: profileError } = await supabase
         .from('user_profiles')
@@ -83,6 +88,7 @@ export default function SignupPage() {
           interests: interests.length > 0 ? interests : null,
           personal_goal: personalGoal,
           learning_style: learningStyle,
+          has_completed_onboarding: hasOnboardingData, // Set based on whether we have onboarding data
           last_login_at: new Date().toISOString(),
         }, {
           onConflict: 'id'
@@ -134,11 +140,13 @@ export default function SignupPage() {
       
       if (error) {
         console.error("Error signing in:", error.message);
+        showToast("Error signing up with Google. Please try again.", "error");
         setError("Error signing in. Please try again.");
         setLoading(false);
       }
     } catch (error) {
       console.error("Error:", error);
+      showToast("An unexpected error occurred. Please try again.", "error");
       setLoading(false);
     }
   };
@@ -148,12 +156,14 @@ export default function SignupPage() {
     const digitsOnly = phoneNumber.replace(/\D/g, '');
     
     if (digitsOnly.length !== 10) {
+      showToast("Please enter a valid 10-digit Indian mobile number", "warning");
       setError("Please enter a valid 10-digit Indian mobile number");
       return;
     }
 
     // Check if number starts with valid digits (6-9)
     if (!['6', '7', '8', '9'].includes(digitsOnly[0])) {
+      showToast("Indian mobile numbers start with 6, 7, 8, or 9", "warning");
       setError("Indian mobile numbers start with 6, 7, 8, or 9");
       return;
     }
@@ -169,15 +179,18 @@ export default function SignupPage() {
       });
 
       if (error) {
+        showToast(error.message, "error");
         setError(error.message);
         setLoading(false);
       } else {
+        showToast("OTP sent successfully! Check your phone.", "success");
         setOtpSent(true);
         setResendTimer(60); // 60 seconds countdown
         setLoading(false);
       }
     } catch (error) {
       console.error("Error:", error);
+      showToast("Failed to send OTP. Please try again.", "error");
       setError("Failed to send OTP. Please try again.");
       setLoading(false);
     }
@@ -185,6 +198,7 @@ export default function SignupPage() {
 
   const handleVerifyOTP = async () => {
     if (otp.length !== 6) {
+      showToast("Please enter a valid 6-digit OTP", "warning");
       setError("Please enter a valid 6-digit OTP");
       return;
     }
@@ -203,17 +217,36 @@ export default function SignupPage() {
       });
 
       if (error) {
+        showToast(error.message, "error");
         setError(error.message);
         setLoading(false);
       } else if (data?.user) {
         // Save profile data
         await saveUserProfile(data.user.id, fullPhoneNumber);
         
-        // Success - redirect to home
-        router.push("/main/home");
+        // Check if user has completed onboarding
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('has_completed_onboarding')
+          .eq('id', data.user.id)
+          .single();
+
+        // Redirect based on onboarding status
+        if (!profile?.has_completed_onboarding) {
+          showToast("Account created! Let's personalize your experience.", "success", 3000);
+          setTimeout(() => {
+            router.push("/onboarding/companion");
+          }, 1500);
+        } else {
+          showToast("Welcome to XolveTech! 🎉", "success", 2000);
+          setTimeout(() => {
+            router.push("/main/home");
+          }, 1000);
+        }
       }
     } catch (error) {
       console.error("Error:", error);
+      showToast("Failed to verify OTP. Please try again.", "error");
       setError("Failed to verify OTP. Please try again.");
       setLoading(false);
     }

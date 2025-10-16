@@ -129,7 +129,7 @@ const XChangePage = () => {
 
   const ThreadCard: React.FC<{ thread: Thread }> = ({ thread }) => (
     <div 
-      className="bg-white rounded-lg border border-gray-200 p-3 sm:p-4 active:bg-gray-50 transition"
+      className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4 active:bg-gray-50 transition"
       onClick={() => router.push(`/main/xchange/thread/${thread.id}`)}
     >
       <div className="flex items-start gap-2 mb-2">
@@ -144,7 +144,7 @@ const XChangePage = () => {
             <span className="text-xs text-gray-500 truncate">{thread.author}</span>
             <span className="text-xs text-gray-400">• {thread.created_at}</span>
           </div>
-          <h3 className="font-semibold text-gray-900 text-sm sm:text-base leading-snug">
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm sm:text-base leading-snug">
             {thread.title}
           </h3>
         </div>
@@ -183,10 +183,10 @@ const XChangePage = () => {
 
   const ProjectCard: React.FC<{ project: Project }> = ({ project }) => (
     <div 
-      className="bg-white rounded-lg border border-gray-200 overflow-hidden active:bg-gray-50 transition"
+      className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden active:bg-gray-50 transition"
       onClick={() => router.push(`/main/xchange/project/${project.id}`)}
     >
-      <div className="h-32 sm:h-40 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+      <div className="h-32 sm:h-40 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 flex items-center justify-center">
         <Lightbulb className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
       </div>
       <div className="p-3 sm:p-4">
@@ -210,17 +210,17 @@ const XChangePage = () => {
           </div>
         </div>
         
-        <h3 className="font-semibold text-gray-900 text-sm sm:text-base mb-1.5 line-clamp-2">
+        <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm sm:text-base mb-1.5 line-clamp-2">
           {project.title}
         </h3>
-        <p className="text-xs sm:text-sm text-gray-600 mb-2 line-clamp-2">
+        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-2 line-clamp-2">
           {project.description}
         </p>
         
         <div className="flex items-center justify-between gap-2">
           <div className="flex flex-wrap gap-1">
             {project.tags.slice(0, 2).map((tag, index) => (
-              <span key={index} className="px-2 py-0.5 bg-blue-50 text-blue-600 text-xs rounded">
+              <span key={index} className="px-2 py-0.5 bg-blue-50 text-blue-600 dark:text-blue-400 text-xs rounded">
                 {tag}
               </span>
             ))}
@@ -232,7 +232,7 @@ const XChangePage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <Header />
       
       {/* Hero Section - Mobile Optimized */}
@@ -256,7 +256,7 @@ const XChangePage = () => {
       <main className="pb-20 px-4">
         <div className="max-w-7xl mx-auto">
           {/* Navigation Tabs - Mobile Optimized */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-4 -mt-2 sticky top-16 z-40">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-4 -mt-2 sticky top-16 z-40">
             <div className="p-2 sm:p-3">
               {/* Search Bar - Mobile First */}
               <div className="mb-2 sm:mb-3">
@@ -267,10 +267,10 @@ const XChangePage = () => {
                     placeholder="Search community..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-9 pr-10 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-9 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                   />
                   <button 
-                    className="p-1.5 absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:bg-gray-100 rounded"
+                    className="p-1.5 absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600 rounded"
                     aria-label="Filter"
                     title="Filter"
                   >
@@ -292,8 +292,8 @@ const XChangePage = () => {
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-colors ${
                       activeTab === tab.id 
-                        ? 'bg-blue-100 text-blue-600' 
-                        : 'text-gray-600 hover:bg-gray-100'
+                        ? 'bg-blue-100 text-blue-600 dark:text-blue-400' 
+                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600'
                     }`}
                   >
                     <tab.icon className="w-4 h-4" />
@@ -311,7 +311,7 @@ const XChangePage = () => {
               <div className="grid grid-cols-2 gap-2 sm:gap-3">
                 <button
                   onClick={() => router.push('/main/xchange/create-thread')}
-                  className="flex items-center justify-center gap-2 py-2.5 sm:py-3 px-3 sm:px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-colors text-sm sm:text-base font-medium"
+                  className="flex items-center justify-center gap-2 py-2.5 sm:py-3 px-3 sm:px-4 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 active:bg-blue-800 transition-colors text-sm sm:text-base font-medium"
                 >
                   <Plus className="w-4 h-4" />
                   <span>New Thread</span>
@@ -328,10 +328,10 @@ const XChangePage = () => {
               {/* Trending Threads */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800">Trending Discussions</h2>
+                  <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-100">Trending Discussions</h2>
                   <button 
                     onClick={() => router.push('/main/xchange/threads')}
-                    className="text-blue-600 hover:text-blue-700 font-medium text-xs sm:text-sm"
+                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:text-blue-400 font-medium text-xs sm:text-sm"
                   >
                     View All
                   </button>
@@ -346,10 +346,10 @@ const XChangePage = () => {
               {/* Featured Projects */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800">Featured Projects</h2>
+                  <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-100">Featured Projects</h2>
                   <button 
                     onClick={() => router.push('/main/xchange/projects')}
-                    className="text-blue-600 hover:text-blue-700 font-medium text-xs sm:text-sm"
+                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:text-blue-400 font-medium text-xs sm:text-sm"
                   >
                     View All
                   </button>
@@ -363,8 +363,8 @@ const XChangePage = () => {
 
               {/* Community Guidelines - Mobile Optimized */}
               <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg border border-blue-100 p-3 sm:p-4">
-                <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">Community Guidelines</h3>
-                <ul className="text-xs sm:text-sm text-gray-600 space-y-1.5">
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 text-sm sm:text-base">Community Guidelines</h3>
+                <ul className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 space-y-1.5">
                   <li>• Be respectful and constructive</li>
                   <li>• Share knowledge and help others</li>
                   <li>• Keep discussions relevant</li>
@@ -376,16 +376,16 @@ const XChangePage = () => {
 
           {/* Other tabs content */}
           {activeTab !== 'feed' && (
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sm:p-8 text-center">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-8 text-center">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 {activeTab === 'threads' && <MessageCircle className="w-8 h-8 text-gray-400" />}
                 {activeTab === 'projects' && <Lightbulb className="w-8 h-8 text-gray-400" />}
                 {activeTab === 'leaderboard' && <Trophy className="w-8 h-8 text-gray-400" />}
               </div>
-              <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">
                 {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
               </h2>
-              <p className="text-sm sm:text-base text-gray-600">This section is under development.</p>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">This section is under development.</p>
             </div>
           )}
         </div>
@@ -401,7 +401,7 @@ const XChangePage = () => {
 
       {/* Create Menu - Mobile */}
       {showCreateMenu && (
-        <div className="md:hidden fixed bottom-36 right-4 bg-white rounded-xl shadow-xl border border-gray-200 p-2 z-40">
+        <div className="md:hidden fixed bottom-36 right-4 bg-white rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 p-2 z-40">
           <button 
             onClick={() => {
               setShowCreateMenu(false);
@@ -409,8 +409,8 @@ const XChangePage = () => {
             }}
             className="flex items-center gap-3 w-full px-4 py-3 rounded-lg active:bg-gray-100 text-left"
           >
-            <MessageCircle className="w-5 h-5 text-blue-600" />
-            <span className="font-medium text-gray-900 text-sm">New Thread</span>
+            <MessageCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <span className="font-medium text-gray-900 dark:text-gray-100 text-sm">New Thread</span>
           </button>
           <button 
             onClick={() => {
@@ -420,7 +420,7 @@ const XChangePage = () => {
             className="flex items-center gap-3 w-full px-4 py-3 rounded-lg active:bg-gray-100 text-left"
           >
             <Lightbulb className="w-5 h-5 text-orange-600" />
-            <span className="font-medium text-gray-900 text-sm">New Project</span>
+            <span className="font-medium text-gray-900 dark:text-gray-100 text-sm">New Project</span>
           </button>
         </div>
       )}

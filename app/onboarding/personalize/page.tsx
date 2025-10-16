@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { useToast } from "@/components/Toast";
 
 type QuestionType = "buttons" | "date" | "multi-select";
 
@@ -54,6 +56,8 @@ export default function PersonalizePage() {
   const [showTransition, setShowTransition] = useState(false);
   const nickname = typeof window !== 'undefined' ? localStorage.getItem('xolve_nickname') || "Student" : "Student";
   const router = useRouter();
+  const supabase = createClient();
+  const { showToast } = useToast();
 
   const currentQuestion = questions[currentStep];
   const progress = ((currentStep + 1) / questions.length) * 100;
@@ -89,10 +93,32 @@ export default function PersonalizePage() {
       if (typeof window !== 'undefined') {
         localStorage.setItem('xolve_preferences', JSON.stringify(answers));
       }
+      
+      // Update user profile with onboarding completion
+      updateOnboardingStatus();
+      
+      showToast("Preferences saved! 🎉 Setting up your account...", "success", 3000);
       setShowTransition(true);
       setTimeout(() => {
         router.push("/signup");
       }, 3000);
+    }
+  };
+
+  const updateOnboardingStatus = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        // Mark onboarding as completed
+        await supabase
+          .from('user_profiles')
+          .update({ has_completed_onboarding: true })
+          .eq('id', user.id);
+        
+        showToast("Onboarding completed successfully! ✨", "success");
+      }
+    } catch (error) {
+      console.error('Error updating onboarding status:', error);
     }
   };
 

@@ -179,13 +179,13 @@ const ProjectsPage = () => {
       case 'beginner': return 'bg-green-100 text-green-800';
       case 'intermediate': return 'bg-yellow-100 text-yellow-800';
       case 'advanced': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-gray-100 text-gray-800 dark:text-gray-100';
     }
   };
 
   const ProjectCard: React.FC<{ project: Project }> = ({ project }) => (
     <div 
-      className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+      className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
       onClick={() => router.push(`/main/xchange/project/${project.id}`)}
     >
       {/* Project Image */}
@@ -213,10 +213,10 @@ const ProjectsPage = () => {
               </span>
               <span className="text-xs text-gray-500">{project.estimated_time}</span>
             </div>
-            <h3 className="font-semibold text-gray-800 hover:text-blue-600 transition-colors mb-2 line-clamp-2">
+            <h3 className="font-semibold text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:text-blue-400 transition-colors mb-2 line-clamp-2">
               {project.title}
             </h3>
-            <p className="text-sm text-gray-600 line-clamp-3 mb-3">
+            <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 mb-3">
               {project.description}
             </p>
           </div>
@@ -225,12 +225,12 @@ const ProjectsPage = () => {
         {/* Tags */}
         <div className="flex flex-wrap gap-1 mb-3">
           {project.tags.slice(0, 3).map((tag, index) => (
-            <span key={index} className="px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded">
+            <span key={index} className="px-2 py-1 bg-blue-50 text-blue-600 dark:text-blue-400 text-xs rounded">
               {tag}
             </span>
           ))}
           {project.tags.length > 3 && (
-            <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
+            <span className="px-2 py-1 bg-gray-100 text-gray-600 dark:text-gray-400 text-xs rounded">
               +{project.tags.length - 3}
             </span>
           )}
@@ -260,12 +260,12 @@ const ProjectsPage = () => {
         </div>
 
         {/* Author and Date */}
-        <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+        <div className="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-              <User className="w-3 h-3 text-blue-600" />
+              <User className="w-3 h-3 text-blue-600 dark:text-blue-400" />
             </div>
-            <span className="text-sm text-gray-600">by {project.author}</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400">by {project.author}</span>
           </div>
           <span className="text-xs text-gray-500">{formatDate(project.created_at)}</span>
         </div>
@@ -274,7 +274,7 @@ const ProjectsPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <Header />
       
       <main className="pt-20 pb-24 px-4">
@@ -282,8 +282,8 @@ const ProjectsPage = () => {
           {/* Page Header */}
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-800">Project Showcase</h1>
-              <p className="text-gray-600">Discover and share amazing projects from the community</p>
+              <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Project Showcase</h1>
+              <p className="text-gray-600 dark:text-gray-400">Discover and share amazing projects from the community</p>
             </div>
             <button
               onClick={() => router.push('/main/xchange/create-project')}
@@ -295,23 +295,23 @@ const ProjectsPage = () => {
           </div>
 
           {/* Stats Bar */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 mb-6">
             <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-200">
               <div className="text-center px-4">
-                <div className="text-2xl font-bold text-blue-600">127</div>
-                <div className="text-sm text-gray-600">Total Projects</div>
+                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">127</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Total Projects</div>
               </div>
               <div className="text-center px-4">
                 <div className="text-2xl font-bold text-green-600">89</div>
-                <div className="text-sm text-gray-600">This Month</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">This Month</div>
               </div>
               <div className="text-center px-4">
                 <div className="text-2xl font-bold text-orange-600">234</div>
-                <div className="text-sm text-gray-600">Total Forks</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Total Forks</div>
               </div>
               <div className="text-center px-4">
                 <div className="text-2xl font-bold text-purple-600">1.2k</div>
-                <div className="text-sm text-gray-600">Downloads</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Downloads</div>
               </div>
             </div>
           </div>
@@ -319,18 +319,18 @@ const ProjectsPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Sidebar - Filters */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sticky top-24">
-                <h3 className="font-semibold text-gray-800 mb-4">Filters</h3>
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sticky top-24">
+                <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-4">Filters</h3>
                 
                 {/* Difficulty Filter */}
                 <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Difficulty Level
                   </label>
                   <select
                     value={difficultyFilter}
                     onChange={(e) => setDifficultyFilter(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
                   >
                     <option value="all">All Levels</option>
                     <option value="beginner">Beginner</option>
@@ -341,13 +341,13 @@ const ProjectsPage = () => {
 
                 {/* Popular Tags */}
                 <div className="mb-6">
-                  <h4 className="font-medium text-gray-800 mb-3">Popular Tags</h4>
+                  <h4 className="font-medium text-gray-800 dark:text-gray-100 mb-3">Popular Tags</h4>
                   <div className="space-y-2">
                     {['Arduino', 'ESP32', 'IoT', 'AI', 'Robotics', '3D Printing', 'Sensors'].map(tag => (
                       <button
                         key={tag}
                         onClick={() => setSearchQuery(tag)}
-                        className="w-full text-left px-2 py-1 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded transition-colors"
+                        className="w-full text-left px-2 py-1 text-sm text-gray-600 dark:text-gray-400 hover:bg-blue-50 hover:text-blue-600 dark:text-blue-400 rounded transition-colors"
                       >
                         #{tag}
                       </button>
@@ -356,9 +356,9 @@ const ProjectsPage = () => {
                 </div>
 
                 {/* Project Stats */}
-                <div className="pt-4 border-t border-gray-200">
-                  <h4 className="font-medium text-gray-800 mb-2">Community Stats</h4>
-                  <div className="space-y-2 text-sm text-gray-600">
+                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <h4 className="font-medium text-gray-800 dark:text-gray-100 mb-2">Community Stats</h4>
+                  <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                     <div className="flex justify-between">
                       <span>Projects Today</span>
                       <span className="font-medium">5</span>
@@ -379,7 +379,7 @@ const ProjectsPage = () => {
             {/* Main Content */}
             <div className="lg:col-span-3">
               {/* Search and Sort */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 mb-6">
                 <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                   <div className="flex items-center gap-4 flex-1">
                     <div className="relative flex-1 max-w-md">
@@ -389,7 +389,7 @@ const ProjectsPage = () => {
                         placeholder="Search projects, tags, or authors..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                       />
                     </div>
                   </div>
@@ -398,7 +398,7 @@ const ProjectsPage = () => {
                     <select
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
                     >
                       <option value="latest">Latest</option>
                       <option value="popular">Most Popular</option>
@@ -409,9 +409,9 @@ const ProjectsPage = () => {
                     
                     <button
                       onClick={() => setShowFilters(!showFilters)}
-                      className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                      className="p-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                     >
-                      <Filter className="w-4 h-4 text-gray-600" />
+                      <Filter className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                     </button>
                   </div>
                 </div>
@@ -424,10 +424,10 @@ const ProjectsPage = () => {
                     <ProjectCard key={project.id} project={project} />
                   ))
                 ) : (
-                  <div className="col-span-full bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+                  <div className="col-span-full bg-white rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-8 text-center">
                     <Lightbulb className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-800 mb-2">No projects found</h3>
-                    <p className="text-gray-600 mb-4">
+                    <h3 className="text-lg font-medium text-gray-800 dark:text-gray-100 mb-2">No projects found</h3>
+                    <p className="text-gray-600 dark:text-gray-400 mb-4">
                       {searchQuery ? 
                         `No projects match your search for "${searchQuery}"` :
                         `No projects match the current filters`

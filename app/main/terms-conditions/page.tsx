@@ -12,7 +12,7 @@ export default function TermsConditionsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <Header />
       
       <main className="pt-16 pb-20">
@@ -21,14 +21,14 @@ export default function TermsConditionsPage() {
           <div className="flex items-center gap-4 mb-6">
             <button 
               onClick={handleBack}
-              className="p-2 hover:bg-gray-100 rounded-full transition"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-full transition"
               aria-label="Go back"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
+              <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             </button>
             <div className="flex items-center gap-3">
-              <FileText className="w-6 h-6 text-blue-600" />
-              <h1 className="text-2xl font-bold text-gray-800">Terms & Conditions</h1>
+              <FileText className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+              <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Terms & Conditions</h1>
             </div>
           </div>
 
@@ -41,14 +41,14 @@ export default function TermsConditionsPage() {
           </div>
 
           {/* Content */}
-          <div className="bg-white rounded-lg shadow-sm p-6 space-y-8">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 space-y-8">
             {/* Introduction */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <User className="w-5 h-5 text-blue-600" />
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
+                <User className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 1. Introduction
               </h2>
-              <div className="text-gray-700 space-y-3">
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   Welcome to XolveTech ("we," "our," or "us"). These Terms and Conditions ("Terms") govern your use of our platform, services, and applications (collectively, the "Service").
                 </p>
@@ -60,11 +60,11 @@ export default function TermsConditionsPage() {
 
             {/* Acceptance of Terms */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <Shield className="w-5 h-5 text-blue-600" />
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
+                <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 2. Acceptance of Terms
               </h2>
-              <div className="text-gray-700 space-y-3">
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   By creating an account, accessing, or using our Service, you acknowledge that you have read, understood, and agree to be bound by these Terms and our Privacy Policy.
                 </p>
@@ -76,8 +76,8 @@ export default function TermsConditionsPage() {
 
             {/* User Accounts */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">3. User Accounts</h2>
-              <div className="text-gray-700 space-y-3">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">3. User Accounts</h2>
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   To access certain features of our Service, you must create an account. You are responsible for:
                 </p>
@@ -92,8 +92,8 @@ export default function TermsConditionsPage() {
 
             {/* Acceptable Use */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">4. Acceptable Use Policy</h2>
-              <div className="text-gray-700 space-y-3">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">4. Acceptable Use Policy</h2>
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>You agree to use our Service only for lawful purposes and in accordance with these Terms. You agree not to:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Post, transmit, or share content that is illegal, harmful, threatening, abusive, or discriminatory</li>
@@ -108,8 +108,8 @@ export default function TermsConditionsPage() {
 
             {/* Content and Intellectual Property */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">5. Content and Intellectual Property</h2>
-              <div className="text-gray-700 space-y-3">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">5. Content and Intellectual Property</h2>
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   You retain ownership of content you post on our Service. By posting content, you grant us a non-exclusive, royalty-free license to use, display, and distribute your content in connection with the Service.
                 </p>
@@ -121,8 +121,8 @@ export default function TermsConditionsPage() {
 
             {/* Privacy */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">6. Privacy</h2>
-              <div className="text-gray-700 space-y-3">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">6. Privacy</h2>
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   Your privacy is important to us. Please review our Privacy Policy, which also governs your use of the Service, to understand our practices.
                 </p>
@@ -134,11 +134,11 @@ export default function TermsConditionsPage() {
 
             {/* Prohibited Activities */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5 text-red-600" />
                 7. Prohibited Activities
               </h2>
-              <div className="text-gray-700 space-y-3">
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>You may not use our Service:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>For any unlawful purpose or to solicit others to perform unlawful acts</li>
@@ -153,8 +153,8 @@ export default function TermsConditionsPage() {
 
             {/* Termination */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">8. Termination</h2>
-              <div className="text-gray-700 space-y-3">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">8. Termination</h2>
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   We may terminate or suspend your account and bar access to the Service immediately, without prior notice or liability, under our sole discretion, for any reason whatsoever, including without limitation if you breach the Terms.
                 </p>
@@ -166,8 +166,8 @@ export default function TermsConditionsPage() {
 
             {/* Disclaimers */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">9. Disclaimers</h2>
-              <div className="text-gray-700 space-y-3">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">9. Disclaimers</h2>
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   The information on this Service is provided on an "as is" basis. To the fullest extent permitted by law, this Company:
                 </p>
@@ -180,8 +180,8 @@ export default function TermsConditionsPage() {
 
             {/* Governing Law */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">10. Governing Law</h2>
-              <div className="text-gray-700 space-y-3">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">10. Governing Law</h2>
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   These Terms shall be interpreted and governed by the laws of the United States, without regard to its conflict of law provisions.
                 </p>
@@ -193,8 +193,8 @@ export default function TermsConditionsPage() {
 
             {/* Changes to Terms */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">11. Changes to Terms</h2>
-              <div className="text-gray-700 space-y-3">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">11. Changes to Terms</h2>
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will provide at least 30 days notice prior to any new terms taking effect.
                 </p>
@@ -206,12 +206,12 @@ export default function TermsConditionsPage() {
 
             {/* Contact Information */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">12. Contact Information</h2>
-              <div className="text-gray-700 space-y-3">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">12. Contact Information</h2>
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   If you have any questions about these Terms and Conditions, please contact us:
                 </p>
-                <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
                   <p><strong>Email:</strong> legal@xolvetech.com</p>
                   <p><strong>Address:</strong> 123 Tech Street, Innovation City, IC 12345</p>
                   <p><strong>Phone:</strong> +1 (555) 123-4567</p>

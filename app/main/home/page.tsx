@@ -130,17 +130,17 @@ const HomePage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading your home page...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading your home page...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <Header />
       
       {/* Main Content Area */}
@@ -148,7 +148,7 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto space-y-6">
           
           {/* Welcome Section */}
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-white">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-700 dark:to-purple-700 rounded-xl p-6 text-white shadow-lg">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-2xl font-bold mb-2">Welcome back, {user.name}!</h1>
@@ -178,8 +178,8 @@ const HomePage = () => {
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Quick Actions</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Quick Actions</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {quickActions.map((action, index) => {
                 const Icon = action.icon;
@@ -187,13 +187,13 @@ const HomePage = () => {
                   <a
                     key={index}
                     href={action.href}
-                    className="p-4 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-sm transition group block"
+                    className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm transition group block bg-white dark:bg-gray-900"
                   >
                     <div className={`w-12 h-12 ${action.color} rounded-lg flex items-center justify-center mb-3 group-hover:scale-105 transition`}>
                       <Icon className="w-6 h-6 text-white" />
                     </div>
-                    <div className="text-sm font-medium text-gray-800 mb-1">{action.label}</div>
-                    <div className="text-xs text-gray-500">{action.count}</div>
+                    <div className="text-sm font-medium text-gray-800 dark:text-gray-100 mb-1">{action.label}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">{action.count}</div>
                   </a>
                 );
               })}
@@ -205,16 +205,16 @@ const HomePage = () => {
             {stats.map((stat, index) => {
               const Icon = stat.icon;
               return (
-                <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <div key={index} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-800">{stat.label}</h3>
+                      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{stat.label}</h3>
                       <div className="flex items-end gap-2 mt-2">
-                        <span className={`text-3xl font-bold ${stat.color}`}>{stat.value}</span>
+                        <span className={`text-3xl font-bold ${stat.color} dark:brightness-125`}>{stat.value}</span>
                       </div>
                     </div>
-                    <div className={`w-12 h-12 ${stat.bgColor} rounded-lg flex items-center justify-center`}>
-                      <Icon className={`w-6 h-6 ${stat.color}`} />
+                    <div className={`w-12 h-12 ${stat.bgColor} dark:bg-opacity-20 rounded-lg flex items-center justify-center`}>
+                      <Icon className={`w-6 h-6 ${stat.color} dark:brightness-125`} />
                     </div>
                   </div>
                 </div>
@@ -224,10 +224,10 @@ const HomePage = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Recent Activity */}
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-gray-800">Recent Activity</h2>
-                <a href="/main/profile" className="text-blue-600 text-sm font-medium hover:text-blue-700 transition">
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Recent Activity</h2>
+                <a href="/main/profile" className="text-blue-600 dark:text-blue-400 text-sm font-medium hover:text-blue-700 dark:hover:text-blue-500 transition">
                   View All
                 </a>
               </div>
@@ -245,17 +245,17 @@ const HomePage = () => {
                   const Icon = getIcon(activity.type);
                   
                   return (
-                    <div key={index} className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition">
-                      <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                        <Icon className="w-5 h-5 text-gray-600" />
+                    <div key={index} className="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition">
+                      <div className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                        <Icon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-800">{activity.title}</p>
-                        <p className="text-xs text-gray-500">{activity.action}</p>
-                        <p className="text-xs text-gray-400">{activity.time}</p>
+                        <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{activity.title}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{activity.action}</p>
+                        <p className="text-xs text-gray-400 dark:text-gray-500">{activity.time}</p>
                       </div>
                       <div className="text-right">
-                        <span className="text-sm font-semibold text-blue-600">+{activity.xp} XP</span>
+                        <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">+{activity.xp} XP</span>
                       </div>
                     </div>
                   );
@@ -264,28 +264,28 @@ const HomePage = () => {
             </div>
 
             {/* Upcoming Deadlines */}
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-gray-800">Upcoming</h2>
-                <button className="text-blue-600 text-sm font-medium hover:text-blue-700 transition">
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Upcoming</h2>
+                <button className="text-blue-600 dark:text-blue-400 text-sm font-medium hover:text-blue-700 dark:hover:text-blue-500 transition">
                   Calendar
                 </button>
               </div>
               <div className="space-y-4">
                 {upcomingDeadlines.map((deadline, index) => (
-                  <div key={index} className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition">
-                    <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                      <Calendar className="w-5 h-5 text-red-600" />
+                  <div key={index} className="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition">
+                    <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                      <Calendar className="w-5 h-5 text-red-600 dark:text-red-400" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-800">{deadline.title}</p>
-                      <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{deadline.title}</p>
+                      <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                         <span>{deadline.date}</span>
                         <span>•</span>
                         <span>{deadline.time}</span>
                       </div>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-gray-400" />
+                    <ArrowRight className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                   </div>
                 ))}
               </div>
@@ -294,34 +294,34 @@ const HomePage = () => {
 
           {/* Notifications Section */}
           {notifications.length > 0 && (
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <Bell className="w-5 h-5 text-blue-600" />
-                  <h2 className="text-xl font-semibold text-gray-800">Notifications</h2>
+                  <Bell className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Notifications</h2>
                 </div>
-                <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
                   {notifications.filter(n => !n.read).length} new
                 </span>
               </div>
               <div className="space-y-3">
                 {notifications.slice(0, 3).map((notification, index) => (
                   <div key={index} className={`flex items-start gap-3 p-3 rounded-lg transition ${
-                    !notification.read ? 'bg-blue-50 border-l-4 border-blue-500' : 'bg-gray-50'
+                    !notification.read ? 'bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 dark:border-blue-400' : 'bg-gray-50 dark:bg-gray-700'
                   }`}>
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      !notification.read ? 'bg-blue-100' : 'bg-gray-100'
+                      !notification.read ? 'bg-blue-100 dark:bg-blue-900/40' : 'bg-gray-100 dark:bg-gray-600'
                     }`}>
                       {!notification.read ? (
-                        <AlertCircle className="w-4 h-4 text-blue-600" />
+                        <AlertCircle className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       ) : (
-                        <CheckCircle className="w-4 h-4 text-gray-600" />
+                        <CheckCircle className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                       )}
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-800">{notification.title}</p>
-                      <p className="text-xs text-gray-500 mt-1">{notification.message}</p>
-                      <p className="text-xs text-gray-400 mt-1">{notification.created_at}</p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{notification.title}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{notification.message}</p>
+                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{notification.created_at}</p>
                     </div>
                   </div>
                 ))}

@@ -168,36 +168,36 @@ const CoursesPage = () => {
   };
 
   const CourseCard = ({ course }: { course: any }) => (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition group">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition group">
       <div className="relative">
-        <div className="w-full h-40 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+        <div className="w-full h-40 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 flex items-center justify-center">
           <BookOpen className="w-12 h-12 text-white" />
         </div>
         <div className="absolute top-3 left-3 flex gap-2">
-          <span className="bg-white text-gray-800 text-xs px-2 py-1 rounded-full font-medium">
+          <span className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 text-xs px-2 py-1 rounded-full font-medium">
             {course.level}
           </span>
           {course.enrolled && (
-            <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded-full font-medium">
+            <span className="bg-blue-600 dark:bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-medium">
               Enrolled
             </span>
           )}
           {course.completed && (
-            <span className="bg-green-600 text-white text-xs px-2 py-1 rounded-full font-medium">
+            <span className="bg-green-600 dark:bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">
               ✓ Completed
             </span>
           )}
         </div>
-        <div className="absolute top-3 right-3 bg-white rounded-full p-1">
+        <div className="absolute top-3 right-3 bg-white dark:bg-gray-800 rounded-full p-1">
           <Star className="w-4 h-4 text-yellow-400 fill-current" />
         </div>
       </div>
       
       <div className="p-4">
-        <h3 className="font-semibold text-gray-800 mb-2 group-hover:text-blue-600 transition line-clamp-2">
+        <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition line-clamp-2">
           {course.title}
         </h3>
-        <p className="text-sm text-gray-600 mb-3">by {course.instructor}</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">by {course.instructor}</p>
         
         <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
           <div className="flex items-center gap-1">
@@ -268,7 +268,7 @@ const CoursesPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <Header />
       
       {/* Main Content Area */}
@@ -277,47 +277,47 @@ const CoursesPage = () => {
           
           {/* Page Header */}
           <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">My Learning</h1>
-            <p className="text-gray-600">Continue your learning journey and explore new courses</p>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">My Learning</h1>
+            <p className="text-gray-600 dark:text-gray-400">Continue your learning journey and explore new courses</p>
           </div>
 
           {/* Learning Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 text-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <BookOpen className="w-6 h-6 text-blue-600" />
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 text-center transition-colors">
+              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               </div>
-              <div className="text-2xl font-bold text-gray-800">{stats.totalEnrolled}</div>
-              <div className="text-sm text-gray-600">Enrolled</div>
+              <div className="text-2xl font-bold text-gray-800 dark:text-gray-100">{stats.totalEnrolled}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Enrolled</div>
             </div>
             
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 text-center">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <CheckCircle className="w-6 h-6 text-green-600" />
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 text-center transition-colors">
+              <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
               </div>
-              <div className="text-2xl font-bold text-gray-800">{stats.completed}</div>
-              <div className="text-sm text-gray-600">Completed</div>
+              <div className="text-2xl font-bold text-gray-800 dark:text-gray-100">{stats.completed}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Completed</div>
             </div>
             
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 text-center">
-              <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <BarChart3 className="w-6 h-6 text-orange-600" />
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 text-center transition-colors">
+              <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                <BarChart3 className="w-6 h-6 text-orange-600 dark:text-orange-400" />
               </div>
-              <div className="text-2xl font-bold text-gray-800">{stats.inProgress}</div>
-              <div className="text-sm text-gray-600">In Progress</div>
+              <div className="text-2xl font-bold text-gray-800 dark:text-gray-100">{stats.inProgress}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">In Progress</div>
             </div>
             
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 text-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Clock className="w-6 h-6 text-purple-600" />
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 text-center transition-colors">
+              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Clock className="w-6 h-6 text-purple-600 dark:text-purple-400" />
               </div>
-              <div className="text-2xl font-bold text-gray-800">{stats.totalHours}</div>
-              <div className="text-sm text-gray-600">Hours</div>
+              <div className="text-2xl font-bold text-gray-800 dark:text-gray-100">{stats.totalHours}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Hours</div>
             </div>
           </div>
 
           {/* Search and Filters */}
-          <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
             <div className="flex flex-col lg:flex-row gap-4">
               {/* Search Bar */}
               <div className="flex-1 relative">
@@ -327,12 +327,12 @@ const CoursesPage = () => {
                   placeholder="Search courses, instructors, or topics..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
               </div>
 
               {/* View Mode Filter */}
-              <div className="flex bg-gray-100 rounded-lg p-1">
+              <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
                 {[
                   { id: 'all', label: 'All Courses' },
                   { id: 'enrolled', label: 'Enrolled' },
@@ -343,8 +343,8 @@ const CoursesPage = () => {
                     onClick={() => setViewMode(mode.id)}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition ${
                       viewMode === mode.id 
-                        ? 'bg-white shadow-sm text-blue-600' 
-                        : 'text-gray-600 hover:text-gray-800'
+                        ? 'bg-white dark:bg-gray-800 shadow-sm text-blue-600 dark:text-blue-400' 
+                        : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100'
                     }`}
                   >
                     {mode.label}
@@ -356,7 +356,7 @@ const CoursesPage = () => {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               >
                 {categories.map(category => (
                   <option key={category.id} value={category.id}>
@@ -369,23 +369,23 @@ const CoursesPage = () => {
 
           {/* Continue Learning Section */}
           {stats.inProgress > 0 && viewMode === 'all' && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Continue Learning</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 transition-colors">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Continue Learning</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {courses.filter(c => c.enrolled && !c.completed).slice(0, 3).map(course => (
-                  <div key={course.id} className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition">
-                    <h3 className="font-medium text-gray-800 mb-2">{course.title}</h3>
+                  <div key={course.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-blue-300 dark:hover:border-blue-600 transition bg-white dark:bg-gray-900">
+                    <h3 className="font-medium text-gray-800 dark:text-gray-100 mb-2">{course.title}</h3>
                     <div className="flex items-center justify-between text-sm mb-2">
-                      <span className="text-gray-600">Progress</span>
-                      <span className="font-medium text-gray-800">{course.progress}%</span>
+                      <span className="text-gray-600 dark:text-gray-400">Progress</span>
+                      <span className="font-medium text-gray-800 dark:text-gray-100">{course.progress}%</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-3">
                       <div 
-                        className="bg-blue-600 rounded-full h-2 transition-all duration-300"
+                        className="bg-blue-600 dark:bg-blue-500 rounded-full h-2 transition-all duration-300"
                         style={{ width: `${course.progress}%` }}
                       ></div>
                     </div>
-                    <button className="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition flex items-center gap-2 justify-center">
+                    <button className="w-full bg-blue-600 dark:bg-blue-500 text-white py-2 rounded-lg text-sm font-medium hover:bg-blue-700 dark:hover:bg-blue-600 transition flex items-center gap-2 justify-center">
                       <Play className="w-4 h-4" />
                       Continue
                     </button>
@@ -397,10 +397,10 @@ const CoursesPage = () => {
 
           {/* Results Header */}
           <div className="flex items-center justify-between">
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400">
               Showing {filteredCourses.length} of {courses.length} courses
             </p>
-            <select className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <select className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
               <option>Sort by: Relevance</option>
               <option>Most Popular</option>
               <option>Highest Rated</option>
@@ -420,9 +420,9 @@ const CoursesPage = () => {
           {/* Empty State */}
           {filteredCourses.length === 0 && (
             <div className="text-center py-12">
-              <BookOpenCheck className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-600 mb-2">No courses found</h3>
-              <p className="text-gray-500">Try adjusting your search or filter criteria</p>
+              <BookOpenCheck className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-600 dark:text-gray-400 mb-2">No courses found</h3>
+              <p className="text-gray-500 dark:text-gray-500">Try adjusting your search or filter criteria</p>
             </div>
           )}
 

@@ -4,6 +4,8 @@ import "./globals.css";
 
 import SupabaseProvider from "@/providers/SupabaseProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
+import { ToastProvider } from "@/components/Toast";
+import { ThemeDebug } from "@/components/ThemeDebug";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
@@ -33,10 +35,13 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange={false}
+          storageKey="xolvetech-theme"
         >
           <SupabaseProvider>
-            {children}
+            <ToastProvider>
+              {children}
+              <ThemeDebug />
+            </ToastProvider>
           </SupabaseProvider>
         </ThemeProvider>
         <SpeedInsights />

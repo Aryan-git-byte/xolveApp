@@ -3,14 +3,17 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useToast } from "@/components/Toast";
 
 export default function CompanionIntroPage() {
   const [nickname, setNickname] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const { showToast } = useToast();
 
   const handleContinue = () => {
     if (!nickname.trim()) {
+      showToast("Please enter a nickname!", "warning");
       setError("Please enter a nickname!");
       return;
     }
@@ -20,7 +23,10 @@ export default function CompanionIntroPage() {
       localStorage.setItem('xolve_nickname', nickname);
     }
     
-    router.push("/onboarding/personalize");
+    showToast(`Great to meet you, ${nickname}! 🤖`, "success", 2000);
+    setTimeout(() => {
+      router.push("/onboarding/personalize");
+    }, 1000);
   };
 
   return (

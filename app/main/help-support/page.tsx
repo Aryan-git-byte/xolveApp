@@ -73,7 +73,7 @@ export default function HelpSupportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <Header />
       
       <main className="pt-16 pb-20">
@@ -82,16 +82,16 @@ export default function HelpSupportPage() {
           <div className="flex items-center gap-4 mb-6">
             <button 
               onClick={handleBack}
-              className="p-2 hover:bg-gray-100 rounded-full transition"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-full transition"
               aria-label="Go back"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
+              <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             </button>
-            <h1 className="text-2xl font-bold text-gray-800">Help & Support</h1>
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Help & Support</h1>
           </div>
 
           {/* Search Bar */}
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -99,41 +99,41 @@ export default function HelpSupportPage() {
                 placeholder="Search for help topics..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
               />
             </div>
           </div>
 
           {/* Quick Actions */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <button className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition text-left">
+            <button className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 hover:shadow-md transition text-left">
               <div className="flex items-center gap-3 mb-3">
-                <MessageCircle className="w-6 h-6 text-blue-600" />
-                <h3 className="font-semibold text-gray-800">Live Chat</h3>
+                <MessageCircle className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                <h3 className="font-semibold text-gray-800 dark:text-gray-100">Live Chat</h3>
               </div>
-              <p className="text-sm text-gray-600">Get instant help from our support team</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Get instant help from our support team</p>
             </button>
             
-            <button className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition text-left">
+            <button className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 hover:shadow-md transition text-left">
               <div className="flex items-center gap-3 mb-3">
                 <Phone className="w-6 h-6 text-green-600" />
-                <h3 className="font-semibold text-gray-800">Call Support</h3>
+                <h3 className="font-semibold text-gray-800 dark:text-gray-100">Call Support</h3>
               </div>
-              <p className="text-sm text-gray-600">Speak directly with our support team</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Speak directly with our support team</p>
             </button>
             
-            <button className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition text-left">
+            <button className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 hover:shadow-md transition text-left">
               <div className="flex items-center gap-3 mb-3">
                 <Mail className="w-6 h-6 text-purple-600" />
-                <h3 className="font-semibold text-gray-800">Email Support</h3>
+                <h3 className="font-semibold text-gray-800 dark:text-gray-100">Email Support</h3>
               </div>
-              <p className="text-sm text-gray-600">Send us an email and we'll get back to you</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Send us an email and we'll get back to you</p>
             </button>
           </div>
 
           {/* Categories */}
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Browse by Category</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Browse by Category</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {categories.map((category) => {
                 const Icon = category.icon;
@@ -143,8 +143,8 @@ export default function HelpSupportPage() {
                     onClick={() => setSelectedCategory(category.id)}
                     className={`p-3 rounded-lg border transition ${
                       selectedCategory === category.id
-                        ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                        ? 'border-blue-500 bg-blue-50 text-blue-700 dark:text-blue-400'
+                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
                     }`}
                   >
                     <Icon className="w-5 h-5 mx-auto mb-2" />
@@ -156,16 +156,16 @@ export default function HelpSupportPage() {
           </div>
 
           {/* FAQ Section */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Frequently Asked Questions</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Frequently Asked Questions</h2>
             <div className="space-y-3">
               {filteredFaq.map((faq) => (
-                <div key={faq.id} className="border border-gray-200 rounded-lg">
+                <div key={faq.id} className="border border-gray-200 dark:border-gray-700 rounded-lg">
                   <button
                     onClick={() => toggleFaq(faq.id)}
-                    className="w-full p-4 text-left hover:bg-gray-50 transition flex items-center justify-between"
+                    className="w-full p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition flex items-center justify-between"
                   >
-                    <span className="font-medium text-gray-800">{faq.question}</span>
+                    <span className="font-medium text-gray-800 dark:text-gray-100">{faq.question}</span>
                     {expandedFaq === faq.id ? (
                       <ChevronDown className="w-5 h-5 text-gray-400" />
                     ) : (
@@ -174,7 +174,7 @@ export default function HelpSupportPage() {
                   </button>
                   {expandedFaq === faq.id && (
                     <div className="px-4 pb-4">
-                      <p className="text-sm text-gray-600 leading-relaxed">{faq.answer}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{faq.answer}</p>
                     </div>
                   )}
                 </div>
@@ -189,29 +189,29 @@ export default function HelpSupportPage() {
           </div>
 
           {/* Contact Information */}
-          <div className="bg-white rounded-lg shadow-sm p-6 mt-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Still need help?</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mt-6">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Still need help?</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h3 className="font-medium text-gray-800 mb-2">Contact Information</h3>
-                <div className="space-y-2 text-sm text-gray-600">
+                <h3 className="font-medium text-gray-800 dark:text-gray-100 mb-2">Contact Information</h3>
+                <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                   <p>📧 Email: support@xolvetech.com</p>
                   <p>📞 Phone: +1 (555) 123-4567</p>
                   <p>🕒 Hours: Mon-Fri 9AM-6PM EST</p>
                 </div>
               </div>
               <div>
-                <h3 className="font-medium text-gray-800 mb-2">Additional Resources</h3>
+                <h3 className="font-medium text-gray-800 dark:text-gray-100 mb-2">Additional Resources</h3>
                 <div className="space-y-2">
-                  <button className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 transition">
+                  <button className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:text-blue-400 transition">
                     <ExternalLink className="w-4 h-4" />
                     Community Guidelines
                   </button>
-                  <button className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 transition">
+                  <button className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:text-blue-400 transition">
                     <ExternalLink className="w-4 h-4" />
                     Video Tutorials
                   </button>
-                  <button className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 transition">
+                  <button className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:text-blue-400 transition">
                     <ExternalLink className="w-4 h-4" />
                     User Manual
                   </button>

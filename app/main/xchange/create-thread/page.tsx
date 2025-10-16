@@ -104,7 +104,7 @@ const CreateThreadPage = () => {
   const selectedCategory = mockCategories.find(cat => cat.id === formData.category_id);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <Header />
       
       <main className="pt-20 pb-24 px-4">
@@ -113,20 +113,20 @@ const CreateThreadPage = () => {
           <div className="flex items-center gap-4 mb-6">
             <button
               onClick={() => router.back()}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-full transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
+              <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-gray-800">Start a New Discussion</h1>
-              <p className="text-gray-600">Share your question or idea with the community</p>
+              <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Start a New Discussion</h1>
+              <p className="text-gray-600 dark:text-gray-400">Share your question or idea with the community</p>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Title */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Thread Title *
               </label>
               <input
@@ -134,8 +134,8 @@ const CreateThreadPage = () => {
                 value={formData.title}
                 onChange={(e) => handleInputChange('title', e.target.value)}
                 placeholder="What's your question or topic?"
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.title ? 'border-red-300' : 'border-gray-300'
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 ${
+                  errors.title ? 'border-red-300' : 'border-gray-300 dark:border-gray-600'
                 }`}
                 maxLength={255}
               />
@@ -151,8 +151,8 @@ const CreateThreadPage = () => {
             </div>
 
             {/* Category Selection */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <label className="block text-sm font-medium text-gray-700 mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
                 Category *
               </label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -163,8 +163,8 @@ const CreateThreadPage = () => {
                     onClick={() => handleInputChange('category_id', category.id)}
                     className={`p-3 rounded-lg border-2 transition-all text-left ${
                       formData.category_id === category.id
-                        ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                        ? 'border-blue-500 bg-blue-50 text-blue-700 dark:text-blue-400'
+                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
                     }`}
                   >
                     <div className="font-medium text-sm">{category.name}</div>
@@ -189,14 +189,14 @@ const CreateThreadPage = () => {
                     />
                     <span className="font-medium text-sm">Selected: {selectedCategory.name}</span>
                   </div>
-                  <p className="text-xs text-gray-600 mt-1">{selectedCategory.description}</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">{selectedCategory.description}</p>
                 </div>
               )}
             </div>
 
             {/* Content */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Content *
               </label>
               <textarea
@@ -204,8 +204,8 @@ const CreateThreadPage = () => {
                 onChange={(e) => handleInputChange('content', e.target.value)}
                 placeholder="Describe your question, share your thoughts, or start a discussion..."
                 rows={8}
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-vertical ${
-                  errors.content ? 'border-red-300' : 'border-gray-300'
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 resize-vertical ${
+                  errors.content ? 'border-red-300' : 'border-gray-300 dark:border-gray-600'
                 }`}
               />
               {errors.content && (
@@ -218,7 +218,7 @@ const CreateThreadPage = () => {
                 <div className="flex items-center gap-4">
                   <button
                     type="button"
-                    className="flex items-center gap-2 px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="flex items-center gap-2 px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors"
                     disabled
                   >
                     <Image className="w-4 h-4" />
@@ -226,7 +226,7 @@ const CreateThreadPage = () => {
                   </button>
                   <button
                     type="button"
-                    className="flex items-center gap-2 px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="flex items-center gap-2 px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors"
                     disabled
                   >
                     <Link className="w-4 h-4" />
@@ -240,8 +240,8 @@ const CreateThreadPage = () => {
             </div>
 
             {/* Tags (Optional) */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Tags (Optional)
               </label>
               <input
@@ -249,7 +249,7 @@ const CreateThreadPage = () => {
                 value={formData.tags}
                 onChange={(e) => handleInputChange('tags', e.target.value)}
                 placeholder="e.g. arduino, sensors, beginner (comma-separated)"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
               />
               <p className="text-sm text-gray-500 mt-2">
                 Add relevant tags to help others find your thread. Separate multiple tags with commas.
@@ -269,11 +269,11 @@ const CreateThreadPage = () => {
 
             {/* Guidelines */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <div className="flex items-center gap-2 text-blue-700 mb-2">
+              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-400 mb-2">
                 <CheckCircle className="w-5 h-5" />
                 <span className="font-medium">Community Guidelines</span>
               </div>
-              <ul className="text-blue-700 text-sm space-y-1">
+              <ul className="text-blue-700 dark:text-blue-400 text-sm space-y-1">
                 <li>• Be respectful and constructive in your discussions</li>
                 <li>• Provide clear, detailed descriptions of your questions</li>
                 <li>• Search existing threads before creating new ones</li>
@@ -286,7 +286,7 @@ const CreateThreadPage = () => {
               <button
                 type="button"
                 onClick={() => router.back()}
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 Cancel
               </button>
@@ -294,7 +294,7 @@ const CreateThreadPage = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex items-center gap-2 px-6 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {isSubmitting ? (
                   <>

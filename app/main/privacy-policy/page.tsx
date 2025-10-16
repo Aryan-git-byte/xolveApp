@@ -12,7 +12,7 @@ export default function PrivacyPolicyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <Header />
       
       <main className="pt-16 pb-20">
@@ -21,14 +21,14 @@ export default function PrivacyPolicyPage() {
           <div className="flex items-center gap-4 mb-6">
             <button 
               onClick={handleBack}
-              className="p-2 hover:bg-gray-100 rounded-full transition"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-full transition"
               aria-label="Go back"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
+              <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             </button>
             <div className="flex items-center gap-3">
-              <Shield className="w-6 h-6 text-blue-600" />
-              <h1 className="text-2xl font-bold text-gray-800">Privacy Policy</h1>
+              <Shield className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+              <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Privacy Policy</h1>
             </div>
           </div>
 
@@ -41,14 +41,14 @@ export default function PrivacyPolicyPage() {
           </div>
 
           {/* Content */}
-          <div className="bg-white rounded-lg shadow-sm p-6 space-y-8">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 space-y-8">
             {/* Introduction */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <Eye className="w-5 h-5 text-blue-600" />
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
+                <Eye className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 1. Introduction
               </h2>
-              <div className="text-gray-700 space-y-3">
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   At XolveTech ("we," "our," or "us"), we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform and services.
                 </p>
@@ -60,13 +60,13 @@ export default function PrivacyPolicyPage() {
 
             {/* Information We Collect */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <Database className="w-5 h-5 text-blue-600" />
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
+                <Database className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 2. Information We Collect
               </h2>
-              <div className="text-gray-700 space-y-4">
+              <div className="text-gray-700 dark:text-gray-300 space-y-4">
                 <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Personal Information</h3>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">Personal Information</h3>
                   <p>We may collect the following types of personal information:</p>
                   <ul className="list-disc list-inside space-y-1 ml-4 mt-2">
                     <li>Name and contact information (email address, phone number)</li>
@@ -77,7 +77,7 @@ export default function PrivacyPolicyPage() {
                 </div>
                 
                 <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Usage Information</h3>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">Usage Information</h3>
                   <p>We automatically collect certain information about your use of our Service:</p>
                   <ul className="list-disc list-inside space-y-1 ml-4 mt-2">
                     <li>Device information (IP address, browser type, operating system)</li>
@@ -88,7 +88,7 @@ export default function PrivacyPolicyPage() {
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Content Information</h3>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">Content Information</h3>
                   <p>We collect information about the content you create and share:</p>
                   <ul className="list-disc list-inside space-y-1 ml-4 mt-2">
                     <li>Posts, comments, and messages you create</li>
@@ -102,11 +102,11 @@ export default function PrivacyPolicyPage() {
 
             {/* How We Use Information */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <User className="w-5 h-5 text-blue-600" />
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
+                <User className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 3. How We Use Your Information
               </h2>
-              <div className="text-gray-700 space-y-3">
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>We use the information we collect for the following purposes:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>To provide, maintain, and improve our Service</li>
@@ -123,30 +123,30 @@ export default function PrivacyPolicyPage() {
 
             {/* Information Sharing */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <Lock className="w-5 h-5 text-blue-600" />
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
+                <Lock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 4. Information Sharing and Disclosure
               </h2>
-              <div className="text-gray-700 space-y-4">
+              <div className="text-gray-700 dark:text-gray-300 space-y-4">
                 <p>We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except in the following circumstances:</p>
                 
                 <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Service Providers</h3>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">Service Providers</h3>
                   <p>We may share your information with trusted third-party service providers who assist us in operating our Service, conducting our business, or serving our users.</p>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Legal Requirements</h3>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">Legal Requirements</h3>
                   <p>We may disclose your information if required to do so by law or in response to valid requests by public authorities.</p>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Business Transfers</h3>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">Business Transfers</h3>
                   <p>In the event of a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction.</p>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Consent</h3>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">Consent</h3>
                   <p>We may share your information with your explicit consent or at your direction.</p>
                 </div>
               </div>
@@ -154,11 +154,11 @@ export default function PrivacyPolicyPage() {
 
             {/* Data Security */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <Shield className="w-5 h-5 text-blue-600" />
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
+                <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 5. Data Security
               </h2>
-              <div className="text-gray-700 space-y-3">
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.
                 </p>
@@ -175,8 +175,8 @@ export default function PrivacyPolicyPage() {
 
             {/* Your Rights */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">6. Your Rights and Choices</h2>
-              <div className="text-gray-700 space-y-3">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">6. Your Rights and Choices</h2>
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>You have the following rights regarding your personal information:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li><strong>Access:</strong> Request access to your personal information</li>
@@ -194,8 +194,8 @@ export default function PrivacyPolicyPage() {
 
             {/* Cookies and Tracking */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">7. Cookies and Tracking Technologies</h2>
-              <div className="text-gray-700 space-y-3">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">7. Cookies and Tracking Technologies</h2>
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   We use cookies and similar tracking technologies to enhance your experience on our Service. Cookies are small data files stored on your device that help us remember your preferences and improve our Service.
                 </p>
@@ -214,8 +214,8 @@ export default function PrivacyPolicyPage() {
 
             {/* Third-Party Services */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">8. Third-Party Services</h2>
-              <div className="text-gray-700 space-y-3">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">8. Third-Party Services</h2>
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   Our Service may contain links to third-party websites or services. We are not responsible for the privacy practices or content of these third-party services.
                 </p>
@@ -227,11 +227,11 @@ export default function PrivacyPolicyPage() {
 
             {/* Children's Privacy */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
                 <AlertCircle className="w-5 h-5 text-orange-600" />
                 9. Children's Privacy
               </h2>
-              <div className="text-gray-700 space-y-3">
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   Our Service is not intended for children under the age of 13. We do not knowingly collect personal information from children under 13.
                 </p>
@@ -243,8 +243,8 @@ export default function PrivacyPolicyPage() {
 
             {/* International Transfers */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">10. International Data Transfers</h2>
-              <div className="text-gray-700 space-y-3">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">10. International Data Transfers</h2>
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   Your information may be transferred to and processed in countries other than your country of residence. We ensure that such transfers comply with applicable data protection laws and implement appropriate safeguards.
                 </p>
@@ -253,8 +253,8 @@ export default function PrivacyPolicyPage() {
 
             {/* Changes to Privacy Policy */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">11. Changes to This Privacy Policy</h2>
-              <div className="text-gray-700 space-y-3">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">11. Changes to This Privacy Policy</h2>
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.
                 </p>
@@ -266,22 +266,22 @@ export default function PrivacyPolicyPage() {
 
             {/* Contact Information */}
             <section>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">12. Contact Us</h2>
-              <div className="text-gray-700 space-y-3">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">12. Contact Us</h2>
+              <div className="text-gray-700 dark:text-gray-300 space-y-3">
                 <p>
                   If you have any questions about this Privacy Policy or our data practices, please contact us:
                 </p>
-                <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
                   <div className="flex items-center gap-2 mb-2">
-                    <Mail className="w-4 h-4 text-blue-600" />
+                    <Mail className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     <span><strong>Email:</strong> privacy@xolvetech.com</span>
                   </div>
                   <div className="flex items-center gap-2 mb-2">
-                    <Phone className="w-4 h-4 text-blue-600" />
+                    <Phone className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     <span><strong>Phone:</strong> +1 (555) 123-4567</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <User className="w-4 h-4 text-blue-600" />
+                    <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     <span><strong>Address:</strong> 123 Tech Street, Innovation City, IC 12345</span>
                   </div>
                 </div>

@@ -136,12 +136,12 @@ const CreateProjectPage = () => {
       case 'beginner': return 'border-green-500 bg-green-50 text-green-700';
       case 'intermediate': return 'border-yellow-500 bg-yellow-50 text-yellow-700';
       case 'advanced': return 'border-red-500 bg-red-50 text-red-700';
-      default: return 'border-gray-300 hover:border-gray-400';
+      default: return 'border-gray-300 dark:border-gray-600 hover:border-gray-400';
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <Header />
       
       <main className="pt-20 pb-24 px-4">
@@ -150,24 +150,24 @@ const CreateProjectPage = () => {
           <div className="flex items-center gap-4 mb-6">
             <button
               onClick={() => router.back()}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-full transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
+              <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-gray-800">Share Your Project</h1>
-              <p className="text-gray-600">Showcase your creation with the community</p>
+              <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Share Your Project</h1>
+              <p className="text-gray-600 dark:text-gray-400">Showcase your creation with the community</p>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Basic Information */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">Basic Information</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Basic Information</h2>
               
               {/* Title */}
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Project Title *
                 </label>
                 <input
@@ -176,7 +176,7 @@ const CreateProjectPage = () => {
                   onChange={(e) => handleInputChange('title', e.target.value)}
                   placeholder="Give your project an engaging title"
                   className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-                    errors.title ? 'border-red-300' : 'border-gray-300'
+                    errors.title ? 'border-red-300' : 'border-gray-300 dark:border-gray-600'
                   }`}
                   maxLength={255}
                 />
@@ -193,7 +193,7 @@ const CreateProjectPage = () => {
 
               {/* Description */}
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Short Description *
                 </label>
                 <textarea
@@ -202,7 +202,7 @@ const CreateProjectPage = () => {
                   placeholder="Briefly describe what your project does and what makes it special"
                   rows={3}
                   className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-vertical ${
-                    errors.description ? 'border-red-300' : 'border-gray-300'
+                    errors.description ? 'border-red-300' : 'border-gray-300 dark:border-gray-600'
                   }`}
                 />
                 {errors.description && (
@@ -216,7 +216,7 @@ const CreateProjectPage = () => {
               {/* Difficulty and Time */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Difficulty Level *
                   </label>
                   <div className="grid grid-cols-3 gap-2">
@@ -232,7 +232,7 @@ const CreateProjectPage = () => {
                         className={`p-3 rounded-lg border-2 transition-all text-sm font-medium ${
                           formData.difficulty_level === difficulty.value
                             ? getDifficultyColor(difficulty.value)
-                            : 'border-gray-300 hover:border-gray-400'
+                            : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'
                         }`}
                       >
                         {difficulty.label}
@@ -248,7 +248,7 @@ const CreateProjectPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Estimated Time *
                   </label>
                   <input
@@ -257,7 +257,7 @@ const CreateProjectPage = () => {
                     onChange={(e) => handleInputChange('estimated_time', e.target.value)}
                     placeholder="e.g., 2-3 hours, 1 week, 3 days"
                     className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-                      errors.estimated_time ? 'border-red-300' : 'border-gray-300'
+                      errors.estimated_time ? 'border-red-300' : 'border-gray-300 dark:border-gray-600'
                     }`}
                   />
                   {errors.estimated_time && (
@@ -271,14 +271,14 @@ const CreateProjectPage = () => {
             </div>
 
             {/* Project Images */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">Project Images</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Project Images</h2>
               
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Upload Images (Max 5, up to 5MB each)
                 </label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+                <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
                   <input
                     type="file"
                     multiple
@@ -289,7 +289,7 @@ const CreateProjectPage = () => {
                   />
                   <label htmlFor="image-upload" className="cursor-pointer">
                     <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                    <p className="text-gray-600">Click to upload images or drag and drop</p>
+                    <p className="text-gray-600 dark:text-gray-400">Click to upload images or drag and drop</p>
                     <p className="text-sm text-gray-500 mt-1">PNG, JPG, WebP up to 5MB</p>
                   </label>
                 </div>
@@ -303,7 +303,7 @@ const CreateProjectPage = () => {
                       <img
                         src={URL.createObjectURL(image)}
                         alt={`Upload ${index + 1}`}
-                        className="w-full h-20 object-cover rounded-lg border border-gray-300"
+                        className="w-full h-20 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
                       />
                       <button
                         type="button"
@@ -319,11 +319,11 @@ const CreateProjectPage = () => {
             </div>
 
             {/* Detailed Instructions */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">Project Instructions</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Project Instructions</h2>
               
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Detailed Instructions *
                 </label>
                 <textarea
@@ -332,7 +332,7 @@ const CreateProjectPage = () => {
                   placeholder="Provide step-by-step instructions, code explanations, assembly guide, etc. Be as detailed as possible to help others recreate your project."
                   rows={12}
                   className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-vertical ${
-                    errors.content ? 'border-red-300' : 'border-gray-300'
+                    errors.content ? 'border-red-300' : 'border-gray-300 dark:border-gray-600'
                   }`}
                 />
                 {errors.content && (
@@ -348,12 +348,12 @@ const CreateProjectPage = () => {
             </div>
 
             {/* Materials and Tools */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">Requirements</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Requirements</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Materials Needed
                   </label>
                   <textarea
@@ -361,12 +361,12 @@ const CreateProjectPage = () => {
                     onChange={(e) => handleInputChange('materials', e.target.value)}
                     placeholder="List all components, parts, and materials needed (one per line)"
                     rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-vertical"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-vertical"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Tools Required
                   </label>
                   <textarea
@@ -374,19 +374,19 @@ const CreateProjectPage = () => {
                     onChange={(e) => handleInputChange('tools', e.target.value)}
                     placeholder="List all tools needed for this project (one per line)"
                     rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-vertical"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-vertical"
                   />
                 </div>
               </div>
             </div>
 
             {/* Additional Information */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">Additional Information</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Additional Information</h2>
               
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Tags
                   </label>
                   <input
@@ -394,7 +394,7 @@ const CreateProjectPage = () => {
                     value={formData.tags}
                     onChange={(e) => handleInputChange('tags', e.target.value)}
                     placeholder="e.g. arduino, IoT, sensors, automation (comma-separated)"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                   <p className="text-sm text-gray-500 mt-1">
                     Add relevant tags to help others discover your project
@@ -403,7 +403,7 @@ const CreateProjectPage = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       GitHub Repository (Optional)
                     </label>
                     <input
@@ -411,12 +411,12 @@ const CreateProjectPage = () => {
                       value={formData.github_url}
                       onChange={(e) => handleInputChange('github_url', e.target.value)}
                       placeholder="https://github.com/username/project"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Live Demo URL (Optional)
                     </label>
                     <input
@@ -424,7 +424,7 @@ const CreateProjectPage = () => {
                       value={formData.demo_url}
                       onChange={(e) => handleInputChange('demo_url', e.target.value)}
                       placeholder="https://your-demo-site.com"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                     />
                   </div>
                 </div>
@@ -462,7 +462,7 @@ const CreateProjectPage = () => {
               <button
                 type="button"
                 onClick={() => router.back()}
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 Cancel
               </button>

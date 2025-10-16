@@ -40,6 +40,7 @@ export async function GET(request: Request) {
         }
 
         // Add preferences if provided
+        let hasOnboardingData = false
         if (preferences) {
           try {
             const prefs = JSON.parse(decodeURIComponent(preferences))
@@ -48,12 +49,15 @@ export async function GET(request: Request) {
             profileData.interests = prefs[3] || []
             profileData.personal_goal = prefs[4] || null
             profileData.learning_style = prefs[5] || null
+            hasOnboardingData = true
+            // Mark onboarding as completed if we have preferences
+            profileData.has_completed_onboarding = true
           } catch (e) {
             console.error('Error parsing preferences:', e)
           }
         }
 
-        // If profile doesn't exist, create it
+        // If profile doesn't exist, create it (new user from signup flow)
         if (!existingProfile) {
           await supabase
             .from('user_profiles')
@@ -84,6 +88,27 @@ export async function GET(request: Request) {
             device_type: request.headers.get('user-agent')?.includes('Mobile') ? 'mobile' : 'desktop',
             browser: request.headers.get('user-agent')?.split(' ').pop()?.split('/')[0] || 'unknown',
           })
+
+        // Get the updated profile to check onboarding status
+        const { data: updatedProfile } = await supabase
+          .from('user_profiles')
+          .select('has_completed_onboarding')
+          .eq('id', user.id)
+          .single()
+
+        // Check onboarding status - redirect to onboarding if not completed
+        if (!updatedProfile?.has_completed_onboarding) {
+          const forwardedHost = request.headers.get('x-forwarded-host')
+          const isLocalEnv = process.env.NODE_ENV === 'development'
+          
+          if (isLocalEnv) {
+            return NextResponse.redirect(`${origin}/onboarding/companion`)
+          } else if (forwardedHost) {
+            return NextResponse.redirect(`https://${forwardedHost}/onboarding/companion`)
+          } else {
+            return NextResponse.redirect(`${origin}/onboarding/companion`)
+          }
+        }
 
         // Check if user already has phone verified
         const isPhoneVerified = user.user_metadata?.phone_verified === true

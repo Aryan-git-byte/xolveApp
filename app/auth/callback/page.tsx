@@ -22,6 +22,19 @@ export default function AuthCallbackClientPage() {
         const session = (result as any)?.data?.session ?? (result as any)?.session ?? null;
 
         if (session?.user) {
+          // Check if user has completed onboarding
+          const { data: profile } = await supabase
+            .from('user_profiles')
+            .select('has_completed_onboarding')
+            .eq('id', session.user.id)
+            .single();
+
+          // If user hasn't completed onboarding, redirect to onboarding
+          if (!profile?.has_completed_onboarding) {
+            router.replace('/onboarding/companion');
+            return;
+          }
+
           // Redirect depending on whether phone is verified
           const isPhoneVerified = session.user.user_metadata?.phone_verified === true;
           const redirectPath = (session.user.phone && isPhoneVerified) ? '/main/home' : '/verify-phone';

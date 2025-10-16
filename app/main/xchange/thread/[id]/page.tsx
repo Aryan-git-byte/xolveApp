@@ -152,19 +152,19 @@ const ThreadDetailPage = () => {
     const [showReplies, setShowReplies] = useState(true);
     
     return (
-      <div className={`${isReply ? 'ml-8 border-l-2 border-gray-200 pl-3' : ''}`}>
-        <div className="bg-white border-b border-gray-200 py-4 last:border-b-0">
+      <div className={`${isReply ? 'ml-8 border-l-2 border-gray-200 dark:border-gray-700 pl-3' : ''}`}>
+        <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 last:border-b-0">
           {/* Message Header */}
           <div className="flex items-start justify-between mb-2">
             <div className="flex items-start gap-2 flex-1 min-w-0">
               <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <User className="w-4 h-4 text-blue-600" />
+                <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-medium text-gray-800 text-sm truncate">{message.author}</span>
+                  <span className="font-medium text-gray-800 dark:text-gray-100 text-sm truncate">{message.author}</span>
                   {message.author_id === thread.author_id && (
-                    <span className="px-1.5 py-0.5 bg-blue-100 text-blue-600 text-xs rounded flex-shrink-0">
+                    <span className="px-1.5 py-0.5 bg-blue-100 text-blue-600 dark:text-blue-400 text-xs rounded flex-shrink-0">
                       OP
                     </span>
                   )}
@@ -181,7 +181,7 @@ const ThreadDetailPage = () => {
 
           {/* Message Content */}
           <div className="mb-3">
-            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{message.content}</p>
+            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">{message.content}</p>
           </div>
 
           {/* Message Actions */}
@@ -191,7 +191,7 @@ const ThreadDetailPage = () => {
                 <button className="p-1.5 text-gray-500 active:text-green-600 rounded">
                   <ArrowUp className="w-4 h-4" />
                 </button>
-                <span className="mx-1 text-sm font-medium text-gray-700">
+                <span className="mx-1 text-sm font-medium text-gray-700 dark:text-gray-300">
                   {message.upvotes - message.downvotes}
                 </span>
                 <button className="p-1.5 text-gray-500 active:text-red-600 rounded">
@@ -201,31 +201,31 @@ const ThreadDetailPage = () => {
               
               <button
                 onClick={() => setReplyingTo(replyingTo === message.id ? null : message.id)}
-                className="flex items-center gap-1 text-xs text-gray-600 active:text-gray-800 px-2 py-1"
+                className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400 active:text-gray-800 dark:text-gray-100 px-2 py-1"
               >
                 <Reply className="w-3.5 h-3.5" />
                 Reply
               </button>
 
-              <button className="flex items-center gap-1 text-xs text-gray-600 active:text-gray-800 px-2 py-1">
+              <button className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400 active:text-gray-800 dark:text-gray-100 px-2 py-1">
                 <Share2 className="w-3.5 h-3.5" />
               </button>
             </div>
             
-            <button className="p-1 text-gray-400 active:text-gray-600">
+            <button className="p-1 text-gray-400 active:text-gray-600 dark:text-gray-400">
               <Flag className="w-3.5 h-3.5" />
             </button>
           </div>
 
           {/* Reply Form */}
           {replyingTo === message.id && (
-            <div className="mt-3 pt-3 border-t border-gray-200">
+            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
               <textarea
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder={`Reply to ${message.author}...`}
                 rows={3}
-                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 resize-none"
               />
               <div className="flex items-center justify-end gap-2 mt-2">
                 <button
@@ -233,14 +233,14 @@ const ThreadDetailPage = () => {
                     setReplyingTo(null);
                     setNewMessage('');
                   }}
-                  className="px-3 py-1.5 text-xs text-gray-600 active:bg-gray-100 rounded-lg"
+                  className="px-3 py-1.5 text-xs text-gray-600 dark:text-gray-400 active:bg-gray-100 rounded-lg"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSubmitMessage}
                   disabled={!newMessage.trim() || isSubmitting}
-                  className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium bg-blue-600 text-white rounded-lg disabled:opacity-50 active:bg-blue-700"
+                  className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium bg-blue-600 dark:bg-blue-500 text-white rounded-lg disabled:opacity-50 active:bg-blue-700"
                 >
                   {isSubmitting ? (
                     <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -260,7 +260,7 @@ const ThreadDetailPage = () => {
             {!isReply && (
               <button
                 onClick={() => setShowReplies(!showReplies)}
-                className="text-xs text-blue-600 font-medium ml-10 mb-2 active:text-blue-700"
+                className="text-xs text-blue-600 dark:text-blue-400 font-medium ml-10 mb-2 active:text-blue-700 dark:text-blue-400"
               >
                 {showReplies ? '▼' : '▶'} {message.replies.length} {message.replies.length === 1 ? 'reply' : 'replies'}
               </button>
@@ -275,27 +275,27 @@ const ThreadDetailPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       {/* Fixed Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between px-4 py-3">
           <button 
             onClick={() => window.history.back()}
-            className="p-2 -ml-2 text-gray-600 active:bg-gray-100 rounded-lg"
+            className="p-2 -ml-2 text-gray-600 dark:text-gray-400 active:bg-gray-100 rounded-lg"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <h1 className="text-sm font-semibold text-gray-800 truncate flex-1 mx-3">
+          <h1 className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate flex-1 mx-3">
             Discussion
           </h1>
           <div className="flex items-center gap-1">
             <button
               onClick={() => setIsBookmarked(!isBookmarked)}
-              className={`p-2 rounded-lg ${isBookmarked ? 'text-blue-600' : 'text-gray-600'} active:bg-gray-100`}
+              className={`p-2 rounded-lg ${isBookmarked ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'} active:bg-gray-100`}
             >
               <Bookmark className="w-5 h-5" fill={isBookmarked ? "currentColor" : "none"} />
             </button>
-            <button className="p-2 -mr-2 text-gray-600 active:bg-gray-100 rounded-lg">
+            <button className="p-2 -mr-2 text-gray-600 dark:text-gray-400 active:bg-gray-100 rounded-lg">
               <MoreHorizontal className="w-5 h-5" />
             </button>
           </div>
@@ -304,7 +304,7 @@ const ThreadDetailPage = () => {
 
       {/* Main Content */}
       <main className="pt-14 pb-20">
-        <div className="bg-white border-b border-gray-200">
+        <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
           <div className="px-4 py-4">
             {/* Thread Badges */}
             <div className="flex items-center gap-2 mb-3 flex-wrap">
@@ -329,15 +329,15 @@ const ThreadDetailPage = () => {
             </div>
             
             {/* Thread Title */}
-            <h2 className="text-lg font-bold text-gray-800 mb-3 leading-tight">
+            <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-3 leading-tight">
               {thread.title}
             </h2>
             
             {/* Thread Meta */}
-            <div className="flex items-center gap-3 text-xs text-gray-600 mb-3">
+            <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400 mb-3">
               <div className="flex items-center gap-1.5">
                 <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                  <User className="w-3 h-3 text-blue-600" />
+                  <User className="w-3 h-3 text-blue-600 dark:text-blue-400" />
                 </div>
                 <span className="font-medium">{thread.author}</span>
               </div>
@@ -348,7 +348,7 @@ const ThreadDetailPage = () => {
             </div>
 
             {/* Stats */}
-            <div className="flex items-center gap-4 text-xs text-gray-600 pb-3 border-b border-gray-200">
+            <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400 pb-3 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-1">
                 <Eye className="w-3.5 h-3.5" />
                 <span>{thread.view_count}</span>
@@ -367,7 +367,7 @@ const ThreadDetailPage = () => {
             {thread.tags && thread.tags.length > 0 && (
               <div className="flex gap-2 overflow-x-auto py-3 -mx-1 px-1 scrollbar-hide">
                 {thread.tags.map((tag, idx) => (
-                  <span key={idx} className="flex-shrink-0 px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded-full">
+                  <span key={idx} className="flex-shrink-0 px-2 py-1 bg-blue-50 text-blue-600 dark:text-blue-400 text-xs rounded-full">
                     #{tag}
                   </span>
                 ))}
@@ -376,13 +376,13 @@ const ThreadDetailPage = () => {
 
             {/* Thread Content */}
             <div className="pt-3">
-              <div className={`text-sm text-gray-700 leading-relaxed whitespace-pre-wrap ${!showFullContent && 'line-clamp-6'}`}>
+              <div className={`text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap ${!showFullContent && 'line-clamp-6'}`}>
                 {thread.content}
               </div>
               {thread.content.length > 300 && (
                 <button 
                   onClick={() => setShowFullContent(!showFullContent)}
-                  className="mt-2 text-blue-600 text-sm font-medium active:text-blue-700"
+                  className="mt-2 text-blue-600 dark:text-blue-400 text-sm font-medium active:text-blue-700 dark:text-blue-400"
                 >
                   {showFullContent ? 'Show Less' : 'Read More'}
                 </button>
@@ -391,24 +391,24 @@ const ThreadDetailPage = () => {
           </div>
 
           {/* Sticky Vote Bar */}
-          <div className="sticky top-14 z-40 bg-white border-t border-gray-200 px-4 py-3">
+          <div className="sticky top-14 z-40 bg-white border-t border-gray-200 dark:border-gray-700 px-4 py-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <button 
                   onClick={() => handleVote('up')}
                   className={`p-2 rounded-lg transition-colors ${
-                    userVote === 'up' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600 active:bg-gray-200'
+                    userVote === 'up' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600 dark:text-gray-400 active:bg-gray-200'
                   }`}
                 >
                   <ArrowUp className="w-5 h-5" />
                 </button>
-                <span className="mx-3 text-base font-bold text-gray-800">
+                <span className="mx-3 text-base font-bold text-gray-800 dark:text-gray-100">
                   {thread.upvotes - thread.downvotes}
                 </span>
                 <button 
                   onClick={() => handleVote('down')}
                   className={`p-2 rounded-lg transition-colors ${
-                    userVote === 'down' ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-600 active:bg-gray-200'
+                    userVote === 'down' ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-600 dark:text-gray-400 active:bg-gray-200'
                   }`}
                 >
                   <ArrowDown className="w-5 h-5" />
@@ -416,10 +416,10 @@ const ThreadDetailPage = () => {
               </div>
               
               <div className="flex items-center gap-2">
-                <button className="p-2 text-gray-600 bg-gray-100 rounded-lg active:bg-gray-200">
+                <button className="p-2 text-gray-600 dark:text-gray-400 bg-gray-100 rounded-lg active:bg-gray-200">
                   <Share2 className="w-5 h-5" />
                 </button>
-                <button className="p-2 text-gray-600 bg-gray-100 rounded-lg active:bg-gray-200">
+                <button className="p-2 text-gray-600 dark:text-gray-400 bg-gray-100 rounded-lg active:bg-gray-200">
                   <Flag className="w-4 h-4" />
                 </button>
               </div>
@@ -429,20 +429,20 @@ const ThreadDetailPage = () => {
 
         {/* New Message Form */}
         {!thread.is_locked && !replyingTo && (
-          <div className="bg-white border-b border-gray-200 p-4">
-            <h3 className="font-semibold text-gray-800 mb-3 text-sm">Join the Discussion</h3>
+          <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4">
+            <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-3 text-sm">Join the Discussion</h3>
             <textarea
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Share your thoughts..."
               rows={3}
-              className="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 resize-none"
             />
             <div className="flex items-center justify-end mt-3">
               <button
                 onClick={handleSubmitMessage}
                 disabled={!newMessage.trim() || isSubmitting}
-                className="flex items-center gap-2 px-5 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg disabled:opacity-50 active:bg-blue-700"
+                className="flex items-center gap-2 px-5 py-2 text-sm font-medium bg-blue-600 dark:bg-blue-500 text-white rounded-lg disabled:opacity-50 active:bg-blue-700"
               >
                 {isSubmitting ? (
                   <>
@@ -472,14 +472,14 @@ const ThreadDetailPage = () => {
 
         {/* Messages Section */}
         <div className="bg-white">
-          <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
-            <h3 className="font-semibold text-gray-800 text-sm">
+          <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+            <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-sm">
               {thread.message_count} Replies
             </h3>
             <select 
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             >
               <option value="oldest">Oldest</option>
               <option value="newest">Newest</option>
@@ -494,8 +494,8 @@ const ThreadDetailPage = () => {
           </div>
 
           {messages.length >= 3 && (
-            <div className="p-4 border-t border-gray-200">
-              <button className="w-full py-2.5 text-sm font-medium text-blue-600 active:text-blue-700">
+            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+              <button className="w-full py-2.5 text-sm font-medium text-blue-600 dark:text-blue-400 active:text-blue-700 dark:text-blue-400">
                 Load More Replies
               </button>
             </div>
@@ -504,11 +504,11 @@ const ThreadDetailPage = () => {
       </main>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-around px-4 py-2">
           <button 
             onClick={() => !thread.is_locked && document.querySelector('textarea')?.focus()}
-            className="flex flex-col items-center gap-1 py-1.5 text-gray-600 active:text-gray-800"
+            className="flex flex-col items-center gap-1 py-1.5 text-gray-600 dark:text-gray-400 active:text-gray-800 dark:text-gray-100"
           >
             <MessageSquare className="w-5 h-5" />
             <span className="text-xs font-medium">Reply</span>
@@ -516,7 +516,7 @@ const ThreadDetailPage = () => {
           <button 
             onClick={() => handleVote('up')}
             className={`flex flex-col items-center gap-1 py-1.5 ${
-              userVote === 'up' ? 'text-green-600' : 'text-gray-600 active:text-gray-800'
+              userVote === 'up' ? 'text-green-600' : 'text-gray-600 dark:text-gray-400 active:text-gray-800 dark:text-gray-100'
             }`}
           >
             <ArrowUp className="w-5 h-5" />
@@ -525,13 +525,13 @@ const ThreadDetailPage = () => {
           <button
             onClick={() => setIsBookmarked(!isBookmarked)}
             className={`flex flex-col items-center gap-1 py-1.5 ${
-              isBookmarked ? 'text-blue-600' : 'text-gray-600 active:text-gray-800'
+              isBookmarked ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 active:text-gray-800 dark:text-gray-100'
             }`}
           >
             <Bookmark className="w-5 h-5" fill={isBookmarked ? "currentColor" : "none"} />
             <span className="text-xs font-medium">Save</span>
           </button>
-          <button className="flex flex-col items-center gap-1 py-1.5 text-gray-600 active:text-gray-800">
+          <button className="flex flex-col items-center gap-1 py-1.5 text-gray-600 dark:text-gray-400 active:text-gray-800 dark:text-gray-100">
             <Share2 className="w-5 h-5" />
             <span className="text-xs font-medium">Share</span>
           </button>
