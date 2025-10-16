@@ -175,18 +175,18 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 p-6 overflow-hidden">
+    <div className="relative min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-6 overflow-hidden transition-colors">
       {/* Decorative background */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-green-500/10 rounded-full blur-3xl"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 dark:bg-blue-500/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-green-500/10 dark:bg-purple-500/10 rounded-full blur-3xl"></div>
 
       {/* Companion floating in corner */}
       <div className="absolute top-8 right-8 hidden md:block">
         <div className="relative">
-          <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-xl animate-bounce">
+          <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 dark:from-blue-500 dark:to-blue-600 rounded-full flex items-center justify-center shadow-xl animate-bounce">
             <span className="text-3xl">🤖</span>
           </div>
-          <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
+          <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 dark:bg-purple-500 rounded-full flex items-center justify-center shadow-lg">
             <span className="text-sm">✨</span>
           </div>
         </div>
@@ -194,18 +194,18 @@ export default function LoginPage() {
 
       {/* Main Card */}
       <div className="relative z-10 w-full max-w-md">
-        <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl">
+        <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl transition-colors">
           {/* Header */}
           <div className="text-center mb-8">
             <div className="inline-block mb-4 md:hidden">
-              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-xl">
+              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 dark:from-blue-500 dark:to-blue-600 rounded-full flex items-center justify-center shadow-xl">
                 <span className="text-3xl">🤖</span>
               </div>
             </div>
-            <h1 className="text-3xl font-bold text-blue-900 mb-2">
+            <h1 className="text-3xl font-bold text-blue-900 dark:text-gray-100 mb-2">
               Welcome Back, {nickname}! 👋
             </h1>
-            <p className="text-blue-600">
+            <p className="text-blue-600 dark:text-gray-300">
               Sign in to continue your XolveTech journey
             </p>
           </div>
@@ -216,7 +216,7 @@ export default function LoginPage() {
               <button
                 onClick={handleGoogleSignIn}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-white border-2 border-blue-200 hover:border-blue-300 hover:bg-blue-50 disabled:bg-gray-100 disabled:cursor-not-allowed rounded-xl font-semibold text-blue-900 shadow-md transition-all mb-4"
+                className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-white dark:bg-gray-700 border-2 border-blue-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-gray-500 hover:bg-blue-50 dark:hover:bg-gray-600 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed rounded-xl font-semibold text-blue-900 dark:text-gray-100 shadow-md transition-all mb-4"
               >
                 <svg className="w-6 h-6" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -230,17 +230,17 @@ export default function LoginPage() {
               {/* Divider */}
               <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-blue-200"></div>
+                  <div className="w-full border-t border-blue-200 dark:border-gray-600"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white text-blue-500 font-medium">Or sign in with phone</span>
+                  <span className="px-4 bg-white dark:bg-gray-800 text-blue-500 dark:text-gray-300 font-medium">Or sign in with phone</span>
                 </div>
               </div>
 
               {/* Phone Login Button */}
               <button
                 onClick={() => setShowPhoneForm(true)}
-                className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 transition-all active:scale-95 shadow-lg mb-6"
+                className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-600 dark:from-blue-600 dark:to-blue-700 text-white rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 dark:hover:from-blue-700 dark:hover:to-blue-800 transition-all active:scale-95 shadow-lg mb-6"
               >
                 Sign in with Phone Number
               </button>
