@@ -12,9 +12,11 @@ export default function AuthCallbackClientPage() {
       try {
         const supabase = createClient();
 
-        // For magic links and some OAuth flows the tokens are in the URL fragment
-        // Use the browser helper to parse and set session from the URL
-        const result = await supabase.auth.getSessionFromUrl({ storeSession: true });
+  // For magic links and some OAuth flows the tokens are in the URL fragment
+  // Use the browser helper to parse and set session from the URL
+  // The auth helper may not be present on the typed client in some envs,
+  // so cast to any to call the URL parsing helper without a type error.
+  const result = await (supabase.auth as any).getSessionFromUrl?.({ storeSession: true });
         console.log('getSessionFromUrl result:', result);
 
         const session = (result as any)?.data?.session ?? (result as any)?.session ?? null;

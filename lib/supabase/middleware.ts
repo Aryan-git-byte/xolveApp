@@ -39,6 +39,7 @@ export async function updateSession(request: NextRequest) {
     '/onboarding/companion',
     '/onboarding/personalize',
     '/auth/callback',
+  '/api/auth/callback',
     '/auth/auth-code-error'
   ]
 
