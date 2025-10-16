@@ -7,9 +7,11 @@ import Link from "next/link";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
-  const [showEmailForm, setShowEmailForm] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [showPhoneForm, setShowPhoneForm] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [resendTimer, setResendTimer] = useState(0);
   const [error, setError] = useState("");
   const router = useRouter();
   const supabase = createClient();
@@ -24,6 +26,34 @@ export default function LoginPage() {
     };
     checkUser();
   }, [router, supabase]);
+
+  useEffect(() => {
+    // Countdown timer for resend OTP
+    if (resendTimer > 0) {
+      const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendTimer]);
+
+  const formatPhoneNumber = (value: string) => {
+    // Remove all non-digit characters
+    const digits = value.replace(/\D/g, '');
+    
+    // Limit to 10 digits
+    const limited = digits.slice(0, 10);
+    
+    // Format as: 12345 67890
+    if (limited.length <= 5) {
+      return limited;
+    }
+    return `${limited.slice(0, 5)} ${limited.slice(5)}`;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setPhoneNumber(formatted);
+    setError("");
+  };
 
   const handleGoogleSignIn = async () => {
     setLoading(true);
@@ -48,15 +78,63 @@ export default function LoginPage() {
     }
   };
 
-  const handleEmailLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
+  const handleSendOTP = async () => {
+    // Validate phone number
+    const digitsOnly = phoneNumber.replace(/\D/g, '');
+    
+    if (digitsOnly.length !== 10) {
+      setError("Please enter a valid 10-digit Indian mobile number");
+      return;
+    }
+
+    // Check if number starts with valid digits (6-9)
+    if (!['6', '7', '8', '9'].includes(digitsOnly[0])) {
+      setError("Indian mobile numbers start with 6, 7, 8, or 9");
+      return;
+    }
+
     setLoading(true);
+    setError("");
 
     try {
-      const { error, data } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const fullPhoneNumber = `+91${digitsOnly}`;
+      
+      const { error } = await supabase.auth.signInWithOtp({
+        phone: fullPhoneNumber,
+      });
+
+      if (error) {
+        setError(error.message);
+        setLoading(false);
+      } else {
+        setOtpSent(true);
+        setResendTimer(60); // 60 seconds countdown
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setError("Failed to send OTP. Please try again.");
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOTP = async () => {
+    if (otp.length !== 6) {
+      setError("Please enter a valid 6-digit OTP");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const digitsOnly = phoneNumber.replace(/\D/g, '');
+      const fullPhoneNumber = `+91${digitsOnly}`;
+
+      const { error, data } = await supabase.auth.verifyOtp({
+        phone: fullPhoneNumber,
+        token: otp,
+        type: 'sms',
       });
 
       if (error) {
@@ -67,7 +145,8 @@ export default function LoginPage() {
         await supabase
           .from('user_profiles')
           .update({ 
-            last_login_at: new Date().toISOString() 
+            last_login_at: new Date().toISOString(),
+            phone: fullPhoneNumber
           })
           .eq('id', data.user.id);
 
@@ -80,19 +159,19 @@ export default function LoginPage() {
             browser: navigator.userAgent.split(' ').pop()?.split('/')[0] || 'unknown',
           });
 
-        // Check if phone is verified
-        const isPhoneVerified = data.user.user_metadata?.phone_verified === true;
-        if (data.user.phone && isPhoneVerified) {
-          router.push("/main/home");
-        } else {
-          router.push("/verify-phone");
-        }
+        // Phone verified, redirect to home
+        router.push("/main/home");
       }
     } catch (error) {
       console.error("Error:", error);
-      setError("An error occurred. Please try again.");
+      setError("Failed to verify OTP. Please try again.");
       setLoading(false);
     }
+  };
+
+  const handleResendOTP = () => {
+    setOtp("");
+    handleSendOTP();
   };
 
   return (
@@ -131,7 +210,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {!showEmailForm ? (
+          {!showPhoneForm ? (
             <>
               {/* Google Sign In Button */}
               <button
@@ -154,80 +233,147 @@ export default function LoginPage() {
                   <div className="w-full border-t border-blue-200"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white text-blue-500 font-medium">Or sign in with email</span>
+                  <span className="px-4 bg-white text-blue-500 font-medium">Or sign in with phone</span>
                 </div>
               </div>
 
-              {/* Email Login Button */}
+              {/* Phone Login Button */}
               <button
-                onClick={() => setShowEmailForm(true)}
+                onClick={() => setShowPhoneForm(true)}
                 className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 transition-all active:scale-95 shadow-lg mb-6"
               >
-                Sign in with Email
+                Sign in with Phone Number
               </button>
             </>
           ) : (
-            <form onSubmit={handleEmailLogin} className="space-y-4 mb-6">
-              {/* Email Input */}
-              <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-blue-700 mb-2">
-                  ✉️ Email
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your.email@example.com"
-                  required
-                  className="w-full px-4 py-3 bg-blue-50 text-blue-900 rounded-xl border-2 border-blue-200 focus:outline-none focus:ring-4 focus:ring-orange-500/50 focus:border-orange-500 transition-all"
-                />
-              </div>
+            <div className="space-y-4 mb-6">
+              {!otpSent ? (
+                <>
+                  {/* Phone Number Input */}
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-semibold text-blue-700 mb-2">
+                      📱 Phone Number
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <div className="px-4 py-3 bg-blue-50 text-blue-900 rounded-xl border-2 border-blue-200 font-semibold">
+                        +91
+                      </div>
+                      <input
+                        id="phone"
+                        type="tel"
+                        value={phoneNumber}
+                        onChange={handlePhoneChange}
+                        placeholder="12345 67890"
+                        required
+                        maxLength={11}
+                        className="flex-1 px-4 py-3 bg-blue-50 text-blue-900 rounded-xl border-2 border-blue-200 focus:outline-none focus:ring-4 focus:ring-orange-500/50 focus:border-orange-500 transition-all"
+                      />
+                    </div>
+                  </div>
 
-              {/* Password Input */}
-              <div>
-                <label htmlFor="password" className="block text-sm font-semibold text-blue-700 mb-2">
-                  🔒 Password
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                  required
-                  className="w-full px-4 py-3 bg-blue-50 text-blue-900 rounded-xl border-2 border-blue-200 focus:outline-none focus:ring-4 focus:ring-orange-500/50 focus:border-orange-500 transition-all"
-                />
-              </div>
+                  {/* Error Message */}
+                  {error && (
+                    <div className="p-3 bg-red-100 border border-red-300 text-red-700 rounded-xl text-sm">
+                      {error}
+                    </div>
+                  )}
 
-              {/* Error Message */}
-              {error && (
-                <div className="p-3 bg-red-100 border border-red-300 text-red-700 rounded-xl text-sm">
-                  {error}
-                </div>
+                  {/* Send OTP Button */}
+                  <button
+                    type="button"
+                    onClick={handleSendOTP}
+                    disabled={loading || phoneNumber.replace(/\D/g, '').length !== 10}
+                    className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 transition-all active:scale-95 shadow-lg disabled:opacity-50"
+                  >
+                    {loading ? "Sending OTP..." : "Send OTP"}
+                  </button>
+
+                  {/* Back Button */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowPhoneForm(false);
+                      setError("");
+                    }}
+                    className="w-full px-6 py-3 text-blue-600 hover:text-blue-700 font-medium transition"
+                  >
+                    ← Back to options
+                  </button>
+                </>
+              ) : (
+                <>
+                  {/* OTP Input */}
+                  <div>
+                    <label htmlFor="otp" className="block text-sm font-semibold text-blue-700 mb-2">
+                      � Enter OTP
+                    </label>
+                    <p className="text-sm text-blue-600 mb-3">
+                      OTP sent to +91 {phoneNumber}
+                    </p>
+                    <input
+                      id="otp"
+                      type="text"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+                      placeholder="Enter 6-digit OTP"
+                      required
+                      maxLength={6}
+                      className="w-full px-4 py-3 bg-blue-50 text-blue-900 rounded-xl border-2 border-blue-200 focus:outline-none focus:ring-4 focus:ring-orange-500/50 focus:border-orange-500 transition-all text-center text-lg tracking-widest"
+                    />
+                  </div>
+
+                  {/* Error Message */}
+                  {error && (
+                    <div className="p-3 bg-red-100 border border-red-300 text-red-700 rounded-xl text-sm">
+                      {error}
+                    </div>
+                  )}
+
+                  {/* Verify OTP Button */}
+                  <button
+                    type="button"
+                    onClick={handleVerifyOTP}
+                    disabled={loading || otp.length !== 6}
+                    className="w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all active:scale-95 shadow-lg disabled:opacity-50"
+                  >
+                    {loading ? "Verifying..." : "Verify OTP"}
+                  </button>
+
+                  {/* Resend OTP */}
+                  <div className="text-center">
+                    {resendTimer > 0 ? (
+                      <p className="text-sm text-blue-600">
+                        Resend OTP in {resendTimer}s
+                      </p>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleResendOTP}
+                        disabled={loading}
+                        className="text-sm text-orange-600 hover:text-orange-700 font-medium"
+                      >
+                        Resend OTP
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Back Button */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowPhoneForm(false);
+                      setOtpSent(false);
+                      setOtp("");
+                      setPhoneNumber("");
+                      setError("");
+                    }}
+                    className="w-full px-6 py-3 text-blue-600 hover:text-blue-700 font-medium transition"
+                  >
+                    ← Back to options
+                  </button>
+                </>
               )}
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 transition-all active:scale-95 shadow-lg disabled:opacity-50"
-              >
-                {loading ? "Signing in..." : "Sign In"}
-              </button>
-
-              {/* Back Button */}
-              <button
-                type="button"
-                onClick={() => {
-                  setShowEmailForm(false);
-                  setError("");
-                }}
-                className="w-full px-6 py-3 text-blue-600 hover:text-blue-700 font-medium transition"
-              >
-                ← Back to options
-              </button>
-            </form>
+            </div>
           )}
 
           
