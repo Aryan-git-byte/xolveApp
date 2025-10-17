@@ -6,6 +6,7 @@ import SupabaseProvider from "@/providers/SupabaseProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { ToastProvider } from "@/components/Toast";
 import { ThemeDebug } from "@/components/ThemeDebug";
+import { ThemeSync } from "@/components/ThemeSync";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
@@ -29,14 +30,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100`}>
+    <html lang="en" suppressHydrationWarning className="">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
+          disableTransitionOnChange={false}
           storageKey="xolvetech-theme"
         >
+          <ThemeSync />
           <SupabaseProvider>
             <ToastProvider>
               {children}

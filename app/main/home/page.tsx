@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 import { Header, Footer } from '../../../components/Layout';
 import { 
   TrendingUp,
@@ -18,12 +19,17 @@ import {
   Zap,
   CheckCircle,
   AlertCircle,
-  Bell
+  Bell,
+  Sun,
+  Moon,
+  Monitor
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 
 // Home Page Component
 const HomePage = () => {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [user, setUser] = useState({
     name: "User",
     level: 1,
@@ -34,6 +40,28 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState<any[]>([]);
   const supabase = createClient();
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+    
+    // Force a re-render when theme changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          // Theme changed, force update
+          setMounted(true);
+        }
+      });
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+    
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -122,15 +150,15 @@ const HomePage = () => {
   ];
 
   const stats = [
-    { label: "Courses", value: "12", icon: BookOpen, color: "text-blue-600", bgColor: "bg-blue-100" },
-    { label: "XP Earned", value: user.xp.toString(), icon: Star, color: "text-yellow-600", bgColor: "bg-yellow-100" },
-    { label: "Streak", value: `${user.streak} days`, icon: Zap, color: "text-orange-600", bgColor: "bg-orange-100" },
-    { label: "Level", value: user.level.toString(), icon: Target, color: "text-purple-600", bgColor: "bg-purple-100" }
+    { label: "Courses", value: "12", icon: BookOpen, color: "text-blue-600 dark:text-blue-400", bgColor: "bg-blue-100 dark:bg-blue-900/30" },
+    { label: "XP Earned", value: user.xp.toString(), icon: Star, color: "text-yellow-600 dark:text-yellow-400", bgColor: "bg-yellow-100 dark:bg-yellow-900/30" },
+    { label: "Streak", value: `${user.streak} days`, icon: Zap, color: "text-orange-600 dark:text-orange-400", bgColor: "bg-orange-100 dark:bg-orange-900/30" },
+    { label: "Level", value: user.level.toString(), icon: Target, color: "text-purple-600 dark:text-purple-400", bgColor: "bg-purple-100 dark:bg-purple-900/30" }
   ];
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen w-full bg-gray-50 dark:bg-gray-900 flex items-center justify-center transition-colors">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-500 mx-auto"></div>
           <p className="mt-4 text-gray-600 dark:text-gray-400">Loading your home page...</p>
@@ -140,15 +168,81 @@ const HomePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div className="min-h-screen w-full bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
       <Header />
       
       {/* Main Content Area */}
-      <main className="pt-20 pb-24 px-4">
+      <main className="min-h-screen w-full pt-20 pb-24 px-4 bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
         <div className="max-w-7xl mx-auto space-y-6">
           
+          {/* Theme Toggle Section */}
+          {mounted && (
+            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm transition-colors">
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                    {theme === 'light' && <Sun className="w-5 h-5 text-white" />}
+                    {theme === 'dark' && <Moon className="w-5 h-5 text-white" />}
+                    {theme === 'system' && <Monitor className="w-5 h-5 text-white" />}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 dark:text-gray-100">Theme Settings</h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Current: <span className="font-medium capitalize">{theme || 'loading...'}</span>
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1.5 gap-1">
+                  <button
+                    onClick={() => {
+                      setTheme('light');
+                      setTimeout(() => setMounted(true), 100);
+                    }}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-all ${
+                      theme === 'light' 
+                        ? 'bg-white dark:bg-gray-600 text-blue-600 shadow-sm' 
+                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
+                    }`}
+                  >
+                    <Sun className="w-4 h-4" />
+                    <span className="hidden sm:inline">Light</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setTheme('dark');
+                      setTimeout(() => setMounted(true), 100);
+                    }}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-all ${
+                      theme === 'dark' 
+                        ? 'bg-gray-600 text-blue-400 shadow-sm' 
+                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
+                    }`}
+                  >
+                    <Moon className="w-4 h-4" />
+                    <span className="hidden sm:inline">Dark</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setTheme('system');
+                      setTimeout(() => setMounted(true), 100);
+                    }}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-all ${
+                      theme === 'system' 
+                        ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm' 
+                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
+                    }`}
+                  >
+                    <Monitor className="w-4 h-4" />
+                    <span className="hidden sm:inline">System</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          
           {/* Welcome Section */}
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-700 dark:to-purple-700 rounded-xl p-6 text-white shadow-lg">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-700 dark:to-purple-700 rounded-xl p-6 text-white shadow-lg transition-colors">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-2xl font-bold mb-2">Welcome back, {user.name}!</h1>
@@ -187,7 +281,7 @@ const HomePage = () => {
                   <a
                     key={index}
                     href={action.href}
-                    className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm transition group block bg-white dark:bg-gray-900"
+                    className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-md transition group block bg-white dark:bg-gray-900"
                   >
                     <div className={`w-12 h-12 ${action.color} rounded-lg flex items-center justify-center mb-3 group-hover:scale-105 transition`}>
                       <Icon className="w-6 h-6 text-white" />
@@ -210,11 +304,11 @@ const HomePage = () => {
                     <div>
                       <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{stat.label}</h3>
                       <div className="flex items-end gap-2 mt-2">
-                        <span className={`text-3xl font-bold ${stat.color} dark:brightness-125`}>{stat.value}</span>
+                        <span className={`text-3xl font-bold ${stat.color}`}>{stat.value}</span>
                       </div>
                     </div>
-                    <div className={`w-12 h-12 ${stat.bgColor} dark:bg-opacity-20 rounded-lg flex items-center justify-center`}>
-                      <Icon className={`w-6 h-6 ${stat.color} dark:brightness-125`} />
+                    <div className={`w-12 h-12 ${stat.bgColor} rounded-lg flex items-center justify-center`}>
+                      <Icon className={`w-6 h-6 ${stat.color}`} />
                     </div>
                   </div>
                 </div>
