@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
 
 export function ThemeToggle() {
-  const { theme, setTheme, systemTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   // Prevent hydration mismatch
@@ -22,7 +22,7 @@ export function ThemeToggle() {
     );
   }
 
-  const currentTheme = theme === 'system' ? systemTheme : theme;
+  const currentTheme = theme;
 
   return (
     <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1.5 gap-1">

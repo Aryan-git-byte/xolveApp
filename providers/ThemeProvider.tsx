@@ -13,17 +13,27 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   }, []);
 
   function ThemeSync() {
-    const { theme } = useTheme();
+    const { theme, setTheme } = useTheme();
+    const hasInitialized = useRef(false);
+    
     useEffect(() => {
+      // Force theme to never be 'system' on mount
+      if (!hasInitialized.current && theme === 'system') {
+        setTheme('light');
+        hasInitialized.current = true;
+        return;
+      }
+      hasInitialized.current = true;
+
       const root = document.documentElement;
       if (theme === "dark") {
         root.classList.add("dark");
         root.classList.remove("light");
-      } else {
+      } else if (theme === "light") {
         root.classList.remove("dark");
         root.classList.add("light");
       }
-    }, [theme]);
+    }, [theme, setTheme]);
     return null;
   }
 
@@ -36,6 +46,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
       enableColorScheme={false}
       disableTransitionOnChange={false}
       storageKey="xolvetech-theme"
+      forcedTheme={undefined}
     >
       {mounted && <ThemeSync />}
       {mounted ? children : null}
