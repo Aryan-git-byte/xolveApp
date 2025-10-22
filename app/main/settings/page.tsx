@@ -1,21 +1,13 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useTheme } from 'next-themes';
-import { ArrowLeft, User, Bell, Shield, Palette, Globe, HelpCircle, FileText, Lock, ChevronRight, Moon, Sun, Monitor, Volume2, VolumeX } from 'lucide-react';
+import { ArrowLeft, User, Shield, Globe, HelpCircle, FileText, Lock, ChevronRight } from 'lucide-react';
 import { Header, Footer } from '@/components/Layout';
 
 export default function SettingsPage() {
   const router = useRouter();
-  const { theme, setTheme, systemTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [notifications, setNotifications] = useState({
-    push: true,
-    email: false,
-    sms: false,
-  });
-  const [language, setLanguage] = useState('en');
-  const [sound, setSound] = useState(true);
+  // ...existing code...
 
   // Prevent hydration mismatch
   useEffect(() => {
@@ -75,145 +67,7 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            {/* Notifications */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 transition-colors">
-              <div className="flex items-center gap-3 mb-4">
-                <Bell className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Notifications</h2>
-              </div>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium text-gray-800 dark:text-gray-100">Push Notifications</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Receive notifications on your device</p>
-                  </div>
-                  <button
-                    onClick={() => setNotifications(prev => ({ ...prev, push: !prev.push }))}
-                    className={`w-12 h-6 rounded-full transition-colors ${
-                      notifications.push ? 'bg-blue-600 dark:bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'
-                    }`}
-                    aria-label="Toggle push notifications"
-                  >
-                    <div className={`w-5 h-5 bg-white rounded-full transition-transform ${
-                      notifications.push ? 'translate-x-6' : 'translate-x-0.5'
-                    }`} />
-                  </button>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium text-gray-800 dark:text-gray-100">Email Notifications</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Receive updates via email</p>
-                  </div>
-                  <button
-                    onClick={() => setNotifications(prev => ({ ...prev, email: !prev.email }))}
-                    className={`w-12 h-6 rounded-full transition-colors ${
-                      notifications.email ? 'bg-blue-600 dark:bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'
-                    }`}
-                    aria-label="Toggle email notifications"
-                  >
-                    <div className={`w-5 h-5 bg-white rounded-full transition-transform ${
-                      notifications.email ? 'translate-x-6' : 'translate-x-0.5'
-                    }`} />
-                  </button>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium text-gray-800 dark:text-gray-100">SMS Notifications</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Receive updates via SMS</p>
-                  </div>
-                  <button
-                    onClick={() => setNotifications(prev => ({ ...prev, sms: !prev.sms }))}
-                    className={`w-12 h-6 rounded-full transition-colors ${
-                      notifications.sms ? 'bg-blue-600 dark:bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'
-                    }`}
-                    aria-label="Toggle SMS notifications"
-                  >
-                    <div className={`w-5 h-5 bg-white rounded-full transition-transform ${
-                      notifications.sms ? 'translate-x-6' : 'translate-x-0.5'
-                    }`} />
-                  </button>
-                </div>
-              </div>
-            </div>
 
-            {/* Appearance */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 transition-colors">
-              <div className="flex items-center gap-3 mb-4">
-                <Palette className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Appearance</h2>
-              </div>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium text-gray-800 dark:text-gray-100">Theme</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {mounted && theme === 'system' 
-                        ? `System (${systemTheme === 'dark' ? 'Dark' : 'Light'})` 
-                        : theme === 'dark' 
-                        ? 'Dark' 
-                        : 'Light'}
-                    </p>
-                  </div>
-                  {mounted && (
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => setTheme('light')}
-                        className={`p-2 rounded-lg transition ${
-                          theme === 'light' 
-                            ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300' 
-                            : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
-                        }`}
-                        aria-label="Set light theme"
-                        title="Light"
-                      >
-                        <Sun className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => setTheme('dark')}
-                        className={`p-2 rounded-lg transition ${
-                          theme === 'dark' 
-                            ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300' 
-                            : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
-                        }`}
-                        aria-label="Set dark theme"
-                        title="Dark"
-                      >
-                        <Moon className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')}
-                        className={`p-2 rounded-lg transition ${
-                          (theme === 'system' ? systemTheme : theme) === 'system' 
-                            ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300' 
-                            : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
-                        }`}
-                        aria-label="Set system theme"
-                        title="System"
-                      >
-                        <Monitor className="w-4 h-4" />
-                      </button>
-                    </div>
-                  )}
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium text-gray-800 dark:text-gray-100">Language</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Choose your preferred language</p>
-                  </div>
-                  <select
-                    value={language}
-                    onChange={(e) => setLanguage(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
-                    aria-label="Select language"
-                  >
-                    <option value="en">English</option>
-                    <option value="es">Spanish</option>
-                    <option value="fr">French</option>
-                    <option value="de">German</option>
-                  </select>
-                </div>
-              </div>
-            </div>
 
             {/* Privacy & Security */}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 transition-colors">
@@ -286,30 +140,7 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            {/* Sound Settings */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 transition-colors">
-              <div className="flex items-center gap-3 mb-4">
-                {sound ? <Volume2 className="w-5 h-5 text-blue-600 dark:text-blue-400" /> : <VolumeX className="w-5 h-5 text-blue-600 dark:text-blue-400" />}
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Sound</h2>
-              </div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-medium text-gray-800 dark:text-gray-100">Sound Effects</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Enable or disable sound effects</p>
-                </div>
-                <button
-                  onClick={() => setSound(!sound)}
-                  className={`w-12 h-6 rounded-full transition-colors ${
-                    sound ? 'bg-blue-600 dark:bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'
-                  }`}
-                  aria-label="Toggle sound effects"
-                >
-                  <div className={`w-5 h-5 bg-white rounded-full transition-transform ${
-                    sound ? 'translate-x-6' : 'translate-x-0.5'
-                  }`} />
-                </button>
-              </div>
-            </div>
+
 
             {/* Account Actions */}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 transition-colors">

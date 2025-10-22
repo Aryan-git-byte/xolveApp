@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import { Header, Footer } from '@/components/Layout';
@@ -26,8 +26,9 @@ import {
   Target
 } from 'lucide-react';
 import type { Product } from '@/lib/types/product';
+import { useToast } from '@/components/Toast';
 
-export default function ProductPage({ params }: { params: { id: string } }) {
+export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
@@ -36,6 +37,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   const [isFavorite, setIsFavorite] = useState(false);
   const supabase = createClientComponentClient();
   const router = useRouter();
+  const resolvedParams = use(params);
+  const { showToast } = useToast();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -43,7 +46,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         const { data, error } = await supabase
           .from('products')
           .select('*')
-          .eq('id', params.id)
+          .eq('id', resolvedParams.id)
           .single();
 
         if (error) throw error;
@@ -56,7 +59,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     };
 
     fetchProduct();
-  }, [params.id, supabase]);
+  }, [resolvedParams.id, supabase]);
 
   if (loading) {
     return (
@@ -106,6 +109,20 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     { id: 'assembly', label: 'How to Build', icon: Wrench },
   ] as const;
 
+  // Add to Cart handler
+  const handleAddToCart = () => {
+    if (!product) return;
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existing = cart.find((item: any) => item.id === product.id);
+    if (existing) {
+      existing.quantity += quantity;
+    } else {
+      cart.push({ ...product, quantity });
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    showToast('Added to cart!', 'success');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <Header />
@@ -129,13 +146,23 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <div className="space-y-4">
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 {/* Main Image */}
-                <div className="relative h-96 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 flex items-center justify-center">
-                  <Package className="w-32 h-32 text-white opacity-20 absolute" />
-                  <div className="relative z-10">
-                    <div className="w-64 h-64 bg-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center">
-                      <Package className="w-32 h-32 text-white" />
+                <div className="relative h-96">
+                  {product.image_urls && product.image_urls.length > 0 ? (
+                    <img 
+                      src={product.image_urls[selectedImage]} 
+                      alt={product.title} 
+                      className="w-full h-full object-cover" 
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 flex items-center justify-center">
+                      <Package className="w-32 h-32 text-white opacity-20 absolute" />
+                      <div className="relative z-10">
+                        <div className="w-64 h-64 bg-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center">
+                          <Package className="w-32 h-32 text-white" />
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  )}
                   
                   {/* Offer Badge */}
                   {product.on_offer && (
@@ -170,8 +197,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
                 {/* Thumbnail Gallery */}
                 <div className="p-4 bg-gray-50">
-                  <div className="grid grid-cols-4 gap-3">
-                    {[0, 1, 2, 3].map((index) => (
+                  <div className={`grid gap-3 ${product.image_urls && product.image_urls.length > 4 ? 'grid-cols-5' : 'grid-cols-4'}`}>
+                    {product.image_urls && product.image_urls.map((url, index) => (
                       <button
                         key={index}
                         onClick={() => setSelectedImage(index)}
@@ -181,33 +208,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                             : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:border-gray-600'
                         }`}
                       >
-                        <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
-                          <Package className="w-8 h-8 text-white opacity-50" />
-                        </div>
+                        <img src={url} alt={`${product.title} ${index + 1}`} className="w-full h-full object-cover" />
                       </button>
                     ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Trust Indicators */}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">Quality Assured</p>
-                    <p className="text-xs text-gray-500">STEM Certified</p>
-                  </div>
-                </div>
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 flex items-center gap-3">
-                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                    <Truck className="w-5 h-5 text-green-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">Free Shipping</p>
-                    <p className="text-xs text-gray-500">Delivered in 3-5 days</p>
                   </div>
                 </div>
               </div>
@@ -218,8 +221,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               
               {/* Category Badge */}
               <div className="mb-4">
-                <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-700 dark:text-blue-400 text-sm px-3 py-1.5 rounded-full font-medium">
-                  <Sparkles className="w-3.5 h-3.5" />
+                <span className="inline-flex items-center gap-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-400 text-sm px-3 py-1.5 rounded-full font-medium">
+                  <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   {product.category}
                 </span>
               </div>
@@ -229,18 +232,14 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">{product.description}</p>
 
               {/* Rating and Reviews */}
-              <div className="flex items-center gap-4 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+              <div className="flex items-center gap-4 mb-6">
                 <div className="flex items-center gap-1">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">4.8</span>
-                <span className="text-sm text-gray-500">(124 reviews)</span>
-                <div className="flex items-center gap-1 text-sm text-gray-500">
-                  <Users className="w-4 h-4" />
-                  <span>342 students</span>
-                </div>
+                <span className="text-lg font-semibold text-gray-800 dark:text-gray-100">4.8</span>
+                <span className="text-gray-500 dark:text-gray-400">(124 reviews)</span>
               </div>
 
               {/* Price */}
@@ -250,40 +249,32 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   {product.on_offer && product.discount_value && (
                     <>
                       <span className="text-xl text-gray-400 line-through">₹{product.price + product.discount_value}</span>
-                      <span className="bg-green-100 text-green-700 text-sm px-3 py-1 rounded-full font-semibold">
+                      <span className="bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-400 text-sm px-3 py-1 rounded-full font-semibold">
                         Save ₹{product.discount_value}
                       </span>
                     </>
                   )}
                 </div>
-                <p className="text-sm text-gray-500">Inclusive of all taxes • Free shipping</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Inclusive of all taxes • Free shipping</p>
               </div>
 
-              {/* Key Features Grid */}
-              <div className="grid grid-cols-2 gap-3 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+              {/* Key Features - Simplified */}
+              <div className="grid grid-cols-2 gap-3 mb-6">
                 <div className="flex items-center gap-2 text-sm">
-                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Award className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                  </div>
+                  <Award className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                   <span className="text-gray-700 dark:text-gray-300 font-medium">STEM Certified</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <Clock className="w-4 h-4 text-purple-600" />
-                  </div>
+                  <Clock className="w-4 h-4 text-purple-600" />
                   <span className="text-gray-700 dark:text-gray-300 font-medium">2-3 Hour Build</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                    <Target className="w-4 h-4 text-green-600" />
-                  </div>
-                  <span className="text-gray-700 dark:text-gray-300 font-medium">Skill Level: Beginner</span>
+                  <Target className="w-4 h-4 text-green-600" />
+                  <span className="text-gray-700 dark:text-gray-300 font-medium">Beginner Friendly</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
-                    <Zap className="w-4 h-4 text-orange-600" />
-                  </div>
-                  <span className="text-gray-700 dark:text-gray-300 font-medium">Interactive Learning</span>
+                  <Zap className="w-4 h-4 text-orange-600" />
+                  <span className="text-gray-700 dark:text-gray-300 font-medium">Interactive</span>
                 </div>
               </div>
 
@@ -307,34 +298,30 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                     +
                   </button>
                   <div className="ml-auto text-right">
-                    <p className="text-sm text-gray-500">Total Price</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Total</p>
                     <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">₹{product.price * quantity}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-3 mb-6">
-                <button className="flex-1 bg-blue-600 dark:bg-blue-500 text-white py-3.5 px-6 rounded-xl font-semibold hover:bg-blue-700 dark:hover:bg-blue-600 transition flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30">
+              {/* Action Buttons - More Prominent */}
+              <div className="space-y-3 mb-6">
+                <button onClick={handleAddToCart} className="w-full bg-blue-600 dark:bg-blue-500 text-white py-4 px-6 rounded-xl font-semibold hover:bg-blue-700 dark:hover:bg-blue-600 transition flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 text-lg">
                   <ShoppingCart className="w-5 h-5" />
                   Add to Cart
                 </button>
-                <button className="px-6 py-3.5 bg-gray-800 text-white rounded-xl font-semibold hover:bg-gray-900 transition">
+                <button className="w-full px-6 py-3 bg-gray-800 text-white rounded-xl font-semibold hover:bg-gray-900 transition">
                   Buy Now
                 </button>
               </div>
 
-              {/* Delivery Info */}
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 border border-blue-100">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Truck className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                  </div>
+              {/* Delivery Info - Simplified */}
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-100 dark:border-blue-800">
+                <div className="flex items-center gap-3">
+                  <Truck className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   <div>
-                    <p className="font-semibold text-gray-800 dark:text-gray-100 mb-1">Fast & Free Delivery</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Order now and get it delivered by <span className="font-semibold text-gray-800 dark:text-gray-100">Oct 15, 2025</span>
-                    </p>
+                    <p className="font-semibold text-gray-800 dark:text-gray-100">Free Delivery by Oct 15, 2025</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Order now for fast shipping</p>
                   </div>
                 </div>
               </div>
@@ -380,26 +367,20 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
-                      <div className="w-12 h-12 bg-blue-600 dark:bg-blue-500 rounded-xl flex items-center justify-center mb-4">
-                        <Lightbulb className="w-6 h-6 text-white" />
-                      </div>
+                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
+                      <Lightbulb className="w-6 h-6 text-blue-600 dark:text-blue-400 mb-4" />
                       <h4 className="font-bold text-gray-800 dark:text-gray-100 mb-2">Hands-On Learning</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Learn by building real projects and gain practical experience</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Learn by building real projects</p>
                     </div>
-                    <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
-                      <div className="w-12 h-12 bg-green-600 dark:bg-green-500 rounded-xl flex items-center justify-center mb-4">
-                        <Award className="w-6 h-6 text-white" />
-                      </div>
+                    <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-6 border border-green-200 dark:border-green-800">
+                      <Award className="w-6 h-6 text-green-600 dark:text-green-400 mb-4" />
                       <h4 className="font-bold text-gray-800 dark:text-gray-100 mb-2">Skill Development</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Build essential STEM skills through guided activities</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Build essential STEM skills</p>
                     </div>
-                    <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
-                      <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center mb-4">
-                        <TrendingUp className="w-6 h-6 text-white" />
-                      </div>
+                    <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-6 border border-purple-200 dark:border-purple-800">
+                      <TrendingUp className="w-6 h-6 text-purple-600 dark:text-purple-400 mb-4" />
                       <h4 className="font-bold text-gray-800 dark:text-gray-100 mb-2">Track Progress</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Monitor your learning journey and celebrate milestones</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Monitor your learning journey</p>
                     </div>
                   </div>
                 </div>
@@ -411,8 +392,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {product.kit_contents?.map((item, index) => (
                       <div key={index} className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition border border-gray-200 dark:border-gray-700">
-                        <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <CheckCircle className="w-4 h-4 text-green-600" />
+                        <div className="w-6 h-6 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
                         </div>
                         <span className="text-gray-700 dark:text-gray-300 font-medium">{item}</span>
                       </div>
@@ -424,30 +405,28 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               {activeTab === 'learning' && (
                 <div>
                   <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">What You'll Learn</h3>
-                  <div className="space-y-4 mb-8">
+                  <div className="space-y-4 mb-6">
                     {product.learning_outcomes?.map((outcome, index) => (
-                      <div key={index} className="flex items-start gap-4 p-5 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200 hover:shadow-md transition">
-                        <div className="w-10 h-10 bg-blue-600 dark:bg-blue-500 text-white rounded-xl flex items-center justify-center flex-shrink-0 font-bold shadow-lg">
+                      <div key={index} className="flex items-start gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                        <div className="w-8 h-8 bg-blue-600 dark:bg-blue-500 text-white rounded-lg flex items-center justify-center flex-shrink-0 font-bold">
                           {index + 1}
                         </div>
-                        <span className="text-gray-700 dark:text-gray-300 font-medium pt-2 leading-relaxed">{outcome}</span>
+                        <span className="text-gray-700 dark:text-gray-300 font-medium pt-1">{outcome}</span>
                       </div>
                     ))}
                   </div>
 
-                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 border border-orange-200">
+                  <div className="bg-orange-50 dark:bg-orange-900/20 rounded-xl p-6 border border-orange-200 dark:border-orange-800">
                     <div className="flex items-start gap-3 mb-4">
-                      <div className="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center">
-                        <Wrench className="w-5 h-5 text-white" />
-                      </div>
+                      <Wrench className="w-5 h-5 text-orange-600 dark:text-orange-400" />
                       <div>
                         <h4 className="font-bold text-gray-800 dark:text-gray-100 mb-1">Tools Required</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">Make sure you have these tools handy before starting</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Make sure you have these tools handy</p>
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {product.tools_required?.map((tool, index) => (
-                        <span key={index} className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg text-sm font-medium border border-orange-200 shadow-sm">
+                        <span key={index} className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-lg text-sm font-medium border border-orange-200 dark:border-orange-800">
                           {tool}
                         </span>
                       ))}
@@ -459,11 +438,11 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               {activeTab === 'assembly' && (
                 <div>
                   <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Assembly Guide</h3>
-                  <div className="space-y-4 mb-6">
+                  <div className="space-y-4">
                     {product.assembly_steps?.split('\n\n').map((step, index) => (
-                      <div key={index} className="flex gap-5 p-5 bg-gray-50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition border border-gray-200 dark:border-gray-700">
+                      <div key={index} className="flex gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
                         <div className="flex-shrink-0">
-                          <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-xl flex items-center justify-center font-bold text-lg shadow-lg">
+                          <div className="w-10 h-10 bg-blue-600 dark:bg-blue-500 text-white rounded-xl flex items-center justify-center font-bold">
                             {index + 1}
                           </div>
                         </div>
@@ -473,108 +452,47 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                       </div>
                     ))}
                   </div>
-
-                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-200">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-blue-600 dark:bg-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Sparkles className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-gray-800 dark:text-gray-100 mb-2">Need Help?</h4>
-                        <p className="text-gray-600 dark:text-gray-400 mb-3">
-                          Stuck during assembly? We're here to help! Watch our detailed video tutorials or contact our support team.
-                        </p>
-                        <div className="flex gap-3">
-                          <button className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition text-sm font-medium">
-                            Watch Video Tutorial
-                          </button>
-                          <button className="px-4 py-2 bg-white text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition text-sm font-medium border border-gray-200 dark:border-gray-700">
-                            Contact Support
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               )}
             </div>
           </div>
 
-          {/* Customer Reviews */}
+          {/* Customer Reviews - Simplified */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 lg:p-8">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Customer Reviews</h3>
-              <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:text-blue-400 font-medium text-sm">
-                Write a Review
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="md:col-span-1 bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-200 text-center">
-                <div className="text-5xl font-bold text-gray-800 dark:text-gray-100 mb-2">4.8</div>
-                <div className="flex items-center justify-center gap-1 mb-2">
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Based on 124 reviews</p>
-              </div>
-              
-              <div className="md:col-span-2 space-y-3">
-                {[5, 4, 3, 2, 1].map((stars) => (
-                  <div key={stars} className="flex items-center gap-3">
-                    <span className="text-sm text-gray-600 dark:text-gray-400 w-12">{stars} star</span>
-                    <div className="flex-1 bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-yellow-400 h-2 rounded-full"
-                        style={{ width: stars === 5 ? '80%' : stars === 4 ? '15%' : '5%' }}
-                      ></div>
-                    </div>
-                    <span className="text-sm text-gray-500 w-12 text-right">
-                      {stars === 5 ? '99' : stars === 4 ? '19' : stars === 3 ? '4' : stars === 2 ? '1' : '1'}
-                    </span>
-                  </div>
-                ))}
+                <span className="text-lg font-semibold text-gray-800 dark:text-gray-100">4.8</span>
+                <span className="text-gray-500 dark:text-gray-400">(124 reviews)</span>
               </div>
             </div>
-
-            {/* Sample Reviews */}
+            
+            {/* Sample Reviews - Just 2 instead of 3 */}
             <div className="space-y-4">
               {[
                 {
                   name: "Rahul Sharma",
                   rating: 5,
-                  date: "2 days ago",
-                  review: "Excellent kit! My son loved building it. The instructions were clear and all parts were included. Great learning experience.",
-                  helpful: 12
+                  review: "Excellent kit! My son loved building it. The instructions were clear and all parts were included."
                 },
                 {
                   name: "Priya Patel",
                   rating: 5,
-                  date: "1 week ago",
-                  review: "Amazing quality and very educational. Perfect for beginners. Highly recommend for anyone interested in STEM learning.",
-                  helpful: 8
-                },
-                {
-                  name: "Amit Kumar",
-                  rating: 4,
-                  date: "2 weeks ago",
-                  review: "Good kit overall. Assembly took longer than expected but the final result was worth it. Could use better packaging.",
-                  helpful: 5
+                  review: "Amazing quality and very educational. Perfect for beginners. Highly recommend!"
                 }
               ].map((review, index) => (
-                <div key={index} className="p-5 bg-gray-50 rounded-xl border border-gray-200 dark:border-gray-700">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <div className="flex items-center gap-3 mb-1">
-                        <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                          {review.name.charAt(0)}
-                        </div>
-                        <div>
-                          <p className="font-semibold text-gray-800 dark:text-gray-100">{review.name}</p>
-                          <p className="text-xs text-gray-500">{review.date}</p>
-                        </div>
+                <div key={index} className="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                        {review.name.charAt(0)}
                       </div>
+                      <span className="font-semibold text-gray-800 dark:text-gray-100">{review.name}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       {[...Array(review.rating)].map((_, i) => (
@@ -582,59 +500,17 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                       ))}
                     </div>
                   </div>
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">{review.review}</p>
-                  <div className="flex items-center gap-4 text-sm">
-                    <button className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:text-gray-100 flex items-center gap-1">
-                      <span>👍</span>
-                      <span>Helpful ({review.helpful})</span>
-                    </button>
-                    <button className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:text-gray-100">
-                      Reply
-                    </button>
-                  </div>
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{review.review}</p>
                 </div>
               ))}
             </div>
 
             <button className="w-full mt-6 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-              Load More Reviews
+              View All Reviews
             </button>
           </div>
 
-          {/* Additional Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 text-center hover:shadow-md transition">
-              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-7 h-7 text-blue-600 dark:text-blue-400" />
-              </div>
-              <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-2">Quality Guarantee</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                All products are tested and certified for quality and safety standards
-              </p>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 text-center hover:shadow-md transition">
-              <div className="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Truck className="w-7 h-7 text-green-600" />
-              </div>
-              <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-2">Free Shipping</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Free delivery on all orders across India with tracking support
-              </p>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 text-center hover:shadow-md transition">
-              <div className="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Clock className="w-7 h-7 text-orange-600" />
-              </div>
-              <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-2">7-Day Support</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Get expert support for setup, assembly, and troubleshooting
-              </p>
-            </div>
-          </div>
-
-          {/* Related Products */}
+          {/* Related Products - Simplified */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 lg:p-8">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">You May Also Like</h3>
@@ -646,22 +522,16 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[1, 2, 3].map((item) => (
                 <div key={item} className="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden hover:shadow-lg transition cursor-pointer group">
-                  <div className="relative h-48 bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
-                    <Package className="w-16 h-16 text-white opacity-30" />
-                    <div className="absolute top-3 right-3 bg-orange-500 text-white text-xs px-2 py-1 rounded-lg font-bold">
-                      20% OFF
-                    </div>
+                  <div className="relative h-32 bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                    <Package className="w-12 h-12 text-white opacity-30" />
                   </div>
                   <div className="p-4">
-                    <span className="inline-block bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full font-medium mb-2">
+                    <span className="inline-block bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-400 text-xs px-2 py-1 rounded-full font-medium mb-2">
                       Robotics
                     </span>
                     <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-blue-600 dark:text-blue-400 transition">
                       Advanced Robot Kit
                     </h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-                      Build your own programmable robot with sensors
-                    </p>
                     <div className="flex items-center justify-between">
                       <span className="text-xl font-bold text-gray-800 dark:text-gray-100">₹2,499</span>
                       <button className="px-3 py-1.5 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition text-sm font-medium">

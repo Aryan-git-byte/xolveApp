@@ -1,8 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { useTheme } from 'next-themes';
 import { Header, Footer } from '../../../components/Layout';
-import { ThemeToggle } from '@/components/ThemeToggle';
 import { 
   TrendingUp,
   Award,
@@ -20,16 +18,12 @@ import {
   Zap,
   CheckCircle,
   AlertCircle,
-  Bell,
-  Sun,
-  Moon,
-  Monitor
+  Bell
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 
 // Home Page Component
 const HomePage = () => {
-  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [user, setUser] = useState({
     name: "User",
@@ -62,10 +56,10 @@ const HomePage = () => {
           if (profile) {
             setUser({
               name: profile.nickname || profile.name || "User",
-              level: Math.floor((profile.xp || 0) / 100) + 1,
-              xp: profile.xp || 0,
-              xpToNext: 100 - ((profile.xp || 0) % 100),
-              streak: profile.streak || 0
+              level: Math.floor((profile.total_xp || 0) / 100) + 1,
+              xp: profile.total_xp || 0,
+              xpToNext: 100 - ((profile.total_xp || 0) % 100),
+              streak: profile.current_streak || 0
             });
           }
 
@@ -158,9 +152,6 @@ const HomePage = () => {
       {/* Main Content Area */}
       <main className="min-h-screen w-full pt-20 pb-24 px-4 bg-white dark:bg-gray-900 transition-colors duration-200">
         <div className="max-w-7xl mx-auto space-y-6">
-          
-          {/* Theme Toggle Section */}
-          <ThemeToggle />
           
           {/* Welcome Section */}
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 rounded-xl p-6 text-white shadow-lg transition-all duration-200">

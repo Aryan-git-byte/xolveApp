@@ -231,10 +231,10 @@ const ProfilePage = () => {
             <div className="text-center mb-4">
               <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-1">{userData.name}</h1>
               <p className="text-sm text-gray-800 dark:text-gray-300 mb-2">{userData.tagline}</p>
-              <p className="text-xs text-gray-600 dark:text-gray-400 dark:text-gray-400 mb-3">{userData.bio}</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">{userData.bio}</p>
               
               {/* Location & Links */}
-              <div className="flex flex-wrap justify-center gap-3 text-xs text-gray-600 dark:text-gray-400 dark:text-gray-400 mb-3">
+              <div className="flex flex-wrap justify-center gap-3 text-xs text-gray-600 dark:text-gray-400 mb-3">
                 <div className="flex items-center gap-1">
                   <MapPin className="w-3 h-3" />
                   <span>Mumbai, India</span>
@@ -268,7 +268,7 @@ const ProfilePage = () => {
               </div>
 
               {/* Stats */}
-              <div className="flex justify-center gap-4 text-xs text-gray-600 dark:text-gray-400 dark:text-gray-400">
+              <div className="flex justify-center gap-4 text-xs text-gray-600 dark:text-gray-400">
                 <div className="flex items-center gap-1">
                   <Users className="w-3 h-3" />
                   <span>234 Followers</span>
@@ -278,7 +278,7 @@ const ProfilePage = () => {
                   <span>1234 Views</span>
                 </div>
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400 dark:text-gray-400 mt-1 flex items-center justify-center gap-1">
+              <div className="text-xs text-gray-600 dark:text-gray-400 mt-1 flex items-center justify-center gap-1">
                 <Calendar className="w-3 h-3" />
                 Joined 2024-01-15
               </div>
@@ -286,17 +286,17 @@ const ProfilePage = () => {
 
             {/* Settings Panel */}
             {showSettings && (
-              <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-700 dark:bg-gray-700 rounded-lg transition-colors">
+              <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg transition-colors">
                 <div className="flex justify-between mb-2">
                   <h3 className="font-semibold text-sm text-gray-800 dark:text-gray-100">Edit Profile</h3>
                   <button onClick={() => setShowSettings(false)}>
-                    <X className="w-4 h-4 text-gray-600 dark:text-gray-400 dark:text-gray-400" />
+                    <X className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                   </button>
                 </div>
                 <div className="space-y-2 text-sm text-gray-800 dark:text-gray-200">
-                  <button className="w-full text-left p-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:bg-gray-600 rounded transition">Edit Bio</button>
-                  <button className="w-full text-left p-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:bg-gray-600 rounded transition">Update Links</button>
-                  <button className="w-full text-left p-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:bg-gray-600 rounded transition">Privacy Settings</button>
+                  <button className="w-full text-left p-2 hover:bg-white dark:hover:bg-gray-600 rounded transition">Edit Bio</button>
+                  <button className="w-full text-left p-2 hover:bg-white dark:hover:bg-gray-600 rounded transition">Update Links</button>
+                  <button className="w-full text-left p-2 hover:bg-white dark:hover:bg-gray-600 rounded transition">Privacy Settings</button>
                 </div>
               </div>
             )}
@@ -323,22 +323,22 @@ const ProfilePage = () => {
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-3 text-center">
               <Rocket className="w-6 h-6 mx-auto mb-1 text-blue-500" />
               <div className="text-xl font-bold text-gray-800 dark:text-gray-100">{userData.projects_count}</div>
-              <div className="text-xs text-gray-800 dark:text-gray-100">Projects</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">Projects</div>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-3 text-center">
               <Package className="w-6 h-6 mx-auto mb-1 text-green-500" />
               <div className="text-xl font-bold text-gray-800 dark:text-gray-100">{userData.kits_owned_count}</div>
-              <div className="text-xs text-gray-800 dark:text-gray-100">Kits Owned</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">Kits Owned</div>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-3 text-center">
               <BookOpen className="w-6 h-6 mx-auto mb-1 text-purple-500" />
               <div className="text-xl font-bold text-gray-800 dark:text-gray-100">{userData.courses_completed_count}/{userData.courses_enrolled_count}</div>
-              <div className="text-xs text-gray-800 dark:text-gray-100">Courses</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">Courses</div>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-3 text-center">
               <Trophy className="w-6 h-6 mx-auto mb-1 text-orange-500" />
               <div className="text-xl font-bold text-gray-800 dark:text-gray-100">{userData.badges_earned_count}</div>
-              <div className="text-xs text-gray-800 dark:text-gray-100">Badges</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">Badges</div>
             </div>
           </div>
 
@@ -383,8 +383,8 @@ const ProfilePage = () => {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="font-semibold text-sm text-gray-800 dark:text-gray-100">{project.title}</div>
-                          <div className="text-xs text-gray-800 dark:text-gray-100">{project.description}</div>
-                          <div className="flex gap-2 mt-1 text-xs text-gray-800 dark:text-gray-100">
+                          <div className="text-xs text-gray-600 dark:text-gray-400">{project.description}</div>
+                          <div className="flex gap-2 mt-1 text-xs text-gray-600 dark:text-gray-400">
                             <span>{project.category}</span>
                             <span>· {project.likes_count} ❤️</span>
                             <span>· {project.views_count} 👁️</span>
@@ -434,7 +434,7 @@ const ProfilePage = () => {
                       <div key={course.id}>
                         <div className="flex justify-between text-sm mb-1">
                           <span className="font-medium text-gray-800 dark:text-gray-100">{course.course_title}</span>
-                          <span className="text-gray-800 dark:text-gray-100">{course.completion_percentage}%</span>
+                          <span className="text-gray-600 dark:text-gray-400">{course.completion_percentage}%</span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2">
                           <div 
@@ -453,14 +453,14 @@ const ProfilePage = () => {
                     <Flame className="w-4 h-4 text-orange-500" />
                     Streaks
                   </h3>
-                  <div className="flex justify-around">
+                  <div className="flex flex-col items-center space-y-4">
                     <div className="text-center">
                       <div className="text-3xl font-bold text-orange-600">{userData.current_streak}</div>
-                      <div className="text-xs text-gray-800 dark:text-gray-100">Current</div>
+                      <div className="text-xs text-gray-600 dark:text-gray-400">Current</div>
                     </div>
                     <div className="text-center">
                       <div className="text-3xl font-bold text-gray-800 dark:text-gray-100">{userData.longest_streak}</div>
-                      <div className="text-xs text-gray-800 dark:text-gray-100">Longest</div>
+                      <div className="text-xs text-gray-600 dark:text-gray-400">Longest</div>
                     </div>
                   </div>
                 </div>
@@ -476,8 +476,8 @@ const ProfilePage = () => {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-semibold text-gray-800 dark:text-gray-100">{project.title}</h3>
-                      <p className="text-xs text-gray-800 dark:text-gray-100 mb-1">{project.description}</p>
-                      <div className="flex gap-2 text-xs text-gray-800 dark:text-gray-100">
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">{project.description}</p>
+                      <div className="flex gap-2 text-xs text-gray-600 dark:text-gray-400">
                         <span>{project.category}</span>
                         <span>· {project.likes_count} ❤️</span>
                         <span>· {project.views_count} 👁️</span>
@@ -502,14 +502,14 @@ const ProfilePage = () => {
                         {course.status === 'completed' ? 'Completed' : 'In Progress'}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-800 dark:text-gray-100 mb-2">{course.course_description}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">{course.course_description}</p>
                     <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
                       <div 
                         className={`h-2 rounded-full ${course.status === 'completed' ? 'bg-green-500' : 'bg-blue-500'}`} 
                         style={{ width: `${course.completion_percentage}%` }}
                       ></div>
                     </div>
-                    <div className="flex justify-between text-xs text-gray-800 dark:text-gray-100">
+                    <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400">
                       <span>{course.completion_percentage}%</span>
                       <span>XP: {course.xp_earned}</span>
                     </div>

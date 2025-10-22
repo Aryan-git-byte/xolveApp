@@ -263,10 +263,20 @@ export default function ShoppingPage() {
                   }`}
                 >
                   {/* Product Image */}
-                  <div className={`relative bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 flex items-center justify-center ${
+                  <div className={`relative ${
                     viewMode === 'grid' ? 'h-48' : 'w-48 h-48'
                   }`}>
-                    <Package className="w-16 h-16 text-white opacity-30" />
+                    {product.image_urls && product.image_urls.length > 0 ? (
+                      <img 
+                        src={product.image_urls[0]} 
+                        alt={product.title} 
+                        className="w-full h-full object-cover rounded-t-xl" 
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 flex items-center justify-center">
+                        <Package className="w-16 h-16 text-white opacity-30" />
+                      </div>
+                    )}
                     
                     {product.on_offer && (
                       <div className="absolute top-3 right-3">
@@ -320,16 +330,27 @@ export default function ShoppingPage() {
                           </div>
                         )}
                       </div>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          // Handle add to cart
-                        }}
-                        className="px-4 py-2 bg-blue-600 dark:bg-blue-500 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 dark:hover:bg-blue-600 dark:bg-blue-500 transition flex items-center gap-2"
-                      >
-                        <ShoppingCart className="w-4 h-4" />
-                        <span className="text-sm font-medium">Add</span>
-                      </button>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            router.push(`/main/shopping/${product.id}`);
+                          }}
+                          className="px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition text-sm font-medium"
+                        >
+                          View Details
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            // Handle add to cart
+                          }}
+                          className="px-4 py-2 bg-blue-600 dark:bg-blue-500 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 dark:hover:bg-blue-600 dark:bg-blue-500 transition flex items-center gap-2"
+                        >
+                          <ShoppingCart className="w-4 h-4" />
+                          <span className="text-sm font-medium">Add</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
