@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useToast } from '@/components/Toast';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import { Header, Footer } from '@/components/Layout';
@@ -20,6 +21,8 @@ import {
 } from 'lucide-react';
 import type { Product } from '@/lib/types/product';
 
+type CartItem = Product & { quantity: number };
+
 export default function ShoppingPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -31,6 +34,20 @@ export default function ShoppingPage() {
   const [showFilters, setShowFilters] = useState(false);
   const supabase = createClientComponentClient();
   const router = useRouter();
+  const { showToast } = useToast();
+  // Add to Cart handler for product card
+  const handleAddToCart = (product: Product) => {
+    const cart: CartItem[] = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existing = cart.find((item) => item.id === product.id);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push({ ...product, quantity: 1 });
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    window.dispatchEvent(new Event('cart-updated'));
+    showToast('Added to cart!', 'success');
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -343,9 +360,9 @@ export default function ShoppingPage() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            // Handle add to cart
+                            handleAddToCart(product);
                           }}
-                          className="px-4 py-2 bg-blue-600 dark:bg-blue-500 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 dark:hover:bg-blue-600 dark:bg-blue-500 transition flex items-center gap-2"
+                          className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition flex items-center gap-2"
                         >
                           <ShoppingCart className="w-4 h-4" />
                           <span className="text-sm font-medium">Add</span>

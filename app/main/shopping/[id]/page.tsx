@@ -120,6 +120,8 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
       cart.push({ ...product, quantity });
     }
     localStorage.setItem('cart', JSON.stringify(cart));
+    // Dispatch custom event so Header updates cart count immediately
+    window.dispatchEvent(new Event('cart-updated'));
     showToast('Added to cart!', 'success');
   };
 

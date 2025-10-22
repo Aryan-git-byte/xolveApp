@@ -52,10 +52,8 @@ export const Header = () => {
     }
   };
 
-  // Fetch user data and notifications
+  // Cart count listener effect
   useEffect(() => {
-    const fetchData = async () => {
-    // Cart count listener
     const updateCartCount = () => setCartCount(getCartCount());
     updateCartCount();
     window.addEventListener('storage', updateCartCount);
@@ -65,6 +63,10 @@ export const Header = () => {
       window.removeEventListener('cart-updated', updateCartCount);
     };
   }, []);
+
+  // Fetch user data and notifications
+  useEffect(() => {
+    const fetchData = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
@@ -96,7 +98,6 @@ export const Header = () => {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [supabase]);
 
