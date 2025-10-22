@@ -181,9 +181,9 @@ export default function SettingsPage() {
                         <Moon className="w-4 h-4" />
                       </button>
                       <button
-                        onClick={() => setTheme('system')}
+                        onClick={() => setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')}
                         className={`p-2 rounded-lg transition ${
-                          theme === 'system' 
+                          (theme === 'system' ? systemTheme : theme) === 'system' 
                             ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300' 
                             : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
                         }`}

@@ -14,10 +14,20 @@ export default function SignupPage() {
   const [otpSent, setOtpSent] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
   const [error, setError] = useState("");
+  const [mounted, setMounted] = useState(false);
+  const [nickname, setNickname] = useState("there");
   const router = useRouter();
   const supabase = createClient();
   const { showToast } = useToast();
-  const nickname = typeof window !== 'undefined' ? localStorage.getItem('xolve_nickname') || "there" : "there";
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+    const storedNickname = localStorage.getItem('xolve_nickname');
+    if (storedNickname) {
+      setNickname(storedNickname);
+    }
+  }, []);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -60,7 +70,7 @@ export default function SignupPage() {
   const saveUserProfile = async (userId: string, userPhone: string) => {
     try {
       // Get preferences from localStorage
-      const preferencesStr = typeof window !== 'undefined' ? localStorage.getItem('xolve_preferences') : null;
+      const preferencesStr = localStorage.getItem('xolve_preferences');
       const preferences = preferencesStr ? JSON.parse(preferencesStr) : {};
       
       // Extract data from preferences
@@ -71,7 +81,7 @@ export default function SignupPage() {
       const learningStyle = preferences[5] || null;
 
       // Get nickname
-      const nicknameFromStorage = typeof window !== 'undefined' ? localStorage.getItem('xolve_nickname') : null;
+      const nicknameFromStorage = localStorage.getItem('xolve_nickname');
 
       // Check if we have onboarding data
       const hasOnboardingData = nicknameFromStorage || grade || interests.length > 0;
@@ -256,6 +266,17 @@ export default function SignupPage() {
     setOtp("");
     handleSendOTP();
   };
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 p-6 overflow-hidden">

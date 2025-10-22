@@ -13,10 +13,20 @@ export default function VerifyPhonePage() {
   const [otpSent, setOtpSent] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  const [nickname, setNickname] = useState("there");
   const router = useRouter();
   const supabase = createClient();
   const { user, loading: authLoading } = useSupabase();
-  const nickname = typeof window !== 'undefined' ? localStorage.getItem('xolve_nickname') || "there" : "there";
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+    const storedNickname = localStorage.getItem('xolve_nickname');
+    if (storedNickname) {
+      setNickname(storedNickname);
+    }
+  }, []);
 
   useEffect(() => {
     const checkUserAuth = async () => {
@@ -182,8 +192,8 @@ export default function VerifyPhonePage() {
     router.push("/main");
   };
 
-  // Show loading state while checking authentication
-  if (authLoading || checkingAuth) {
+  // Show loading state while checking authentication or mounting
+  if (!mounted || authLoading || checkingAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700">
         <div className="text-white text-xl">Loading...</div>

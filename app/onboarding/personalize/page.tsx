@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/Toast";
@@ -54,10 +54,20 @@ export default function PersonalizePage() {
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [dateInput, setDateInput] = useState("");
   const [showTransition, setShowTransition] = useState(false);
-  const nickname = typeof window !== 'undefined' ? localStorage.getItem('xolve_nickname') || "Student" : "Student";
+  const [mounted, setMounted] = useState(false);
+  const [nickname, setNickname] = useState("Student");
   const router = useRouter();
   const supabase = createClient();
   const { showToast } = useToast();
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+    const storedNickname = localStorage.getItem('xolve_nickname');
+    if (storedNickname) {
+      setNickname(storedNickname);
+    }
+  }, []);
 
   const currentQuestion = questions[currentStep];
   const progress = ((currentStep + 1) / questions.length) * 100;
@@ -90,9 +100,7 @@ export default function PersonalizePage() {
     // On last question completion, show transition message
     if (currentStep === questions.length - 1) {
       // Save preferences to localStorage
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('xolve_preferences', JSON.stringify(answers));
-      }
+      localStorage.setItem('xolve_preferences', JSON.stringify(answers));
       
       // Update user profile with onboarding completion
       updateOnboardingStatus();

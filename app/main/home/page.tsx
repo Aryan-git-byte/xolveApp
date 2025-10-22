@@ -45,23 +45,6 @@ const HomePage = () => {
   // Prevent hydration mismatch
   useEffect(() => {
     setMounted(true);
-    
-    // Force a re-render when theme changes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'class') {
-          // Theme changed, force update
-          setMounted(true);
-        }
-      });
-    });
-    
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
-    
-    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -157,7 +140,7 @@ const HomePage = () => {
     { label: "Level", value: user.level.toString(), icon: Target, color: "text-purple-600 dark:text-purple-400", bgColor: "bg-purple-100 dark:bg-purple-900/30" }
   ];
 
-  if (loading) {
+  if (!mounted || loading) {
     return (
       <div className="min-h-screen w-full bg-white dark:bg-gray-900 flex items-center justify-center transition-colors">
         <div className="text-center">
@@ -180,11 +163,11 @@ const HomePage = () => {
           <ThemeToggle />
           
           {/* Welcome Section */}
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-white shadow-lg transition-colors">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 rounded-xl p-6 text-white shadow-lg transition-all duration-200">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-2xl font-bold mb-2">Welcome back, {user.name}!</h1>
-                <p className="text-blue-100 mb-4">Ready to continue your learning journey?</p>
+                <p className="text-blue-100 dark:text-blue-200 mb-4">Ready to continue your learning journey?</p>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     <Zap className="w-4 h-4" />
@@ -198,10 +181,10 @@ const HomePage = () => {
               </div>
               <div className="text-right">
                 <div className="text-3xl font-bold">{user.xp}</div>
-                <div className="text-blue-200 text-sm">XP Points</div>
-                <div className="w-24 bg-blue-500 rounded-full h-2 mt-2">
+                <div className="text-blue-100 dark:text-blue-200 text-sm">XP Points</div>
+                <div className="w-24 bg-blue-500/50 dark:bg-blue-400/50 rounded-full h-2 mt-2">
                   <div 
-                    className="bg-white rounded-full h-2 transition-all duration-300"
+                    className="bg-white dark:bg-gray-100 rounded-full h-2 transition-all duration-300"
                     style={{ width: `${Math.min((user.xp % 100) / 100 * 100, 100)}%` }}
                   ></div>
                 </div>

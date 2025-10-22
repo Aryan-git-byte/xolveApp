@@ -14,10 +14,20 @@ export default function LoginPage() {
   const [otpSent, setOtpSent] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
   const [error, setError] = useState("");
+  const [mounted, setMounted] = useState(false);
+  const [nickname, setNickname] = useState("there");
   const router = useRouter();
   const supabase = createClient();
   const { showToast } = useToast();
-  const nickname = typeof window !== 'undefined' ? localStorage.getItem('xolve_nickname') || "there" : "there";
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+    const storedNickname = localStorage.getItem('xolve_nickname');
+    if (storedNickname) {
+      setNickname(storedNickname);
+    }
+  }, []);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -224,6 +234,17 @@ export default function LoginPage() {
     setOtp("");
     handleSendOTP();
   };
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-6 overflow-hidden transition-colors">
