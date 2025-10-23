@@ -1,3 +1,5 @@
+// lib/types/order.ts
+
 export interface Order {
   id: string;
   created_at: string;
@@ -10,7 +12,7 @@ export interface Order {
   order_type: 'product' | 'service'; // Can extend later
   cart_items: any[]; // Will store the cart items
   shipping_details?: string;
-  payment_method: 'partial_cod' | 'full_online';
+  payment_method: 'partial_cod' | 'full_payment'; // Changed back to match cart page
   payment_status: 'unpaid' | 'paid' | 'partial';
   is_partial_cod: boolean;
   status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
@@ -28,4 +30,4 @@ export interface OrderFormData {
   pincode: string;
 }
 
-export type PaymentMethod = 'partial_cod' | 'full_online';
+export type PaymentMethod = 'partial_cod' | 'full_payment'; // Changed back to match cart page
