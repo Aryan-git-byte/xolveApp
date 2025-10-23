@@ -12,23 +12,66 @@ export async function updateSession(request: NextRequest) {
     {
       cookies: {
         getAll() {
-          return request.cookies.getAll()
+          try {
+            // Decode base64 session cookies if present
+            const all = request.cookies.getAll();
+            return all.map((cookie) => {
+              if (cookie.name.startsWith('sb-') && cookie.value) {
+                try {
+                  // Try to decode base64 and parse JSON
+                  const decoded = Buffer.from(cookie.value, 'base64').toString('utf-8');
+                  JSON.parse(decoded); // will throw if not valid JSON
+                  return { ...cookie, value: decoded };
+                } catch (e) {
+                  // If not base64 or not JSON, fallback to original value
+                  return cookie;
+                }
+              }
+              return cookie;
+            });
+          } catch (error) {
+            console.error('Error getting cookies:', error);
+            return [];
+          }
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
+          try {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              try {
+                request.cookies.set(name, value);
+              } catch (error) {
+                console.error(`Error setting request cookie ${name}:`, error);
+              }
+            });
+            supabaseResponse = NextResponse.next({
+              request,
+            });
+            cookiesToSet.forEach(({ name, value, options }) => {
+              try {
+                supabaseResponse.cookies.set(name, value, options);
+              } catch (error) {
+                console.error(`Error setting response cookie ${name}:`, error);
+              }
+            });
+          } catch (error) {
+            console.error('Error in setAll cookies:', error);
+          }
         },
       },
     }
-  )
+  );
 
   // Refresh session if expired
-  const { data: { user } } = await supabase.auth.getUser()
+  let user = null
+  try {
+    const { data, error } = await supabase.auth.getUser()
+    if (error) {
+      console.error('Error getting user:', error)
+    }
+    user = data?.user || null
+  } catch (error) {
+    console.error('Exception getting user:', error)
+  }
 
   // Public routes that don't require authentication
   const publicRoutes = [

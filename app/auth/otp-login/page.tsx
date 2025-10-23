@@ -98,8 +98,8 @@ export default function PhoneOtpLogin() {
               <label htmlFor="phone" className="block text-sm font-semibold text-blue-700 mb-2">
                 📱 Phone Number
               </label>
-              <div className="flex items-center gap-2">
-                <div className="px-4 py-3 border-2 border-blue-200 rounded-lg font-semibold text-blue-900">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="px-4 py-3 border-2 border-blue-200 rounded-lg font-semibold text-blue-900 whitespace-nowrap">
                   +91
                 </div>
                 <input
@@ -109,7 +109,7 @@ export default function PhoneOtpLogin() {
                   onChange={handlePhoneChange}
                   required
                   maxLength={11}
-                  className="flex-1 px-4 py-3 border-2 border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+                  className="flex-1 min-w-0 px-4 py-3 border-2 border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
                   disabled={loading}
                 />
               </div>

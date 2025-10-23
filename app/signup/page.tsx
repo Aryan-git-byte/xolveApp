@@ -358,8 +358,8 @@ export default function SignupPage() {
                     <label htmlFor="phone" className="block text-sm font-semibold text-blue-700 mb-2">
                       📱 Phone Number
                     </label>
-                    <div className="flex items-center gap-2">
-                      <div className="px-4 py-3 bg-blue-50 text-blue-900 rounded-xl border-2 border-blue-200 font-semibold">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className="px-4 py-3 bg-blue-50 text-blue-900 rounded-xl border-2 border-blue-200 font-semibold whitespace-nowrap">
                         +91
                       </div>
                       <input
@@ -370,7 +370,7 @@ export default function SignupPage() {
                         placeholder="12345 67890"
                         required
                         maxLength={11}
-                        className="flex-1 px-4 py-3 bg-blue-50 text-blue-900 rounded-xl border-2 border-blue-200 focus:outline-none focus:ring-4 focus:ring-orange-500/50 focus:border-orange-500 transition-all"
+                        className="flex-1 min-w-0 px-4 py-3 bg-blue-50 text-blue-900 rounded-xl border-2 border-blue-200 focus:outline-none focus:ring-4 focus:ring-orange-500/50 focus:border-orange-500 transition-all"
                       />
                     </div>
                   </div>

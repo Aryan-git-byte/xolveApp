@@ -245,8 +245,8 @@ export default function VerifyPhonePage() {
                   <label htmlFor="phone" className="block text-sm font-semibold text-blue-700 mb-2">
                     📱 Mobile Number
                   </label>
-                  <div className="flex gap-2">
-                    <div className="flex items-center px-4 py-3 bg-blue-100 border-2 border-blue-200 rounded-xl font-semibold text-blue-900">
+                  <div className="flex gap-2 min-w-0">
+                    <div className="flex items-center px-4 py-3 bg-blue-100 border-2 border-blue-200 rounded-xl font-semibold text-blue-900 whitespace-nowrap">
                       +91
                     </div>
                     <input
@@ -256,7 +256,7 @@ export default function VerifyPhonePage() {
                       onChange={handlePhoneChange}
                       placeholder="12345 67890"
                       maxLength={11}
-                      className="flex-1 px-4 py-3 bg-blue-50 text-blue-900 rounded-xl border-2 border-blue-200 focus:outline-none focus:ring-4 focus:ring-orange-500/50 focus:border-orange-500 transition-all font-mono text-lg"
+                      className="flex-1 min-w-0 px-4 py-3 bg-blue-50 text-blue-900 rounded-xl border-2 border-blue-200 focus:outline-none focus:ring-4 focus:ring-orange-500/50 focus:border-orange-500 transition-all font-mono text-lg"
                     />
                   </div>
                   <p className="text-xs text-blue-500 mt-2">
