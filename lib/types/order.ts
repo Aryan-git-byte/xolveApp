@@ -10,7 +10,7 @@ export interface Order {
   order_type: 'product' | 'service'; // Can extend later
   cart_items: any[]; // Will store the cart items
   shipping_details?: string;
-  payment_method: 'partial_cod' | 'full_online' | null;
+  payment_method: 'partial_cod' | 'full_online';
   payment_status: 'unpaid' | 'paid' | 'partial';
   is_partial_cod: boolean;
   status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
