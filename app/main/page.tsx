@@ -1,43 +1,9 @@
-"use client";
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Header, Footer } from '../../components/Layout';
-import { BookOpen } from 'lucide-react';
+import { redirect } from "next/navigation";
 
-// Main Layout Component
-const XolveTechLayout = () => {
-  const router = useRouter();
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
-      
-      {/* Main Content Area */}
-      <main className="pt-20 pb-24 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-4">
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">Welcome to XolveTech</h1>
-            <p className="text-gray-600 mb-4">
-              This is your main content area. The header and footer are separate reusable components
-              that remain constant across all pages.
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-              <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-6 text-white">
-                <h3 className="text-lg font-semibold mb-2">Your Progress</h3>
-                <div className="flex items-end gap-2">
-                  <span className="text-4xl font-bold">250</span>
-                  <span className="text-blue-100 mb-1">XP Earned</span>
-                </div>
-              </div>
-              
-              <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-lg p-6 text-white">
-                <h3 className="text-lg font-semibold mb-2">Courses</h3>
-                <div className="flex items-end gap-2">
-                  <span className="text-4xl font-bold">5</span>
-                  <span className="text-green-100 mb-1">Active</span>
-                </div>
-              </div>
+export default function MainPage() {
+  redirect("/main/home");
+  return null;
+}
             </div>
           </div>
 

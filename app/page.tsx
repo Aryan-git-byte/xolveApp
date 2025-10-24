@@ -1,42 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
-
-export default function IntroPage() {
-  const slides = [
-    {
-      image:
-        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
-      title: "Welcome to XolveTech 🚀",
-      text: "India’s youth-driven innovation hub where learning meets creativity.",
-    },
-    {
-      image:
-        "https://images.unsplash.com/photo-1581091870622-7e0cdfbb6794?auto=format&fit=crop&w=800&q=80",
-      title: "Learn by Building",
-      text: "Explore hands-on STEM kits and guided courses for every curious mind.",
-    },
-    {
-      image:
-        "https://images.unsplash.com/photo-1581093588401-22f63612e6c5?auto=format&fit=crop&w=800&q=80",
-      title: "Join the Xchange",
-      text: "Connect, discuss, and share your projects with other innovators.",
-    },
-    {
-      image:
-        "https://images.unsplash.com/photo-1596496058755-1c2f2df543d5?auto=format&fit=crop&w=800&q=80",
-      title: "Earn & Grow",
-      text: "Complete missions, gain XP, earn badges, and climb the leaderboard!",
-    },
-    {
-      image:
-        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
-      title: "Ready to Begin?",
-      text: "Start your journey with your personal companion and build your first project!",
-    },
-  ];
+export default function Home() {
+  redirect("/main/home");
+  return null;
+}
 
   const router = useRouter();
 
