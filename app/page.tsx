@@ -1,29 +1,46 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
-  const router = useRouter();
-  const [current, setCurrent] = useState(0);
 
+export default function IntroPage() {
   const slides = [
     {
-      title: "Welcome",
-      text: "Discover the app",
-      image: "/images/slide1.jpg",
+      image:
+        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+      title: "Welcome to XolveTech 🚀",
+      text: "India’s youth-driven innovation hub where learning meets creativity.",
     },
     {
-      title: "Features",
-      text: "Explore powerful features",
-      image: "/images/slide2.jpg",
+      image:
+        "https://images.unsplash.com/photo-1581091870622-7e0cdfbb6794?auto=format&fit=crop&w=800&q=80",
+      title: "Learn by Building",
+      text: "Explore hands-on STEM kits and guided courses for every curious mind.",
     },
     {
-      title: "Get Started",
-      text: "Let's begin",
-      image: "/images/slide3.jpg",
+      image:
+        "https://images.unsplash.com/photo-1581093588401-22f63612e6c5?auto=format&fit=crop&w=800&q=80",
+      title: "Join the Xchange",
+      text: "Connect, discuss, and share your projects with other innovators.",
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1596496058755-1c2f2df543d5?auto=format&fit=crop&w=800&q=80",
+      title: "Earn & Grow",
+      text: "Complete missions, gain XP, earn badges, and climb the leaderboard!",
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+      title: "Ready to Begin?",
+      text: "Start your journey with your personal companion and build your first project!",
     },
   ];
+
+  const router = useRouter();
+
+  const [current, setCurrent] = useState(0);
 
   const nextSlide = () => {
     if (current < slides.length - 1) setCurrent(current + 1);
