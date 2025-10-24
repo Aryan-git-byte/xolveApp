@@ -236,7 +236,7 @@ export default function OrderReview({
               {/* Full Online Payment Option */}
               <label
                 className={`block p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                  selectedPayment === "full_online"
+                  selectedPayment === "full_payment"
                     ? "border-green-500 bg-green-50 dark:bg-green-900/30"
                     : "border-gray-300 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-700"
                 }`}
@@ -244,8 +244,8 @@ export default function OrderReview({
                 <input
                   type="radio"
                   name="payment"
-                  value="full_online"
-                  checked={selectedPayment === "full_online"}
+                  value="full_payment"
+                  checked={selectedPayment === "full_payment"}
                   onChange={(e) => setSelectedPayment(e.target.value as PaymentMethod)}
                   className="sr-only"
                 />
@@ -254,12 +254,12 @@ export default function OrderReview({
                     <div className="flex items-center gap-2">
                       <div
                         className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                          selectedPayment === "full_online"
+                          selectedPayment === "full_payment"
                             ? "border-green-500 bg-green-500"
                             : "border-gray-300 dark:border-gray-600"
                         }`}
                       >
-                        {selectedPayment === "full_online" && (
+                        {selectedPayment === "full_payment" && (
                           <div className="w-2.5 h-2.5 bg-white rounded-full" />
                         )}
                       </div>
@@ -295,7 +295,7 @@ export default function OrderReview({
           </div>
 
           {/* Pay Now Button - Using Razorpay */}
-          {selectedPayment === "full_online" && (
+          {selectedPayment === "full_payment" && (
             <RazorpayButton
               amount={regularTotal}
               orderId={`order_${Date.now()}`}
