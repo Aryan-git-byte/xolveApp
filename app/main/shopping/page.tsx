@@ -117,7 +117,7 @@ export default function ShoppingPage() {
           <div className="max-w-7xl mx-auto flex items-center justify-center min-h-[60vh]">
             <div className="text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
-              <p className="text-gray-600 dark:text-gray-400 dark:text-gray-400">Loading products...</p>
+              <p className="text-gray-600 dark:text-gray-400">Loading products...</p>
             </div>
           </div>
         </main>
@@ -158,7 +158,7 @@ export default function ShoppingPage() {
           </div>
 
           {/* Search and Filter Bar */}
-          <div className="bg-white dark:bg-gray-800 dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 dark:border-gray-700 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
             <div className="flex flex-col lg:flex-row gap-4">
               
               {/* Search */}
@@ -169,7 +169,7 @@ export default function ShoppingPage() {
                   placeholder="Search for products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
               </div>
 
@@ -178,7 +178,7 @@ export default function ShoppingPage() {
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`p-2 rounded-md transition ${
-                    viewMode === 'grid' ? 'bg-white shadow-sm' : 'hover:bg-gray-200'
+                    viewMode === 'grid' ? 'bg-white dark:bg-gray-600 shadow-sm' : 'hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   <Grid3x3 className="w-5 h-5 text-gray-800 dark:text-gray-100" />
@@ -186,7 +186,7 @@ export default function ShoppingPage() {
                 <button
                   onClick={() => setViewMode('list')}
                   className={`p-2 rounded-md transition ${
-                    viewMode === 'list' ? 'bg-white shadow-sm' : 'hover:bg-gray-200'
+                    viewMode === 'list' ? 'bg-white dark:bg-gray-600 shadow-sm' : 'hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   <List className="w-5 h-5 text-gray-800 dark:text-gray-100" />
@@ -196,7 +196,7 @@ export default function ShoppingPage() {
               {/* Filter Button */}
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 transition text-gray-800 dark:text-gray-100"
+                className="flex items-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition text-gray-800 dark:text-gray-100"
               >
                 <Filter className="w-5 h-5" />
                 <span className="font-medium">Filters</span>
@@ -206,7 +206,7 @@ export default function ShoppingPage() {
 
             {/* Expandable Filters */}
             {showFilters && (
-              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 dark:border-gray-700 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 grid grid-cols-1 md:grid-cols-2 gap-4">
                 
                 {/* Category Filter */}
                 <div>
@@ -214,7 +214,7 @@ export default function ShoppingPage() {
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-gray-800 dark:text-gray-100"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700"
                   >
                     {categories.map((category) => (
                       <option key={category} value={category}>
@@ -230,7 +230,7 @@ export default function ShoppingPage() {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as any)}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-gray-800 dark:text-gray-100"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700"
                   >
                     <option value="featured">Featured</option>
                     <option value="newest">Newest First</option>
@@ -244,23 +244,23 @@ export default function ShoppingPage() {
 
           {/* Results Count */}
           <div className="flex items-center justify-between">
-            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-400">
-              <span className="font-semibold text-gray-800 dark:text-gray-100 dark:text-gray-100">{filteredProducts.length}</span> products found
+            <p className="text-gray-600 dark:text-gray-400">
+              <span className="font-semibold text-gray-800 dark:text-gray-100">{filteredProducts.length}</span> products found
             </p>
           </div>
 
           {/* Products Grid/List */}
           {filteredProducts.length === 0 ? (
-            <div className="bg-white dark:bg-gray-800 dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 dark:border-gray-700 p-12 text-center">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-12 text-center">
               <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 dark:text-gray-100 mb-2">No products found</h3>
-              <p className="text-gray-600 dark:text-gray-400 dark:text-gray-400 mb-4">Try adjusting your search or filters</p>
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">No products found</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">Try adjusting your search or filters</p>
               <button
                 onClick={() => {
                   setSearchQuery('');
                   setSelectedCategory('all');
                 }}
-                className="px-6 py-2 bg-blue-600 dark:bg-blue-500 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 dark:hover:bg-blue-600 dark:bg-blue-500 transition"
+                className="px-6 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition"
               >
                 Clear Filters
               </button>
@@ -275,7 +275,7 @@ export default function ShoppingPage() {
                 <div
                   key={product.id}
                   onClick={() => handleProductClick(product.id)}
-                  className={`bg-white rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 dark:border-gray-700 overflow-hidden hover:shadow-lg transition cursor-pointer ${
+                  className={`bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition cursor-pointer ${
                     viewMode === 'list' ? 'flex' : ''
                   }`}
                 >
@@ -311,22 +311,22 @@ export default function ShoppingPage() {
                         e.stopPropagation();
                         // Handle wishlist
                       }}
-                      className="absolute top-3 left-3 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-600 dark:bg-gray-700 transition"
+                      className="absolute top-3 left-3 w-8 h-8 bg-white dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-600 transition"
                     >
-                      <Heart className="w-4 h-4 text-gray-600 dark:text-gray-400 dark:text-gray-400" />
+                      <Heart className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                     </button>
                   </div>
 
                   {/* Product Info */}
                   <div className={`p-4 ${viewMode === 'list' ? 'flex-1' : ''}`}>
                     <div className="mb-2">
-                      <span className="inline-block bg-blue-100 text-blue-700 dark:text-blue-400 text-xs px-2 py-1 rounded-full font-medium mb-2">
+                      <span className="inline-block bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs px-2 py-1 rounded-full font-medium mb-2">
                         {product.category}
                       </span>
-                      <h3 className="font-semibold text-gray-800 dark:text-gray-100 dark:text-gray-100 text-lg mb-1 line-clamp-2">
+                      <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-lg mb-1 line-clamp-2">
                         {product.title}
                       </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-400 line-clamp-2">{product.description}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">{product.description}</p>
                     </div>
 
                     {/* Rating */}
@@ -334,15 +334,15 @@ export default function ShoppingPage() {
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Star key={star} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                       ))}
-                      <span className="text-xs text-gray-500 dark:text-gray-500 ml-1">(4.8)</span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">(4.8)</span>
                     </div>
 
                     {/* Price and Action */}
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="text-2xl font-bold text-gray-800 dark:text-gray-100 dark:text-gray-100">₹{product.price}</span>
+                        <span className="text-2xl font-bold text-gray-800 dark:text-gray-100">₹{product.price}</span>
                         {product.on_offer && (
-                          <div className="text-xs text-green-600 font-semibold">
+                          <div className="text-xs text-green-600 dark:text-green-400 font-semibold">
                             Save ₹{product.discount_value}
                           </div>
                         )}
@@ -376,8 +376,8 @@ export default function ShoppingPage() {
           )}
 
           {/* Featured Categories */}
-          <div className="bg-white dark:bg-gray-800 dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 dark:border-gray-700 p-6">
-            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 dark:text-gray-100 mb-4">Shop by Category</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Shop by Category</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {categories.filter(c => c !== 'all').map((category) => (
                 <button
@@ -385,15 +385,15 @@ export default function ShoppingPage() {
                   onClick={() => setSelectedCategory(category)}
                   className={`p-4 rounded-xl border-2 transition ${
                     selectedCategory === category
-                      ? 'border-blue-600 bg-blue-50'
-                      : 'border-gray-200 dark:border-gray-700 dark:border-gray-700 hover:border-gray-300 dark:border-gray-600 dark:border-gray-600'
+                      ? 'border-blue-600 dark:border-blue-500 bg-blue-50 dark:bg-blue-900/30'
+                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                   }`}
                 >
                   <Package className={`w-8 h-8 mx-auto mb-2 ${
-                    selectedCategory === category ? 'text-blue-600 dark:text-blue-400 dark:text-blue-400' : 'text-gray-400'
+                    selectedCategory === category ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'
                   }`} />
                   <p className={`text-sm font-medium ${
-                    selectedCategory === category ? 'text-blue-600 dark:text-blue-400 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300 dark:text-gray-300'
+                    selectedCategory === category ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
                   }`}>
                     {category}
                   </p>
@@ -404,25 +404,25 @@ export default function ShoppingPage() {
 
           {/* Trust Badges */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-white dark:bg-gray-800 dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 dark:border-gray-700 p-4 text-center">
-              <Award className="w-8 h-8 text-blue-600 dark:text-blue-400 dark:text-blue-400 mx-auto mb-2" />
-              <h3 className="font-semibold text-gray-800 dark:text-gray-100 dark:text-gray-100 text-sm mb-1">STEM Certified</h3>
-              <p className="text-xs text-gray-600 dark:text-gray-400 dark:text-gray-400">Quality assured kits</p>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 text-center">
+              <Award className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-2" />
+              <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-sm mb-1">STEM Certified</h3>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Quality assured kits</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 dark:border-gray-700 p-4 text-center">
-              <Package className="w-8 h-8 text-green-600 mx-auto mb-2" />
-              <h3 className="font-semibold text-gray-800 dark:text-gray-100 dark:text-gray-100 text-sm mb-1">Free Shipping</h3>
-              <p className="text-xs text-gray-600 dark:text-gray-400 dark:text-gray-400">On all orders</p>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 text-center">
+              <Package className="w-8 h-8 text-green-600 dark:text-green-400 mx-auto mb-2" />
+              <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-sm mb-1">Free Shipping</h3>
+              <p className="text-xs text-gray-600 dark:text-gray-400">On all orders</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 dark:border-gray-700 p-4 text-center">
-              <TrendingUp className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-              <h3 className="font-semibold text-gray-800 dark:text-gray-100 dark:text-gray-100 text-sm mb-1">Easy Returns</h3>
-              <p className="text-xs text-gray-600 dark:text-gray-400 dark:text-gray-400">7-day return policy</p>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 text-center">
+              <TrendingUp className="w-8 h-8 text-purple-600 dark:text-purple-400 mx-auto mb-2" />
+              <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-sm mb-1">Easy Returns</h3>
+              <p className="text-xs text-gray-600 dark:text-gray-400">7-day return policy</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 dark:border-gray-700 p-4 text-center">
-              <Sparkles className="w-8 h-8 text-orange-600 mx-auto mb-2" />
-              <h3 className="font-semibold text-gray-800 dark:text-gray-100 dark:text-gray-100 text-sm mb-1">Expert Support</h3>
-              <p className="text-xs text-gray-600 dark:text-gray-400 dark:text-gray-400">Always here to help</p>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 text-center">
+              <Sparkles className="w-8 h-8 text-orange-600 dark:text-orange-400 mx-auto mb-2" />
+              <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-sm mb-1">Expert Support</h3>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Always here to help</p>
             </div>
           </div>
 

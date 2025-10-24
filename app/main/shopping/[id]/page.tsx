@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState, use } from 'react';
@@ -135,7 +136,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           {/* Back Button */}
           <button
             onClick={() => router.push('/main/shopping')}
-            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:text-gray-100 transition group"
+            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-100 transition group"
           >
             <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition" />
             <span className="font-medium">Back to Shopping</span>
@@ -186,19 +187,19 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                       className={`w-10 h-10 rounded-xl flex items-center justify-center backdrop-blur-sm transition ${
                         isFavorite 
                           ? 'bg-red-500 text-white' 
-                          : 'bg-white/90 text-gray-700 dark:text-gray-300 hover:bg-white'
+                          : 'bg-white/90 dark:bg-gray-700/90 text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-700'
                       }`}
                     >
                       <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
                     </button>
-                    <button className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center hover:bg-white dark:hover:bg-gray-600 transition">
+                    <button className="w-10 h-10 bg-white/90 dark:bg-gray-700/90 backdrop-blur-sm rounded-xl flex items-center justify-center hover:bg-white dark:hover:bg-gray-700 transition">
                       <Share2 className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                     </button>
                   </div>
                 </div>
 
                 {/* Thumbnail Gallery */}
-                <div className="p-4 bg-gray-50">
+                <div className="p-4 bg-gray-50 dark:bg-gray-900">
                   <div className={`grid gap-3 ${product.image_urls && product.image_urls.length > 4 ? 'grid-cols-5' : 'grid-cols-4'}`}>
                     {product.image_urls && product.image_urls.map((url, index) => (
                       <button
@@ -206,8 +207,8 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                         onClick={() => setSelectedImage(index)}
                         className={`relative h-20 rounded-lg overflow-hidden border-2 transition ${
                           selectedImage === index
-                            ? 'border-blue-600'
-                            : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:border-gray-600'
+                            ? 'border-blue-600 dark:border-blue-500'
+                            : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                         }`}
                       >
                         <img src={url} alt={`${product.title} ${index + 1}`} className="w-full h-full object-cover" />
@@ -223,7 +224,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
               
               {/* Category Badge */}
               <div className="mb-4">
-                <span className="inline-flex items-center gap-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-400 text-sm px-3 py-1.5 rounded-full font-medium">
+                <span className="inline-flex items-center gap-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-sm px-3 py-1.5 rounded-full font-medium">
                   <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   {product.category}
                 </span>
@@ -250,8 +251,8 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                   <span className="text-4xl font-bold text-gray-800 dark:text-gray-100">₹{product.price}</span>
                   {product.on_offer && product.discount_value && (
                     <>
-                      <span className="text-xl text-gray-400 line-through">₹{product.price + product.discount_value}</span>
-                      <span className="bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-400 text-sm px-3 py-1 rounded-full font-semibold">
+                      <span className="text-xl text-gray-400 dark:text-gray-500 line-through">₹{product.price + product.discount_value}</span>
+                      <span className="bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 text-sm px-3 py-1 rounded-full font-semibold">
                         Save ₹{product.discount_value}
                       </span>
                     </>
@@ -267,15 +268,15 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                   <span className="text-gray-700 dark:text-gray-300 font-medium">STEM Certified</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <Clock className="w-4 h-4 text-purple-600" />
+                  <Clock className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                   <span className="text-gray-700 dark:text-gray-300 font-medium">2-3 Hour Build</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <Target className="w-4 h-4 text-green-600" />
+                  <Target className="w-4 h-4 text-green-600 dark:text-green-400" />
                   <span className="text-gray-700 dark:text-gray-300 font-medium">Beginner Friendly</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <Zap className="w-4 h-4 text-orange-600" />
+                  <Zap className="w-4 h-4 text-orange-600 dark:text-orange-400" />
                   <span className="text-gray-700 dark:text-gray-300 font-medium">Interactive</span>
                 </div>
               </div>
@@ -286,16 +287,16 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-11 h-11 bg-gray-100 rounded-xl flex items-center justify-center hover:bg-gray-200 transition font-semibold text-gray-700 dark:text-gray-300 text-lg"
+                    className="w-11 h-11 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 transition font-semibold text-gray-700 dark:text-gray-300 text-lg"
                   >
                     -
                   </button>
-                  <div className="w-16 h-11 bg-gray-50 border-2 border-gray-200 dark:border-gray-700 rounded-xl flex items-center justify-center">
+                  <div className="w-16 h-11 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl flex items-center justify-center">
                     <span className="text-lg font-semibold text-gray-800 dark:text-gray-100">{quantity}</span>
                   </div>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="w-11 h-11 bg-gray-100 rounded-xl flex items-center justify-center hover:bg-gray-200 transition font-semibold text-gray-700 dark:text-gray-300 text-lg"
+                    className="w-11 h-11 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 transition font-semibold text-gray-700 dark:text-gray-300 text-lg"
                   >
                     +
                   </button>
@@ -312,7 +313,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                   <ShoppingCart className="w-5 h-5" />
                   Add to Cart
                 </button>
-                <button className="w-full px-6 py-3 bg-gray-800 text-white rounded-xl font-semibold hover:bg-gray-900 transition">
+                <button className="w-full px-6 py-3 bg-gray-800 dark:bg-gray-700 text-white rounded-xl font-semibold hover:bg-gray-900 dark:hover:bg-gray-600 transition">
                   Buy Now
                 </button>
               </div>
@@ -334,7 +335,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
             
             {/* Tab Navigation */}
-            <div className="border-b border-gray-200 dark:border-gray-700 bg-gray-50">
+            <div className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
               <div className="flex overflow-x-auto scrollbar-hide">
                 {tabs.map((tab) => {
                   const Icon = tab.icon;
@@ -344,14 +345,14 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                       onClick={() => setActiveTab(tab.id)}
                       className={`flex items-center gap-2 px-6 py-4 font-medium whitespace-nowrap transition relative ${
                         activeTab === tab.id
-                          ? 'text-blue-600 dark:text-blue-400 bg-white'
-                          : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600'
+                          ? 'text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800'
+                          : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700'
                       }`}
                     >
                       <Icon className="w-4 h-4" />
                       {tab.label}
                       {activeTab === tab.id && (
-                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"></div>
+                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-500"></div>
                       )}
                     </button>
                   );
@@ -393,7 +394,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                   <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">What's in the Box</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {product.kit_contents?.map((item, index) => (
-                      <div key={index} className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition border border-gray-200 dark:border-gray-700">
+                      <div key={index} className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-900 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition border border-gray-200 dark:border-gray-700">
                         <div className="w-6 h-6 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
                           <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
                         </div>
@@ -409,7 +410,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                   <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">What You'll Learn</h3>
                   <div className="space-y-4 mb-6">
                     {product.learning_outcomes?.map((outcome, index) => (
-                      <div key={index} className="flex items-start gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                      <div key={index} className="flex items-start gap-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
                         <div className="w-8 h-8 bg-blue-600 dark:bg-blue-500 text-white rounded-lg flex items-center justify-center flex-shrink-0 font-bold">
                           {index + 1}
                         </div>
@@ -442,7 +443,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                   <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Assembly Guide</h3>
                   <div className="space-y-4">
                     {product.assembly_steps?.split('\n\n').map((step, index) => (
-                      <div key={index} className="flex gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                      <div key={index} className="flex gap-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
                         <div className="flex-shrink-0">
                           <div className="w-10 h-10 bg-blue-600 dark:bg-blue-500 text-white rounded-xl flex items-center justify-center font-bold">
                             {index + 1}
@@ -488,7 +489,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                   review: "Amazing quality and very educational. Perfect for beginners. Highly recommend!"
                 }
               ].map((review, index) => (
-                <div key={index} className="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                <div key={index} className="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
