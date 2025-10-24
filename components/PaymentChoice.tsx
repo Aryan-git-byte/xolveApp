@@ -65,7 +65,7 @@ export default function PaymentChoice({
 
         {/* Full Online Payment Option */}
         <button
-          onClick={() => onSelect("full_online")}
+          onClick={() => onSelect("full_payment")}
           className="w-full group"
         >
           <div className="p-6 rounded-xl border-2 border-gray-300 dark:border-gray-600 hover:border-green-500 dark:hover:border-green-500 bg-gradient-to-br from-green-50 to-white dark:from-gray-700 dark:to-gray-800 transition-all duration-200 hover:shadow-lg">

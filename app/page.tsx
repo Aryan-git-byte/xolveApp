@@ -1,15 +1,29 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Home() {
-  redirect("/main/home");
-  return null;
-}
-
   const router = useRouter();
-
   const [current, setCurrent] = useState(0);
+
+  const slides = [
+    {
+      title: "Welcome",
+      text: "Discover the app",
+      image: "/images/slide1.jpg",
+    },
+    {
+      title: "Features",
+      text: "Explore powerful features",
+      image: "/images/slide2.jpg",
+    },
+    {
+      title: "Get Started",
+      text: "Let's begin",
+      image: "/images/slide3.jpg",
+    },
+  ];
 
   const nextSlide = () => {
     if (current < slides.length - 1) setCurrent(current + 1);
